@@ -17,9 +17,23 @@ You can access the dev server at `http://localhost:9000`
 Bundling the app
 `$ npm run build`
 
+Pushing the app online*
+`$ npm run deploy`
+
 Running the unit tests
 `$ npm test`
 
-## Example application
-At the time this guide was written an example of the application was available at `uqdraw.co`. This may not be the case when you read this.
+**The live website can be found online at: **
+ `http://artifex.uqcloud.net`.
 
+ ### Other Notes
+
+ *In order for `npm run deploy` to work ~/.ssh/config must be configured with a connection for moss.labs.eait.uq.edu.au. In order to pass bundle.js through to the Artifex zone moss is used as a stepping stone to enter the uq network. Currently a copy of bundle.js is left in the deployer's moss ~ directory.
+
+If ~/.ssh/config does not exist use the following template
+
+```
+Host moss
+Hostname moss.labs.eait.uq.edu.au
+User <yourusername>
+```
