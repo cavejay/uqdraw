@@ -179,7 +179,7 @@ class Presenter extends React.Component {
             <div className="Step">
               <div className='Step-number'>2</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Enter code</span><span className='Step-value'>3fa</span>
+                <span className='Step-label'>Enter code</span><span className='Step-value'>{ this.componentKey }</span>
               </div>
             </div>
           </div>

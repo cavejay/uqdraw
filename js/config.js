@@ -1,5 +1,5 @@
 export default {
     firebase: {
-        base: 'https://uqdraw.firebaseio.com',
+        base: 'https://uqartifex.firebaseio.com/',
     },
 };

@@ -23,6 +23,11 @@ const APIConstants = keyMirror({
     lectures: null,
     responses: null,
     subjects: null,
+    
+    courses: null,
+    lecturers: null,
+    
+    
 });
 
 // APIConstants will be used to index into the map
@@ -30,6 +35,11 @@ let firebasePaths = {
     [APIConstants.lectures]: 'lectures',
     [APIConstants.responses]: 'responses',
     [APIConstants.subjects]: 'courseLists',
+    
+    [APIConstants.courses]: 'Courses',
+    [APIConstants.lecturers]: 'Lecturers',
+    
+    
 };
 
 let API = {
@@ -69,6 +79,7 @@ let API = {
         }
     },
 
+	// function to call the courses for the user
     firebaseSubscribe: function(refType, filter, componentKey, callback) {
         // Get ref data for the chosen type and filter
         let current = this.initialiseRefs(refType, filter);

@@ -80,10 +80,14 @@ class StartView extends React.Component {
     this.setState({'codeInput3': inputValue});
   }
 
+  onUserInputChange(event) {
+    this.setState({ usernameInput: event.target.value });
+  }
+
   onLogin(event) {
     event.preventDefault();
     this.context.router
-      .transitionTo('welcome', {'userId': 'uqjstee8'}, {});
+      .transitionTo('welcome', {'userId': this.state.usernameInput}, {});
   }
 
   render() {
@@ -115,7 +119,8 @@ class StartView extends React.Component {
             <h3>Login as Presenter</h3>
             <form className='LoginForm'>
               <div className='Slat Slat--unpadded'>
-                <input className='Input Input--first' type="text" placeholder="Username"/>
+                <input className='Input Input--first' type='text' placeholder='Username' value={this.state.usernameInput} 
+                		onChange={this.onUserInputChange.bind(this)}/>
               </div>
               <div className='Slat Slat--unpadded'>
                 <input className='Input Input--last' type="password" placeholder="Password"/>
