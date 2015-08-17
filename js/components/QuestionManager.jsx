@@ -121,7 +121,11 @@ class QuestionManager extends React.Component {
     return (
       <div className='ViewContainer'>
         <Header>
-          <div className='Stack'>
+          <div className='Stackl'>
+            /* insert a graphic here for symmetry */
+            <Link to='archive' className='Stack-label'>Delete Course</Link>
+          </div>
+          <div className='Stackr'>
             <img className='Stack-icon' src={require('../../images/basic_picture_multiple.svg')} />
             <Link to='archive' className='Stack-label'>Archives</Link>
           </div>

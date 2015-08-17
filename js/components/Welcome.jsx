@@ -84,6 +84,11 @@ class Welcome extends React.Component {
     SubjectActions.create(userId, subjectName);
   }
 
+  onRemoveSubject(subjectName) {
+    let userId = this.props.routeParams.userId;
+    SubjectActions
+  }
+
   render() {
     console.log('render()');
     console.log('subjects = ', this.state.subjects);
@@ -109,6 +114,7 @@ class Welcome extends React.Component {
 Welcome.propTypes = {
   onAddSubject: React.PropTypes.func,
   onChangeCourse: React.PropTypes.func,
+  onRemoveSubject: React.PropTypes.func,
 };
 
 export default Welcome;

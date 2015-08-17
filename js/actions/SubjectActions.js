@@ -26,9 +26,33 @@ let SubjectActions = {
         });
       }
     });
-
     Dispatcher.dispatch({
       type: actionTypes.SUBJECT_CREATE_INITIATED,
+      subjectName: subjectName,
+    });
+  },
+
+  delete: (userId, subjectName) => {
+    if (!subjectName) return;
+
+    API.removeFromSubjects(userId, subjectName, (error) => {
+      if (error == null) {
+        Dispatcher.dispatch({
+          type: actionTypes.SUBJECT_REMOVE_SUCCESS,
+          userId: userId,
+          subjectName: subjectName
+        })
+      } else {
+        Dispatcher.dispatch({
+          type: actionTypes.SUBJECT_REMOVE_FAIL,
+          userId: userId,
+          subjectName: subjectName,
+          error: error,
+        });
+      }
+    });
+    Dispatcher.dispatch({
+      type: actionTypes.SUBJECT_REMOVE_INITIATED,
       subjectName: subjectName,
     });
   },
