@@ -26,7 +26,7 @@ const APIConstants = keyMirror({
     
     courses: null,
     lecturers: null,
-    
+    users: null,
     
 });
 
@@ -35,7 +35,7 @@ let firebasePaths = {
     [APIConstants.lectures]: 'lectures',
     [APIConstants.responses]: 'responses',
     [APIConstants.subjects]: 'courseLists',
-    
+    [APIConstants.users]: 'Users',
     [APIConstants.courses]: 'Courses',
     [APIConstants.lecturers]: 'Lecturers',
     
