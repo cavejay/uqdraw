@@ -139,6 +139,12 @@ class Drawing extends React.Component {
     this.setState({ isEraserActive: !this.state.isEraserActive });
   }
 
+  clearCanvas() {
+    var ctx = this.displayCtx;
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
+
   // Sets the line width for the canvas and stores the state on the component
   setLineWidth(size) { // size is 's' | 'm' | 'l'
     let lineWidth;
@@ -180,6 +186,8 @@ class Drawing extends React.Component {
     if (this.state.isEraserActive)
       eraserStyle = { backgroundImage: 'url(../../images/eraser-active.svg)' };
 
+    var clearStyle = {};
+
     var activeStyle = {backgroundColor: '#fff'};
     var smallStyle = (this.state.lineWidth === 's') ? activeStyle : {};
     var mediumStyle = (this.state.lineWidth === 'm') ? activeStyle : {};
@@ -200,6 +208,9 @@ class Drawing extends React.Component {
         <div className='ActionBar'>
           <div onClick={this.toggleEraser.bind(this)} className='Action Action--eraser'>
             <div style={eraserStyle} className='Action-icon'></div>
+          </div>
+          <div onClick={this.clearCanvas.bind(this)} className='Action Action--clear'>
+            <div style={clearStyle} className='Action-icon'></div>
           </div>
           <div className='Action Action--submit'>
             <button className='Button--unstyled' onClick={this.onSubmitImage.bind(this)}>Submit Answer</button>
