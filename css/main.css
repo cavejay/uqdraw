@@ -222,6 +222,10 @@ input:focus {
   background-image: url('../images/eraser.svg');
 }
 
+.Action--clear > .Action-icon {
+  background-image: url('../images/clear.svg');
+}
+
 .fullscreen {
   background-image: url('../images/arrows_expand.svg');
 }
