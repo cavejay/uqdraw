@@ -116,6 +116,7 @@ let API = {
     },
 
     addToLectures: function(courseKey, lecture, callback) {
+        console.log('we got here');
         return refs[APIConstants.lectures][courseKey].ref.push(lecture, callback);
     },
 
@@ -186,6 +187,10 @@ let API = {
 
     addToSubjects: function(userId, subjectName, callback) {
         return refs[APIConstants.subjects][userId].ref.push(subjectName, callback);
+    },
+
+    removeFromSubjects: function(userId, subjectNameId, callback) {
+        return refs[APIConstants.subjects][userId].ref.child(subjectNameId).remove(callback);
     },
 
     getRefs: function() {

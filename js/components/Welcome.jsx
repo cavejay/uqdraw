@@ -22,6 +22,7 @@ class Welcome extends React.Component {
     this.onSubjectChange = this.onSubjectChange.bind(this);
     this.onSubmitChange = this.onSubmitChange.bind(this);
     this.onAddSubject = this.onAddSubject.bind(this);
+    this.onRemoveSubject = this.onRemoveSubject.bind(this);
     this.initData = this.initData.bind(this);
 
 
@@ -69,10 +70,12 @@ class Welcome extends React.Component {
 
   onSubjectChange() {
     this.setState({ subjects: SubjectStore.getAll() });
+    console.log('subjectchange');
   }
 
   onSubmitChange() {
     this.setState({ isSubmitting: SubjectStore.isSubmitting() });
+    console.log('submitchange');
   }
 
   // Callback to be passed to SubjectList child
