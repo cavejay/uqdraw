@@ -1,3 +1,7 @@
+# PROTOTYPE VERISON
+
+_This is only for archival purposes_
+
 # UQDraw Prototype
 This guide assumes you are familiar with modern web dev and will not cover configuring your system for web development. The getting started section assumes you are using OSX with node installed.
 
