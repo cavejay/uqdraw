@@ -100,6 +100,16 @@ class QuestionManager extends React.Component {
     event.preventDefault();
   }
 
+  onRemoveCourse() {
+    console.log("Removing the course isn't implemented yet");
+
+    // console.log('userId: '+this.state.userId)
+    // this.context.router.transitionTo('welcome', {'userId':this.props.routeParams.userId}, {});
+
+    // Kill the course in the database
+    // Move the user to the welcome page
+  }
+
   render() {
     let lectures;
     if (this.state.lectures) {
@@ -122,8 +132,8 @@ class QuestionManager extends React.Component {
       <div className='ViewContainer'>
         <Header>
           <div className='Stackl'>
-            /* insert a graphic here for symmetry */
-            <Link to='archive' className='Stack-label'>Delete Course</Link>
+            <img className='Stack-icon' src={require('../../images/trash.svg')} />
+            <div className='Stack-label' onClick={this.onRemoveCourse.bind(this)}> Delete Course</div>
           </div>
           <div className='Stackr'>
             <img className='Stack-icon' src={require('../../images/basic_picture_multiple.svg')} />
@@ -158,5 +168,11 @@ class QuestionManager extends React.Component {
     );
   }
 }
+
+// Set Router Context to allow for programatically transitioning to new routes.
+// See: https://github.com/rackt/react-router/blob/master/docs/api/RouterContext.md
+QuestionManager.contextTypes = {
+  router: React.PropTypes.func
+};
 
 export default HorizontalDragScroll(QuestionManager);
