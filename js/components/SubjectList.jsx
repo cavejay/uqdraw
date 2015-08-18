@@ -16,8 +16,20 @@ class SubjectListItem extends React.Component {
     this.props.onChangeCourse(courseId, courseName);
   }
 
+  onRemoveCourse(courseId) {
+    console.log('Tried to remove course: '+courseId);
+
+  }
+
   render() {
     return (
+      <div>
+      <div
+        class='Icon--cross'
+        onClick={this.onRemoveCourse.bind(this, this.props.courseId)}
+      >
+        &times;
+      </div>
       <Link
         className='ListItem'
         to={this.props.to}
@@ -27,9 +39,11 @@ class SubjectListItem extends React.Component {
       >
         {this.props.children}
       </Link>
+      </div>
     );
   }
 }
+
 SubjectListItem.propTypes = {
   to: React.PropTypes.string,
   courseName: React.PropTypes.string,

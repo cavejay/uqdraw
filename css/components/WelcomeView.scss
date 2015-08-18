@@ -69,6 +69,17 @@
   left: -5px;
 }
 
+.Icon--cross {
+  color: gray;
+  display: inline-block;
+  position: relative;
+
+  &:hover {
+    color: black;
+    cursor: pointer;
+  }
+}
+
 .Modal--addCourse {
   width: 300px;
   height: 192px;
