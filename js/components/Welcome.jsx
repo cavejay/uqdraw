@@ -8,12 +8,14 @@ import SubjectActions from '../actions/SubjectActions.js';
 import SubjectStore from '../stores/SubjectStore.js';
 
 import ComponentKey from '../utils/ComponentKey.js';
+import LectureKey from '../utils/LectureKey.js';
 import API, {APIConstants} from '../utils/API.js';
 
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
     this.componentKey = ComponentKey.generate();
+    this.lectureKey = LectureKey.generate();
     this.state = {
       subjects: [], // list of subject names
     };
@@ -57,6 +59,7 @@ class Welcome extends React.Component {
   initData() {
     let userId = this.props.routeParams.userId;
     console.log('USERID = ', userId);
+     console.log('LKEY = ', this.lectureKey);
     console.log('subjects = ', SubjectStore.getAll());
 
     this.setState({
@@ -97,7 +100,7 @@ class Welcome extends React.Component {
         <Header />
         <div className='Welcome'>
           <div className='Marquee'>
-            <h1 className='Marquee-Heading'>Welcome, Lecturer.</h1>
+            <h1 className='Marquee-Heading'>Welcome, {this.props.routeParams.userId}.</h1>
             <div className="Marquee-Subheading">Select the course the questions are for below, or add a new course.</div>
           </div>
           <SubjectList
