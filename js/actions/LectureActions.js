@@ -1,11 +1,10 @@
-import Dispatcher from '../dispatcher/Dispatcher';
-import LectureConstants from '../constants/LectureConstants';
+import Dispatcher from '../dispatcher/Dispatcher.js';
+import LectureConstants from '../constants/LectureConstants.js';
 let ActionTypes = LectureConstants.ActionTypes;
-let API = require('../utils/API').default;
+// let API = require('../utils/API').default;
 
 let LectureActions = {
-
-    updateLectures: (courseKey, lectures) => {
+   updateLectures: (courseKey, lectures) => {
         if (!courseKey || !lectures) return;
         Dispatcher.dispatch({
             type: ActionTypes.LECTURES_UPDATE_SUCCESS,
@@ -14,8 +13,9 @@ let LectureActions = {
         });
     },
 
-    create: (courseKey, lectureTitle) => {
-        let newLecture = {title: lectureTitle, questions: []};
+    create: (courseKey, lectureKey, lectureTitle) => {
+    let API = require('../utils/API').default;
+        let newLecture = {title: lectureTitle, lectureCode: lectureKey , questions: []};
         let ref = API.addToLectures(courseKey, newLecture, (error) => {
             if (error) {
                 Dispatcher.dispatch({
@@ -40,6 +40,7 @@ let LectureActions = {
     },
 
     delete: (courseKey, lectureKey) => {
+    let API = require('../utils/API').default;
         API.removeLecture(courseKey, lectureKey, (error) => {
             if (error) {
                 Dispatcher.dispatch({
@@ -61,6 +62,7 @@ let LectureActions = {
             lectureKey,
         });
     },
+
 };
 
 export default LectureActions;

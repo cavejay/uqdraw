@@ -11,7 +11,7 @@ import LectureActions from '../actions/LectureActions.js';
 import LectureStore from '../stores/LectureStore.js';
 import API, {APIConstants} from '../utils/API.js';
 import ComponentKey from '../utils/ComponentKey.js';
-
+import LectureKey from '../utils/LectureKey.js';
 let Firebase = require('firebase');
 let Modal = require('react-modal');
 
@@ -27,6 +27,7 @@ class QuestionManager extends React.Component {
     super(props);
     props.onChangeCourse(null, props.routeParams.courseName);
     this.componentKey = ComponentKey.generate();
+    this.LectureKey = LectureKey.generate();
     this.state = {
       curYPos: 0,
       curXPos: 0,
@@ -81,7 +82,7 @@ class QuestionManager extends React.Component {
   }
 
   onAddLecture(title) {
-    LectureActions.create(this.props.courseId, title);
+    LectureActions.create(this.props.courseId, this.LectureKey, title);
     this.setState({isLectureModalOpen: false});
     event.preventDefault();
   }

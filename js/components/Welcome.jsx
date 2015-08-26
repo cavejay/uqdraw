@@ -8,14 +8,12 @@ import SubjectActions from '../actions/SubjectActions.js';
 import SubjectStore from '../stores/SubjectStore.js';
 
 import ComponentKey from '../utils/ComponentKey.js';
-import LectureKey from '../utils/LectureKey.js';
 import API, {APIConstants} from '../utils/API.js';
 
 class Welcome extends React.Component {
   constructor(props) {
     super(props);
     this.componentKey = ComponentKey.generate();
-    this.lectureKey = LectureKey.generate();
     this.state = {
       subjects: [], // list of subject names
     };
@@ -34,9 +32,6 @@ class Welcome extends React.Component {
   componentDidMount() {
     // Populate local state from store & setup Firebase observation.
     this.initData();
-
-    console.log('DID MOUNT');
-    console.log('subjectsNow = ', SubjectStore.getAll());
     // Listen for store changes
     SubjectStore.addChangeListener(this.onSubjectChange);
     SubjectStore.addChangeListener(this.onSubmitChange);
@@ -57,8 +52,6 @@ class Welcome extends React.Component {
 
   initData() {
     let userId = this.props.routeParams.userId;
-    console.log('USERID = ', userId);
-     console.log('LKEY = ', this.lectureKey);
     console.log('subjects = ', SubjectStore.getAll());
 
     this.setState({

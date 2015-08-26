@@ -9,7 +9,6 @@ import Timer from './Timer.jsx';
 import LectureStore from '../stores/LectureStore.js';
 import PresentationStore from '../stores/PresentationStore.js';
 
-import ComponentKey from '../utils/ComponentKey.js';
 import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
@@ -19,7 +18,6 @@ class Presenter extends React.Component {
   constructor(props) {
     super(props);
     props.onChangeCourse(null, props.routeParams.courseName);
-    this.componentKey = ComponentKey.generate();
     this.state = {
       activeQuestionKey: undefined,
       responses: [],
@@ -59,6 +57,7 @@ class Presenter extends React.Component {
     if (courseKey) {
       let lectureKey = this.props.routeParams.lectureId;
       let lecture = LectureStore.getAll(lectureKey);
+      console.log(lecture);
       this.setState({lecture: lecture});
       this.setState({responses: PresentationStore.getResponses(lectureKey)});
       API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
@@ -179,7 +178,7 @@ class Presenter extends React.Component {
             <div className="Step">
               <div className='Step-number'>2</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Enter code</span><span className='Step-value'>{ this.componentKey }</span>
+                <span className='Step-label'>Enter code</span><span className='Step-value'>{this.state.lecture.lectureCode}</span>
               </div>
             </div>
           </div>
