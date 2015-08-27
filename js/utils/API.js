@@ -202,25 +202,20 @@ let API = {
     login: function(username, password, callback) {
       let refType = APIConstants.users;
       let filter = username;
-
-      // Get ref data for the chosen users and username
-      let current = this.initialiseRefs(refType, filter);
-
-      // If a ref for the current course doesn't exist
-      if (!current.ref) {
-        current.ref = new Firebase(`${firebaseRoot}/${firebasePaths[refType]}/${filter}`);
-        current.ref.once('value', (snapshot) => {
-          let content = snapshot.val() || {};
-          if (content == password) {
-            console.log('we matched pwds');
-            callback(content); // This is a success
-          } else if (content) { // Password exists but didn't match
-            callback(2); // Bad password errorcode == 2
-          } else {
-            callback(1) // There was no user
-          }
-        });
-      }
+      console.log('loggin in')
+      let current = new Firebase(`${firebaseRoot}/${firebasePaths[refType]}/${filter}`);
+      console.log('current: '+current)
+      current.once('value', (snapshot) => {
+        let content = snapshot.val() || {};
+        if (content == password) {
+          console.log('we matched pwds');
+          callback(null); // This is a success
+        } else if (content) { // Password exists but didn't match
+          callback(2); // Bad password errorcode == 2
+        } else {
+          callback(1) // There was no user
+        }
+      });
     },
 
     getRefs: function() {
