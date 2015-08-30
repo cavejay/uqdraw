@@ -23,11 +23,11 @@ const APIConstants = keyMirror({
     lectures: null,
     responses: null,
     subjects: null,
-    
+
     courses: null,
     lecturers: null,
     users: null,
-    
+
 });
 
 // APIConstants will be used to index into the map
@@ -38,8 +38,8 @@ let firebasePaths = {
     [APIConstants.users]: 'Users',
     [APIConstants.courses]: 'Courses',
     [APIConstants.lecturers]: 'Lecturers',
-    
-    
+
+
 };
 
 let API = {
@@ -203,6 +203,25 @@ let API = {
         return refs[APIConstants.subjects][userId].ref.push(subjectName, callback);
     },
 
+    login: function(username, password, callback) {
+      let refType = APIConstants.users;
+      let filter = username;
+      console.log('loggin in')
+      let current = new Firebase(`${firebaseRoot}/${firebasePaths[refType]}/${filter}`);
+      console.log('current: '+current)
+      current.once('value', (snapshot) => {
+        let content = snapshot.val() || {};
+        if (content == password) {
+          console.log('we matched pwds');
+          callback(null); // This is a success
+        } else if (content) { // Password exists but didn't match
+          callback(2); // Bad password errorcode == 2
+        } else {
+          callback(1) // There was no user
+        }
+      });
+    },
+
     getRefs: function() {
         return refs;
     },
@@ -225,6 +244,7 @@ let publicAPI = {
     updateLectureCode: API.updateLectureCode,
     addToResponses: API.addToResponses,
     addToSubjects: API.addToSubjects,
+    login: API.login,
 };
 
 export default publicAPI;

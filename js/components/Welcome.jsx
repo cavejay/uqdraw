@@ -23,9 +23,6 @@ class Welcome extends React.Component {
     this.onSubmitChange = this.onSubmitChange.bind(this);
     this.onAddSubject = this.onAddSubject.bind(this);
     this.initData = this.initData.bind(this);
-
-
-
     console.log('DID CONSTRUCT');
   }
 
