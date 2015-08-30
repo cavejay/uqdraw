@@ -6,10 +6,12 @@ let ActionTypes = LoginConstants.ActionTypes;
 let CHANGE_EVENT = 'change';
 
 let AuthStore = Object.assign({}, EventEmitter.prototype, {
+  router: null,
   emitChange: function() {
-      this.emit(CHANGE_EVENT);
+      this.emit(CHANGE_EVENT, this.router);
   },
-  addChangeListener: function(callback) {
+  addChangeListener: function(callback, router) {
+      this.router = router;
       this.on(CHANGE_EVENT, callback);
   },
   removeChangeListener: function(callback) {
