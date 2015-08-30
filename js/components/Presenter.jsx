@@ -8,7 +8,7 @@ import Timer from './Timer.jsx';
 
 import LectureStore from '../stores/LectureStore.js';
 import PresentationStore from '../stores/PresentationStore.js';
-
+import LectureActions from '../actions/LectureActions.js';
 import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
@@ -75,7 +75,11 @@ class Presenter extends React.Component {
   }
 
   onActivateQuestion(key) {
+  let courseKey = this.props.courseId;
+  let lectureKey = this.props.routeParams.lectureId;
+  let lecCode = this.state.lecture.lectureCode;
     this.setState({activeQuestionKey: key});
+    LectureActions.updateActiveLecture(lecCode, courseKey, lectureKey, key);
     this.reset();
   }
 

@@ -67,6 +67,30 @@ let LectureActions = {
         });
     },    
     
+   updateActiveLecture: (lectureCode, courseKey, lectureKey, activeQuestionKey) => {
+    let API = require('../utils/API').default;
+        let newActive= {courseID: courseKey, lectureID: lectureKey, activeQ: activeQuestionKey};
+        let ref = API.updateActive(lectureCode, newActive, (error) => {
+            if (error) {
+                Dispatcher.dispatch({
+                    type: ActionTypes.LECTURE_CREATE_FAIL,
+                    courseKey: courseKey,
+                    activeQ: newActive,
+                });
+            } else {
+                Dispatcher.dispatch({
+                    type: ActionTypes.LECTURE_CREATE_SUCCESS,
+                    courseKey: courseKey,
+                    activeQ: newActive,
+                });
+            }
+        });
+        Dispatcher.dispatch({
+            type: ActionTypes.LECTURE_CREATE_INITIATED,
+            courseKey: courseKey,
+            activeQ: newActive,
+        });
+    },      
 
     delete: (courseKey, lectureKey) => {
     let API = require('../utils/API').default;

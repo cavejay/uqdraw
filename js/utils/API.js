@@ -23,7 +23,7 @@ const APIConstants = keyMirror({
     lectures: null,
     responses: null,
     subjects: null,
-
+    active: null,
     courses: null,
     lecturers: null,
     users: null,
@@ -37,8 +37,8 @@ let firebasePaths = {
     [APIConstants.subjects]: 'courseLists',
     [APIConstants.users]: 'Users',
     [APIConstants.courses]: 'Courses',
+    [APIConstants.active]: 'activeLectures',
     [APIConstants.lecturers]: 'Lecturers',
-
 
 };
 
@@ -142,6 +142,11 @@ let API = {
         refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
     },    
 
+    updateActive: function(lectureCode, newActive, callback) {
+            let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+            ref.child(lectureCode).update(newActive, callback);
+    },  
+
     addToQuestions: function(courseKey, lectureKey, lecture, question, callback) {
         let count = 0;
         let cb = (error) => {
@@ -244,6 +249,7 @@ let publicAPI = {
     updateLectureCode: API.updateLectureCode,
     addToResponses: API.addToResponses,
     addToSubjects: API.addToSubjects,
+    updateActive: API.updateActive,
     login: API.login,
 };
 

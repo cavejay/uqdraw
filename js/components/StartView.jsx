@@ -71,26 +71,38 @@ class StartView extends React.Component {
     AuthStore.removeChangeListener(this.onLoginSuccess);
   }
 
-  onChangeInput1(event) {
+onChangeInput1(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
     if (inputValue.length === 1) React.findDOMNode(this.refs.in2).focus();
     this.setState({'codeInput1': inputValue});
+    this.state.codeInput1 = inputValue;
+    this.codeChecker();
   }
+  
   onChangeInput2(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
     if (inputValue.length === 1) React.findDOMNode(this.refs.in3).focus();
     this.setState({'codeInput2': inputValue});
+    this.state.codeInput2 = inputValue;
+    this.codeChecker();
+     
   }
+  
   onChangeInput3(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
-    if (inputValue.length === 1) {
-      // validate that all inputs are filled.
-      this.context.router.transitionTo('drawing');
-    }
     this.setState({'codeInput3': inputValue});
+    this.state.codeInput3 = inputValue;
+    this.codeChecker();
+  }
+  
+  codeChecker() {
+    let lecCode = this.state.codeInput1.concat(this.state.codeInput2,this.state.codeInput3);
+    if (lecCode.length === 3){
+      this.context.router.transitionTo('drawing', {'lectureCode': lecCode}, {});
+    }
   }
 
   onUserInputChange(event) {
