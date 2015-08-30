@@ -90,7 +90,31 @@ let LectureActions = {
             courseKey: courseKey,
             activeQ: newActive,
         });
-    },      
+    }, 
+    
+   getActiveLecture: (lectureCode) => {
+    let API = require('../utils/API').default;
+        let ref = API.getActiveLecPath(lectureCode, (error) => {
+            if (error) {
+                Dispatcher.dispatch({
+                    type: ActionTypes.GET_ACTIVE_LECTURE_FAIL,
+            		lectureCode: lectureCode,
+            		ref:ref,
+                });
+            } else {
+                Dispatcher.dispatch({
+                    type: ActionTypes.GET_ACTIVE_LECTURE_SUCCESS,
+                       lectureCode: lectureCode,
+                       ref:ref,
+                });
+            }
+        });
+        Dispatcher.dispatch({
+            type: ActionTypes.GET_ACTIVE_LECTURE_INIT,
+			lectureCode: lectureCode,
+			ref:ref,
+        });
+    },          
 
     delete: (courseKey, lectureKey) => {
     let API = require('../utils/API').default;

@@ -146,6 +146,14 @@ let API = {
             let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
             ref.child(lectureCode).update(newActive, callback);
     },  
+    
+    getActiveLecPath: function(lectureCode, callback) {
+            let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+            ref.child(lectureCode).once("value", function(snapshot) {
+          		var returnPass = snapshot.val();
+				callback(returnPass);
+        	});
+    },  
 
     addToQuestions: function(courseKey, lectureKey, lecture, question, callback) {
         let count = 0;
@@ -251,6 +259,7 @@ let publicAPI = {
     addToSubjects: API.addToSubjects,
     updateActive: API.updateActive,
     login: API.login,
+    getActiveLecPath: API.getActiveLecPath,
 };
 
 export default publicAPI;

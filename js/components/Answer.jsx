@@ -1,7 +1,7 @@
 import React from 'react';
 import config from '../config.js';
 import ComponentKey from '../utils/ComponentKey.js';
-
+import LectureActions from '../actions/LectureActions.js';
 require('../../css/components/Button.scss');
 
 import PresentationStore from '../stores/PresentationStore.js';
@@ -14,13 +14,14 @@ class Answer extends React.Component {
     super(props);
     this.componentKey = ComponentKey.generate();
     this.state = {
-    lecID: undefined,
+     lectureCode: this.props.routeParams.lectureCode,
       isQuestionOpen: true,
       lectureKey: '-JliFPJmDtXhEAv-YRZ4',
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
     this.getPresentationState = this.getPresentationState.bind(this);
+    
   }
 
   componentDidMount() {
@@ -67,6 +68,7 @@ class Answer extends React.Component {
 
   hideQuestion() {
     this.setState({ isQuestionOpen: false });
+    console.log(LectureActions.getActiveLecture(this.state.lectureCode));
   }
 
   render() {

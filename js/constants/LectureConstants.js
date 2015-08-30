@@ -12,5 +12,8 @@ export default {
         LECTURE_DELETE_INITIATED: null,
         LECTURE_DELETE_SUCCESS: null,
         LECTURE_DELETE_FAIL: null,
+        GET_ACTIVE_LECTURE_SUCCESS: null,
+        GET_ACTIVE_LECTURE_FAIL: null,
+        GET_ACTIVE_LECTURE_INIT: null,
     }),
 };

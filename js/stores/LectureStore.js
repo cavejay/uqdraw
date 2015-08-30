@@ -7,6 +7,8 @@ let CHANGE_EVENT = 'change';
 
 let _lectures = {};
 
+let questionPath = {};
+
 let LectureStore = Object.assign({}, EventEmitter.prototype, {
     get: function(courseId, lectureId) {
         if (!courseId || !lectureId) throw new Error('LectureStore.get requires a courseId and a lectureId');
@@ -123,6 +125,14 @@ let dispatcherCallback = function(action) {
             LectureStore.emitChange();
             break;
         }
+        
+        case ActionTypes.GET_ACTIVE_LECTURE_SUCCESS: {
+            let {lectureCode, ref} = action;
+            questionPath = ref;
+            LectureStore.emitChange();
+            break;
+        }
+        
         default:
             //noop
     }
