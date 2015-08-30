@@ -14,6 +14,7 @@ class Answer extends React.Component {
     super(props);
     this.componentKey = ComponentKey.generate();
     this.state = {
+    lecID: undefined,
       isQuestionOpen: true,
       lectureKey: '-JliFPJmDtXhEAv-YRZ4',
     };

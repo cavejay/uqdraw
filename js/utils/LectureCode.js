@@ -1,4 +1,4 @@
-let LectureKey = {
+let LectureCode = {
     generate: () => {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -8,4 +8,4 @@ let LectureKey = {
     },
 }
 
-export default LectureKey;
+export default LectureCode;

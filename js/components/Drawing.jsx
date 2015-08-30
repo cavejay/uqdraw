@@ -15,6 +15,7 @@ class Drawing extends React.Component {
       isFullscreen: false,
     };
     this.ctx = undefined; // drawing canvas context
+
   }
 
   componentDidMount() {

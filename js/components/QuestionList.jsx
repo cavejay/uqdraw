@@ -2,12 +2,17 @@ import React from 'react';
 import { Link } from 'react-router';
 import Question from './Question.jsx';
 import QuestionComposer from './QuestionComposer.jsx';
+import LectureActions from '../actions/LectureActions.js';
+import LectureStore from '../stores/LectureStore.js';
+import lectureCode from '../utils/lectureCode.js';
+import API, {APIConstants} from '../utils/API.js';
 require('../../css/components/QuestionManager.scss');
 
 class QuestionList extends React.Component {
 
   constructor(props) {
     super(props);
+    this.lectureCode = '';
     this.state = {
       modalIsOpen: false,
     };
@@ -36,9 +41,15 @@ class QuestionList extends React.Component {
   onRemoveQuestion(lectureKey, lecture, questionKey) {
     this.props.onRemoveQuestion(lectureKey, lecture, questionKey);
   }
+  
+  generateCode(courseKey, lectureKey, lecture){
+  	let lec = lectureCode.generate();
+  	LectureActions.updateCode(courseKey, lectureKey, lec, lecture);
+  	event.preventDefault();
+  }
 
   render() {
-    let {courseName, lectureKey, lecture, ...delegateProps} = this.props;
+    let {courseName, courseKey, lectureKey, lecture, ...delegateProps} = this.props;
     let questionComponents;
     // Make sure both the lecture questions and lecture question order exist
     if (lecture.questions && lecture.questionOrder) {
@@ -64,7 +75,7 @@ class QuestionList extends React.Component {
       <div className='CardList' draggable="true">
         <div className='CardList-header'>
           <h2>{lecture.title}</h2>
-          <div className='PresenterLinkContainer'>
+          <div className='PresenterLinkContainer' onClick={this.generateCode.bind(this,courseKey, lectureKey, lecture)}>
             <Link to="presenter" params={{courseName: courseName, lectureId: lectureKey}}>Launch {lecture.title} Presentation</Link>
           </div>
           <a

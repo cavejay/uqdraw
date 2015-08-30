@@ -19,10 +19,11 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      userId: 'uqjstee8',
+      userId: undefined,
       courseId: undefined,
       courseName: undefined,
       activeQuestionKey: undefined,
+    	lecID: undefined,
     };
     this.onChangeCourse = this.onChangeCourse.bind(this);
   }

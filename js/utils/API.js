@@ -137,6 +137,10 @@ let API = {
     updateLecture: function(courseKey, lectureKey, lecture, callback) {
         refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
     },
+    
+    updateLectureCode: function(courseKey, lectureKey, lecture, callback) {
+        refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
+    },    
 
     addToQuestions: function(courseKey, lectureKey, lecture, question, callback) {
         let count = 0;
@@ -218,6 +222,7 @@ let publicAPI = {
     updateLecture: API.updateLecture,
     addToQuestions: API.addToQuestions,
     removeQuestion: API.removeQuestion,
+    updateLectureCode: API.updateLectureCode,
     addToResponses: API.addToResponses,
     addToSubjects: API.addToSubjects,
 };
