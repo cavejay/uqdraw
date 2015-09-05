@@ -23,11 +23,11 @@ const APIConstants = keyMirror({
     lectures: null,
     responses: null,
     subjects: null,
-    
+    active: null,
     courses: null,
     lecturers: null,
     users: null,
-    
+
 });
 
 // APIConstants will be used to index into the map
@@ -37,9 +37,9 @@ let firebasePaths = {
     [APIConstants.subjects]: 'courseLists',
     [APIConstants.users]: 'Users',
     [APIConstants.courses]: 'Courses',
+    [APIConstants.active]: 'activeLectures',
     [APIConstants.lecturers]: 'Lecturers',
-    
-    
+
 };
 
 let API = {
@@ -61,6 +61,7 @@ let API = {
         let refTypeVal = APIConstants[refType];
         let formattedRefType = refTypeVal[0].toUpperCase() + refTypeVal.slice(1).toLowerCase();
         let methodName = 'subscribeTo' + formattedRefType;
+
         if (API[methodName] && typeof API[methodName] === 'function') {
             API[methodName].apply(API, args);
         } else {
@@ -126,6 +127,11 @@ let API = {
         this.firebaseUnsubscribe(APIConstants.lectures, courseKey, componentKey);
     },
 
+
+    /* ================================================ 
+     * LECTURES                                         
+     * ================================================ */
+
     addToLectures: function(courseKey, lecture, callback) {
         return refs[APIConstants.lectures][courseKey].ref.push(lecture, callback);
     },
@@ -134,13 +140,97 @@ let API = {
         refs[APIConstants.lectures][courseKey].ref.child(lectureId).remove(callback);
     },
 
+    /* Updates a lecture for a specific course/lecture key combination. */
     updateLecture: function(courseKey, lectureKey, lecture, callback) {
         refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
     },
     
-    updateLectureCode: function(courseKey, lectureKey, lecture, callback) {
-        refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
+
+    /* Inside of every lecture is a 'lectureCode' property. This property records
+     * the three digit code generated when presenting a lecture. 
+     * 
+     * Function creates or updates the code property for a specific course/lecture
+     * key combination */
+    updateLectureCode: function(courseKey, lectureKey, lectureCode, callback) {
+        refs[APIConstants.lectures][courseKey][lectureKey].ref.child("lectureCode").update(lectureCode, callback);
     },    
+
+
+
+    /* In order to enable quick reference from the 3-digit codes to the specific
+     * course/lecture combinations, a separate activeLectures table is kept, using
+     * the 3 digit code as a key, and recording course/lecture combinations for each
+     * key.
+     *
+     * Function creates or updates information for any active lecture key.
+     *
+     * lectureCode: 3 digit code, all in capitals
+     * newActive: the question code for the newly active question
+     **/
+    createActiveLecture: function(lectureCode, courseKey, lectureKey, callback) {
+        // root/activeLecture
+        let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+
+        let newActiveLecture = {
+            courseID: courseKey, 
+            lectureID: lectureKey, 
+            activeQ: "NONE"
+        };
+
+
+        //For this lectureCode, set course, lecture and activeQ
+        ref.child(lectureCode).update(newActiveLecture, callback);
+
+        console.log("[API] Creating new activeLecture instance with code " + lectureCode);
+    },
+
+
+    updateActiveLectureQuestion: function(lectureCode, newActiveQuestionKey, callback) {
+        let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+
+        let newActiveLecture = {
+            activeQ: newActiveQuestionKey
+        };
+
+        ref.child(lectureCode).update(newActiveLecture, callback);
+
+        console.log("[API] Setting question for " + lectureCode + " to " + newActiveQuestionKey);
+    },
+
+    /* Removes the currently active question for a specific lecture code, setting
+     * it to none. 
+     * 
+     * Used to disable the currently active question and return the response
+     * screen back to a waiting screen */
+    clearActiveLectureQuestion: function (lectureCode, callback) {
+        let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+
+        let newActiveLecture = {
+            activeQ: "NONE"
+        };
+
+        ref.child(lectureCode).update(newActiveLecture, callback);
+
+        console.log("[API] Clearing active question for " + lectureCode);
+    },
+
+    /* Removes the code from the activeLectures table.
+     *
+     * As a result, removes the current active question, and references to
+     * the course and lecture. Must be called when a lectures is finished to
+     * free up codes for other lectures. */
+    deleteActiveLecture: function (lectureCode, callback) {
+        let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
+        ref.child(lectureCode).remove(callback);
+
+        console.log("[API] Deactivating lecture with code " + lectureCode);
+    },
+
+
+
+    /* ================================================
+     * Questions                                        
+     * ================================================ */
 
     addToQuestions: function(courseKey, lectureKey, lecture, question, callback) {
         let count = 0;
@@ -203,6 +293,25 @@ let API = {
         return refs[APIConstants.subjects][userId].ref.push(subjectName, callback);
     },
 
+    login: function(username, password, callback) {
+      let refType = APIConstants.users;
+      let filter = username;
+      console.log('loggin in')
+      let current = new Firebase(`${firebaseRoot}/${firebasePaths[refType]}/${filter}`);
+      console.log('current: '+current)
+      current.once('value', (snapshot) => {
+        let content = snapshot.val() || {};
+        if (content == password) {
+          console.log('we matched pwds');
+          callback(null); // This is a success
+        } else if (content) { // Password exists but didn't match
+          callback(2); // Bad password errorcode == 2
+        } else {
+          callback(1) // There was no user
+        }
+      });
+    },
+
     getRefs: function() {
         return refs;
     },
@@ -223,8 +332,16 @@ let publicAPI = {
     addToQuestions: API.addToQuestions,
     removeQuestion: API.removeQuestion,
     updateLectureCode: API.updateLectureCode,
+
+    createActiveLecture: API.createActiveLecture,
+    updateActiveLectureQuestion: API.updateActiveLectureQuestion,
+    clearActiveLectureQuestion: API.clearActiveLectureQuestion,
+    deleteActiveLecture: API.deleteActiveLecture,
+
     addToResponses: API.addToResponses,
     addToSubjects: API.addToSubjects,
+    updateActive: API.updateActive,
+    login: API.login,
 };
 
 export default publicAPI;

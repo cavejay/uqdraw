@@ -5,7 +5,7 @@ let ActionTypes = LectureConstants.ActionTypes;
 
 let LectureActions = {
 
-   updateLectures: (courseKey, lectures) => {
+    updateLectures: (courseKey, lectures) => {
         if (!courseKey || !lectures) return;
         Dispatcher.dispatch({
             type: ActionTypes.LECTURES_UPDATE_SUCCESS,
@@ -14,9 +14,21 @@ let LectureActions = {
         });
     },
 
+
+
+
+    /* lectures */
+
     create: (courseKey, lectureCode, lectureTitle) => {
     let API = require('../utils/API').default;
-        let newLecture = {title: lectureTitle, lectureCode: lectureCode, questions: []};
+        //Create the new lecture
+        let newLecture = {
+            title: lectureTitle, 
+            lectureCode: lectureCode, 
+            questions: [], 
+            questionOrder: []
+        };
+        
         let ref = API.addToLectures(courseKey, newLecture, (error) => {
             if (error) {
                 Dispatcher.dispatch({
@@ -33,40 +45,13 @@ let LectureActions = {
                 });
             }
         });
+
         Dispatcher.dispatch({
             type: ActionTypes.LECTURE_CREATE_INITIATED,
             courseKey: courseKey,
             lecture: newLecture,
         });
     },
-    
-    updateCode: (courseKey, lectureKey, lecCode, lecture) => {
-    let API = require('../utils/API').default;
-    	lecture.lectureCode = lecCode;
-        let newLecture = lecture;
-        let ref = API.updateLectureCode(courseKey, lectureKey, newLecture, (error) => {
-            if (error) {
-                Dispatcher.dispatch({
-                    type: ActionTypes.LECTURE_CREATE_FAIL,
-                    courseKey: courseKey,
-                    lecture: newLecture,
-                });
-            } else {
-                Dispatcher.dispatch({
-                    type: ActionTypes.LECTURE_CREATE_SUCCESS,
-                    courseKey: courseKey,
-                    lectureKey: ref.key(),
-                    lecture: newLecture,
-                });
-            }
-        });
-        Dispatcher.dispatch({
-            type: ActionTypes.LECTURE_CREATE_INITIATED,
-            courseKey: courseKey,
-            lecture: newLecture,
-        });
-    },    
-    
 
     delete: (courseKey, lectureKey) => {
     let API = require('../utils/API').default;
@@ -91,6 +76,63 @@ let LectureActions = {
             lectureKey,
         });
     },
+    
+    updateCode: (courseKey, lectureKey, lecCode) => {
+        let API = require('../utils/API').default;
+
+        let ref = API.updateLectureCode(courseKey, lectureKey, lecCode, (error) => {
+            if (error) {
+                Dispatcher.dispatch({
+                    type: ActionTypes.LECTURE_CREATE_FAIL,
+                    courseKey: courseKey,
+                    lecture: newLecture,
+                });
+            } else {
+                Dispatcher.dispatch({
+                    type: ActionTypes.LECTURE_CREATE_SUCCESS,
+                    courseKey: courseKey,
+                    lectureKey: ref.key(),
+                    lecture: newLecture,
+                });
+            }
+        });
+
+        Dispatcher.dispatch({
+            type: ActionTypes.LECTURE_CREATE_INITIATED,
+            courseKey: courseKey,
+            lecture: newLecture,
+        });
+    }, 
+   
+
+
+
+    /* activeLecture */
+    // None of these currently have callbacks, they will be implemented later. We don't
+    // really need them at this point in time.
+    activateLecture: (lectureCode, courseKey, lectureKey) => {
+        let API = require('../utils/API').default;
+        let ref = API.createActiveLecture(lectureCode, courseKey, lectureKey, () => {});
+    },
+
+    setActiveQuestion: (lectureCode, activeQuestionKey) => {
+        let API = require('../utils/API').default;
+        let ref = API.updateActiveLectureQuestion(lectureCode, activeQuestionKey, () => {});
+    },
+
+    clearActiveQuestion: (lectureCode) => {
+        let API = require('../utils/API').default;
+        let ref = API.clearActiveLectureQuestion(lectureCode, () => {});
+    },
+
+    deactivateLecture: (lectureCode) => {
+        let API = require('../utils/API').default;
+
+        console.log(API);
+        console.log(API.deleteActiveLecture);
+
+        let ref = API.deleteActiveLecture(lectureCode, () => {});
+    }    
 
 };
 

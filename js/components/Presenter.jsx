@@ -9,6 +9,9 @@ import Timer from './Timer.jsx';
 import LectureStore from '../stores/LectureStore.js';
 import PresentationStore from '../stores/PresentationStore.js';
 
+import LectureActions from '../actions/LectureActions.js';
+
+import lectureCode from '../utils/lectureCode.js';
 import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
@@ -17,13 +20,19 @@ class Presenter extends React.Component {
 
   constructor(props) {
     super(props);
-    props.onChangeCourse(null, props.routeParams.courseName);
+
+    //props.onChangeCourse(null, props.routeParams.courseName);
+
     this.state = {
-      activeQuestionKey: undefined,
+      lectureCode: undefined,
+      activeQuestionKey: "NONE",
+      courseKey: undefined,
+      lectureKey: undefined,
       responses: [],
-      courseId: undefined,
       lecture: {},
     };
+
+    this.state.lectureCode = this.generateCode();
 
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
@@ -38,45 +47,73 @@ class Presenter extends React.Component {
     // Listen for store changes
     LectureStore.addChangeListener(this.onLectureChange);
     PresentationStore.addChangeListener(this.onPresentationChange);
-    this.initData(this.props.courseId);
-  }
 
-  componentWillReceiveProps(newProps) {
-    this.initData(newProps.courseId);
+    this.initData();
   }
 
   componentWillUnmount() {
     let lectureKey = this.props.routeParams.lectureId;
+    let courseKey = this.props.routeParams.courseId;
+    let lectureCode = this.state.lectureCode;
+
+    LectureActions.deactivateLecture(lectureCode); //Presentation finished, deactivate
+
     LectureStore.removeChangeListener(this.onLectureChange);
     PresentationStore.removeChangeListener(this.onPresentationChange);
-    API.unsubscribe(APIConstants.lectures, this.componentKey, this.props.courseId);
+
+    API.unsubscribe(APIConstants.lectures, this.componentKey, courseKey);
     API.unsubscribe(APIConstants.responses, this.componentKey, lectureKey);
   }
 
-  initData(courseKey) {
-    if (courseKey) {
-      let lectureKey = this.props.routeParams.lectureId;
-      let lecture = LectureStore.getAll(lectureKey);
-      console.log(lecture);
-      this.setState({lecture: lecture});
-      this.setState({responses: PresentationStore.getResponses(lectureKey)});
-      API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
-      API.subscribe(APIConstants.responses, this.componentKey, lectureKey);
-    }
+  /* Generates a 3 digit code, used to give users access to the lecture 
+   * response page */
+  generateCode(courseKey, lectureKey, lecture){
+    let code3 = lectureCode.generate(); //Generate the code
+
+    //LectureActions.updateCode(courseKey, lectureKey, code3); //Store code in DB
+
+    return code3;
+  }
+
+  /* Sets up all the basic data for the application */
+  initData() {
+    let courseKey = this.props.routeParams.courseId;
+    let lectureKey = this.props.routeParams.lectureId;
+    let lectureCode = this.state.lectureCode;
+
+    this.state.courseKey = courseKey;
+    this.state.lectureKey = lectureKey;
+    this.state.lectureCode = lectureCode;
+
+    this.setState({lecture: LectureStore.getAll(lectureKey)});
+    this.setState({responses: PresentationStore.getResponses(lectureKey)});
+
+    console.log(this.state);
+
+    LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
+    
+    API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
+    API.subscribe(APIConstants.responses, this.componentKey, lectureKey);
   }
 
   onLectureChange() {
-    let lecture = LectureStore.get(this.props.courseId, this.props.routeParams.lectureId);
+    let courseKey = this.props.routeParams.courseId;
+    let lectureKey = this.props.routeParams.lectureId;
+
+    let lecture = LectureStore.get(courseKey, lectureKey);
     this.setState({'lecture': lecture});
   }
 
   onPresentationChange() {
-    this.setState({'responses': PresentationStore.getResponses(this.props.routeParams.lectureId)});
+    let lectureKey = this.props.routeParams.lectureId;
+
+    this.setState({'responses': PresentationStore.getResponses(lectureKey)});
   }
 
+  //Triggered when the user selects a question
   onActivateQuestion(key) {
-    this.setState({activeQuestionKey: key});
-    this.reset();
+    this.setState({activeQuestionKey: key}); //Store key of the new selected question 
+    this.reset(); //When a new question is selected, stop taking answers for the old one
   }
 
   onThumbnailClick(key) {
@@ -84,17 +121,27 @@ class Presenter extends React.Component {
   }
 
   start() {
-    this.setState({takingQuestions: true});
+    this.setState({takingQuestions: true}); //Start taking answers
+
+    let lectureCode = this.state.lectureCode;
+    let activeQuestionKey = this.state.activeQuestionKey;
+    LectureActions.setActiveQuestion(lectureCode, activeQuestionKey); //Set active question
+
     this.refs.timer.startTimer();
   }
 
   stop() {
-    this.setState({takingQuestions: false});
+    this.setState({takingQuestions: false}); //Stop taking answers
+
+    let lectureCode = this.state.lectureCode;
+    LectureActions.clearActiveQuestion(lectureCode); //Set active question to none
+
     this.refs.timer.stopTimer();
   }
 
   reset() {
-    this.setState({takingQuestions: false});
+    this.stop();
+
     if (this.refs.timer) {
       this.refs.timer.resetTimer();
     }
@@ -161,7 +208,9 @@ class Presenter extends React.Component {
 
     let activeResponses;
     if (typeof this.state.activeQuestionKey !== 'undefined') {
-      activeResponses = this.state.responses[this.state.activeQuestionKey];
+      if (this.state.responses) {
+        activeResponses = this.state.responses[this.state.activeQuestionKey];
+      }
     }
 
     return (
@@ -178,7 +227,7 @@ class Presenter extends React.Component {
             <div className="Step">
               <div className='Step-number'>2</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Enter code</span><span className='Step-value'>{this.state.lecture.lectureCode}</span>
+                <span className='Step-label'>Enter code</span><span className='Step-value'>{this.state.lectureCode}</span>
               </div>
             </div>
           </div>
