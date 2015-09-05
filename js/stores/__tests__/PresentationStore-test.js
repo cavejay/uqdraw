@@ -2,8 +2,8 @@ jest.dontMock('../PresentationStore.js');
 let clone = obj => JSON.parse(JSON.stringify(obj));
 
 describe('PresentationStore', () => {
-    let PresentationConstants = require('../../constants/PresentationConstants.js');
-    let ActionTypes = PresentationConstants.ActionTypes;
+    let ResponseConstants = require('../../constants/ResponseConstants.js');
+    let ActionTypes = ResponseConstants.ActionTypes;
     let Dispatcher;
     let PresentationStore;
     let callback;

@@ -1,12 +1,12 @@
-jest.dontMock('../PresentationActions.js');
+jest.dontMock('../ResponderActions.js');
 jest.dontMock('keymirror');
 
 let API;
 let Dispatcher;
-let PresentationActions;
-let ActionTypes = require('../../constants/PresentationConstants.js').ActionTypes;
+let ResponderActions;
+let ActionTypes = require('../../constants/ResponseConstants.js').ActionTypes;
 
-describe('PresentationActions', () => {
+describe('ResponderActions', () => {
   // Common arguments used in the nested test suites.
   let testLectureKey = '-9asdf8as9d8f';
   let testQuestionKey = '-c6vbn46c5vbn';
@@ -17,18 +17,18 @@ describe('PresentationActions', () => {
     // Get a fresh version of all our dependencies each time.
     Dispatcher = require('../../dispatcher/Dispatcher.js');
     API = require('../../utils/API').default;
-    PresentationActions = require('../PresentationActions.js');
+    ResponderActions = require('../ResponderActions.js');
   });
 
   describe('createResponse', () => {
     it('tells the API to add a new response', () => {
-      PresentationActions.createResponse(testLectureKey, testQuestionKey, testResponse);
+      ResponderActions.createResponse(testLectureKey, testQuestionKey, testResponse);
       expect(API.addToResponses)
         .lastCalledWith(testLectureKey, testQuestionKey, testResponse, jasmine.any(Function));
     });
 
     it('dispatches a RESPONSE_CREATE_INITIATED action', () => {
-      PresentationActions.createResponse(testLectureKey, testQuestionKey, testResponse);
+      ResponderActions.createResponse(testLectureKey, testQuestionKey, testResponse);
 
       expect(Dispatcher.dispatch).lastCalledWith({
         type: ActionTypes.RESPONSE_CREATE_INITIATED,
@@ -39,7 +39,7 @@ describe('PresentationActions', () => {
     });
 
     it('dispatches a RESPONSE_CREATE_FAIL action when API invokes error callback', () => {
-      PresentationActions.createResponse(testLectureKey, testQuestionKey, testResponse);
+      ResponderActions.createResponse(testLectureKey, testQuestionKey, testResponse);
 
       // Get a ref to the callback given to the API; invoke with error arg.
       let calls = API.addToResponses.mock.calls;
@@ -61,7 +61,7 @@ describe('PresentationActions', () => {
         return 'aas9df8s9df';
       });
 
-      PresentationActions.createResponse(testLectureKey, testQuestionKey, testResponse);
+      ResponderActions.createResponse(testLectureKey, testQuestionKey, testResponse);
 
       // Get a ref to the callback given to the API; invoke with null error arg.
       let calls = API.addToResponses.mock.calls;
@@ -80,7 +80,7 @@ describe('PresentationActions', () => {
 
   describe('updateResponses', () => {
     it('dispatches a RESPONSES_UPDATE_SUCCESS action', () => {
-      PresentationActions.updateResponses(testLectureKey, testResponses);
+      ResponderActions.updateResponses(testLectureKey, testResponses);
 
     });
   });

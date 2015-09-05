@@ -1,10 +1,10 @@
 import Dispatcher from '../dispatcher/Dispatcher.js';
-import PresentationConstants from '../constants/PresentationConstants.js';
+import ResponseConstants from '../constants/ResponseConstants.js';
 let API = require('../utils/API').default;
-let actionTypes = PresentationConstants.ActionTypes;
+let actionTypes = ResponseConstants.ActionTypes;
 
 
-let PresentationActions = {
+let ResponderActions = {
     createResponse: function(lectureKey, questionKey, response) {
         let responseKey = API.addToResponses(lectureKey, questionKey, response, (error) => {
             if (error) {
@@ -42,4 +42,4 @@ let PresentationActions = {
     }
 };
 
-export default PresentationActions;
+export default ResponderActions;

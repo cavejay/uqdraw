@@ -21,7 +21,7 @@ The following document give an overview of the heirarchy of components. There is
 		- Question.jsx
 		- QuestionComposer.jsx
 	- LectureComposer.jsx
-- Answer.jsx
+- Responder.jsx
 	- Drawing.jsx
 - Responses.jsx
 - Archive.jsx

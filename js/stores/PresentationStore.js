@@ -1,12 +1,11 @@
 let Dispatcher = require('../dispatcher/Dispatcher.js');
 let EventEmitter = require('events').EventEmitter;
-import PresentationConstants from '../constants/PresentationConstants.js';
-let ActionTypes = PresentationConstants.ActionTypes;
+import ResponseConstants from '../constants/ResponseConstants.js';
+let ActionTypes = ResponseConstants.ActionTypes;
 
 let CHANGE_EVENT = 'change';
 
 let _responses = {};
-let _isSubmitting = false;
 let PresentationStore = Object.assign({}, EventEmitter.prototype, {
     getResponses: function(lectureKey) {
         return _responses[lectureKey];
@@ -15,10 +14,6 @@ let PresentationStore = Object.assign({}, EventEmitter.prototype, {
     getResponsesForQuestion: function(lectureKey, questionKey) {
         if (!_responses[lectureKey]) return;
         return _responses[lectureKey][questionKey];
-    },
-
-    isSubmitting: function() {
-        return _isSubmitting;
     },
 
     emitChange: function() {
@@ -44,27 +39,6 @@ let dispatchCallback = function(action) {
                 Object.assign(_responses[lectureKey], responses);
                 PresentationStore.emitChange();
             }
-            break;
-        }
-        case ActionTypes.RESPONSE_CREATE_INITIATED: {
-            _isSubmitting = true;
-            PresentationStore.emitChange();
-            break;
-        }
-        case ActionTypes.RESPONSE_CREATE_SUCCESS: {
-            let {lectureKey, questionKey, responseKey, response} = action;
-            _isSubmitting = false;
-            if (lectureKey && response) {
-               _responses[lectureKey] = _responses[lectureKey] || {};
-               _responses[lectureKey][questionKey] = _responses[lectureKey][questionKey] || {};
-                Object.assign(_responses[lectureKey][questionKey], {[responseKey]: response});
-            }
-            PresentationStore.emitChange();
-            break;
-        }
-        case ActionTypes.RESPONSE_CREATE_FAIL: {
-            _isSubmitting = false;
-            PresentationStore.emitChange();
             break;
         }
     }

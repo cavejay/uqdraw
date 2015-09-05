@@ -4,12 +4,12 @@ import ComponentKey from '../utils/ComponentKey.js';
 
 require('../../css/components/Button.scss');
 
-import PresentationStore from '../stores/PresentationStore.js';
-import PresentationActions from '../actions/PresentationActions.js';
+import ResponderStore from '../stores/ResponderStore.js';
+import ResponderActions from '../actions/ResponderActions.js';
 import Drawing from '../components/Drawing.jsx';
 import API, {APIConstants} from '../utils/API.js';
 
-class Answer extends React.Component {
+class Responder extends React.Component {
   constructor(props) {
     super(props);
     this.componentKey = ComponentKey.generate();
@@ -20,18 +20,18 @@ class Answer extends React.Component {
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
-    this.getPresentationState = this.getPresentationState.bind(this);
+    this.getResponderState = this.getResponderState.bind(this);
   }
 
   componentDidMount() {
-    this.getPresentationState();
+    this.getResponderState();
     API.subscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
-    PresentationStore.addChangeListener(this.onPresentationChange);
+    ResponderStore.addChangeListener(this.onPresentationChange);
   }
 
   componentDidUnmount() {
     API.unsubscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
-    PresentationStore.removeChangeListener(this.onPresentationChange);
+    ResponderStore.removeChangeListener(this.onPresentationChange);
   }
 
   componentWillReceiveProps(newProps) {
@@ -47,7 +47,7 @@ class Answer extends React.Component {
   }
 
   onPresentationChange() {
-    this.getPresentationState();
+    this.getResponderState();
   }
 
   // Submit the current canvas
@@ -58,11 +58,11 @@ class Answer extends React.Component {
     };
     let lectureKey = '-JliFPJmDtXhEAv-YRZ4';
     let questionKey = '-JmhCbo1eHVVsTEA4TuZ';
-    let ref = PresentationActions.createResponse(lectureKey, questionKey, response);
+    let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
   }
 
-  getPresentationState() {
-    this.setState({isSubmitting: PresentationStore.isSubmitting()});
+  getResponderState() {
+    this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
   hideQuestion() {
@@ -109,9 +109,9 @@ class Answer extends React.Component {
   }
 }
 
-Answer.propTypes = {
+Responder.propTypes = {
   activeQuestionKey: React.PropTypes.string,
 };
 
 
-export default Answer;
+export default Responder;

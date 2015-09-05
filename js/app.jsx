@@ -6,7 +6,7 @@ import config from './config.js';
 import Welcome from './components/Welcome.jsx';
 import QuestionManager from './components/QuestionManager.jsx';
 import Presenter from './components/Presenter.jsx';
-import Answer from './components/Answer.jsx';
+import Responder from './components/Responder.jsx';
 import StartView from './components/StartView.jsx';
 import Archive from './components/Archive.jsx';
 import Responses from './components/Responses.jsx';
@@ -58,7 +58,7 @@ let routes = (
   <Route name="app" path="/" handler={App}>
     <Route name="questionManager" handler={QuestionManager} path="/:courseName/question-manager"/>
     <Route name="welcome" handler={Welcome} path="/welcome/:userId" />
-    <Route name="drawing" handler={Answer} path="/drawing/:lectureCode"/>
+    <Route name="drawing" handler={Responder} path="/drawing/:lectureCode"/>
     <Route name="presenter" handler={Presenter} path="/:courseId/:lectureId"/>
     <Route name="archive" handler={Archive} path="/archive" />
     <Route name="responses" handler={Responses} path="/responses" />

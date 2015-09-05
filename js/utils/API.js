@@ -2,7 +2,7 @@ import config from '../config';
 let firebaseRoot = config.firebase.base;
 let Firebase = require('firebase');
 import LectureActions from '../actions/LectureActions.js';
-import PresentationActions from '../actions/PresentationActions.js';
+import ResponderActions from '../actions/ResponderActions.js';
 import SubjectActions from '../actions/SubjectActions.js';
 let keyMirror = require('keymirror');
 
@@ -128,8 +128,8 @@ let API = {
     },
 
 
-    /* ================================================ 
-     * LECTURES                                         
+    /* ================================================
+     * LECTURES
      * ================================================ */
 
     addToLectures: function(courseKey, lecture, callback) {
@@ -144,16 +144,16 @@ let API = {
     updateLecture: function(courseKey, lectureKey, lecture, callback) {
         refs[APIConstants.lectures][courseKey].ref.child(lectureKey).update(lecture, callback);
     },
-    
+
 
     /* Inside of every lecture is a 'lectureCode' property. This property records
-     * the three digit code generated when presenting a lecture. 
-     * 
+     * the three digit code generated when presenting a lecture.
+     *
      * Function creates or updates the code property for a specific course/lecture
      * key combination */
     updateLectureCode: function(courseKey, lectureKey, lectureCode, callback) {
         refs[APIConstants.lectures][courseKey][lectureKey].ref.child("lectureCode").update(lectureCode, callback);
-    },    
+    },
 
 
 
@@ -172,8 +172,8 @@ let API = {
         let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
 
         let newActiveLecture = {
-            courseID: courseKey, 
-            lectureID: lectureKey, 
+            courseID: courseKey,
+            lectureID: lectureKey,
             activeQ: "NONE"
         };
 
@@ -198,8 +198,8 @@ let API = {
     },
 
     /* Removes the currently active question for a specific lecture code, setting
-     * it to none. 
-     * 
+     * it to none.
+     *
      * Used to disable the currently active question and return the response
      * screen back to a waiting screen */
     clearActiveLectureQuestion: function (lectureCode, callback) {
@@ -229,7 +229,7 @@ let API = {
 
 
     /* ================================================
-     * Questions                                        
+     * Questions
      * ================================================ */
 
     addToQuestions: function(courseKey, lectureKey, lecture, question, callback) {
@@ -265,7 +265,7 @@ let API = {
 
     subscribeToResponses: function(componentKey, lectureKey) {
         this.firebaseSubscribe(APIConstants.responses, lectureKey, componentKey, function(content) {
-            PresentationActions.updateResponses(lectureKey, content);
+            ResponderActions.updateResponses(lectureKey, content);
         });
     },
 
