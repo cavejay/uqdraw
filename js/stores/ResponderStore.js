@@ -6,7 +6,7 @@ let ActionTypes = ResponseConstants.ActionTypes;
 let CHANGE_EVENT = 'change';
 
 let _isSubmitting = false;
-let PresentationStore = Object.assign({}, EventEmitter.prototype, {
+let ResponderStore = Object.assign({}, EventEmitter.prototype, {
     isSubmitting: function() {
         return _isSubmitting;
     },
