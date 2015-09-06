@@ -8,5 +8,7 @@ export default {
             RESPONSES_UPDATE_INITIATED: null,
             RESPONSES_UPDATE_SUCCESS: null,
             RESPONSES_UPDATE_FAIL: null,
+            ACTIVE_QUESTION_CHANGE: null,
+            GET_QUESTION_TEXT: null,
     }),
 };

@@ -14,21 +14,18 @@ let LectureActions = {
         });
     },
 
-
-
-
     /* lectures */
 
     create: (courseKey, lectureCode, lectureTitle) => {
     let API = require('../utils/API').default;
         //Create the new lecture
         let newLecture = {
-            title: lectureTitle, 
-            lectureCode: lectureCode, 
-            questions: [], 
+            title: lectureTitle,
+            lectureCode: lectureCode,
+            questions: [],
             questionOrder: []
         };
-        
+
         let ref = API.addToLectures(courseKey, newLecture, (error) => {
             if (error) {
                 Dispatcher.dispatch({
@@ -76,7 +73,7 @@ let LectureActions = {
             lectureKey,
         });
     },
-    
+
     updateCode: (courseKey, lectureKey, lecCode) => {
         let API = require('../utils/API').default;
 
@@ -102,8 +99,8 @@ let LectureActions = {
             courseKey: courseKey,
             lecture: newLecture,
         });
-    }, 
-   
+    },
+
 
 
 
@@ -132,7 +129,7 @@ let LectureActions = {
         console.log(API.deleteActiveLecture);
 
         let ref = API.deleteActiveLecture(lectureCode, () => {});
-    }    
+    }
 
 };
 

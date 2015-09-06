@@ -24,7 +24,6 @@ const APIConstants = keyMirror({
     responses: null,
     subjects: null,
     active: null,
-    courses: null,
     lecturers: null,
     users: null,
 
@@ -36,7 +35,6 @@ let firebasePaths = {
     [APIConstants.responses]: 'responses',
     [APIConstants.subjects]: 'courseLists',
     [APIConstants.users]: 'Users',
-    [APIConstants.courses]: 'Courses',
     [APIConstants.active]: 'activeLectures',
     [APIConstants.lecturers]: 'Lecturers',
 
@@ -155,6 +153,31 @@ let API = {
         refs[APIConstants.lectures][courseKey][lectureKey].ref.child("lectureCode").update(lectureCode, callback);
     },
 
+    /* Subscribes to the current active lecture and reports changes in the
+     * through to
+     *
+     */
+    subscribeToActive: function(componentKey, lectureCode) {
+      this.firebaseSubscribe(APIConstants.active, lectureCode, componentKey, function(content) {
+        ResponderActions.updateResponder(lectureCode, content);
+      });
+      console.log("[API] Subscribed to LectureCode "+lectureCode);
+    },
+
+    unsubscribeFromActive: function(componentKey, lectureCode) {
+      this.firebaseUnsubscribe(APIConstants.active, lectureCode, componentKey)
+      console.log("[API] Unsubscribed to LectureCode "+LectureCode);
+    },
+
+    getActiveQuestionText: function(courseID, lectureID, questionID, callback) {
+      console.log("[API] Fetching questionText for lecture");
+      let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.lectures]}/${courseID}/${lectureID}/questions/${questionID}`);
+
+      ref.once('value', function(snapshot) {
+        callback(snapshot.val());
+      });
+
+    },
 
 
     /* In order to enable quick reference from the 3-digit codes to the specific
@@ -333,6 +356,7 @@ let publicAPI = {
     removeQuestion: API.removeQuestion,
     updateLectureCode: API.updateLectureCode,
 
+    getActiveQuestionText: API.getActiveQuestionText,
     createActiveLecture: API.createActiveLecture,
     updateActiveLectureQuestion: API.updateActiveLectureQuestion,
     clearActiveLectureQuestion: API.clearActiveLectureQuestion,

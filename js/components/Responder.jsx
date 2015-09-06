@@ -14,9 +14,11 @@ class Responder extends React.Component {
     super(props);
     this.componentKey = ComponentKey.generate();
     this.state = {
-    lecID: undefined,
+      lecID: undefined,
       isQuestionOpen: true,
-      lectureKey: '-JliFPJmDtXhEAv-YRZ4',
+      questionKey: "",
+      lectureKey: "",
+      questionText: "Please wait while question loads",
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
@@ -26,11 +28,13 @@ class Responder extends React.Component {
   componentDidMount() {
     this.getResponderState();
     API.subscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
+    API.subscribe(APIConstants.active, this.componentKey, this.props.routeParams.lectureCode);
     ResponderStore.addChangeListener(this.onPresentationChange);
   }
 
   componentDidUnmount() {
-    API.unsubscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
+    API.unsubscribe(APIConstants.responses, this.componentKey, );
+    API.unsubscribe(APIConstants.active, this.componentKey);
     ResponderStore.removeChangeListener(this.onPresentationChange);
   }
 
@@ -50,19 +54,21 @@ class Responder extends React.Component {
     this.getResponderState();
   }
 
+  getResponderState() {
+    console.log("[STORE] Updating state of component");
+    this.setState(ResponderStore.refreshState());
+    // this.setState({isSubmitting: ResponderStore.isSubmitting()});
+  }
+
   // Submit the current canvas
   onSubmitImage(dataURL) {
     let response = {
       submitted: Date.now(),
       imageURI: dataURL,
     };
-    let lectureKey = '-JliFPJmDtXhEAv-YRZ4';
-    let questionKey = '-JmhCbo1eHVVsTEA4TuZ';
+    let lectureKey = this.state.lectureKey;
+    let questionKey = this.state.questionKey;
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
-  }
-
-  getResponderState() {
-    this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
   hideQuestion() {
@@ -85,7 +91,7 @@ class Responder extends React.Component {
         <div>
           <div className='QuestionOverlay' style={questionStyle}>
             <div className="QuestionOverlay-content" >
-              <h3>Draw the 3-way handshake TCP uses to establish a connection</h3>
+              <h3>{this.state.questionText}</h3>
               <button className='Button' onClick={this.hideQuestion.bind(this)}>Tap To Start Drawing</button>
             </div>
           </div>
@@ -97,7 +103,9 @@ class Responder extends React.Component {
 
     else {
       markup = (
-        <div>There is no currently active question. You must wait for your lecturer to start taking responses before you may draw.</div>
+        <div className='QuestionOverlay' style={questionStyle}>
+        There is no currently active question. You must wait for your lecturer to start taking responses before you may draw.
+        </div>
       );
     }
 

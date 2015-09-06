@@ -33,6 +33,27 @@ let ResponderActions = {
         });
     },
 
+    updateResponder: function(lectureCode, content) {
+        if(!content) return;
+        Dispatcher.dispatch({
+            type: actionTypes.ACTIVE_QUESTION_CHANGE,
+            activeQ: content.activeQ,
+            courseID: content.courseID,
+            lectureID: content.lectureID,
+        })
+    },
+
+    getQuestionText: function(courseID, lectureID, questionID) {
+        let API = require('../utils/API').default;
+        API.getActiveQuestionText(courseID, lectureID, questionID, function(content) {
+          Dispatcher.dispatch({
+              type: actionTypes.GET_QUESTION_TEXT,
+              questionText: content,
+          })
+        });
+
+    },
+
     updateResponses: function(lectureKey, responses) {
         Dispatcher.dispatch({
             type: actionTypes.RESPONSES_UPDATE_SUCCESS,
