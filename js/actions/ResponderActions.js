@@ -33,6 +33,15 @@ let ResponderActions = {
         });
     },
 
+    updateResponseQuestion: function(content) {
+        Dispatcher.dispatch({
+            type: actionType.ACTIVE_QUESTION_CHANGE,
+            questionKey,
+            courseKey,
+            lectureKey,
+        })
+    },
+
     updateResponses: function(lectureKey, responses) {
         Dispatcher.dispatch({
             type: actionTypes.RESPONSES_UPDATE_SUCCESS,

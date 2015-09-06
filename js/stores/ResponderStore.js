@@ -6,6 +6,8 @@ let ActionTypes = ResponseConstants.ActionTypes;
 let CHANGE_EVENT = 'change';
 
 let _isSubmitting = false;
+let _questionText = "This is your father speaking?";
+
 let ResponderStore = Object.assign({}, EventEmitter.prototype, {
     isSubmitting: function() {
         return _isSubmitting;
@@ -14,6 +16,8 @@ let ResponderStore = Object.assign({}, EventEmitter.prototype, {
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
+
+    
 
     addChangeListener: function(callback) {
         this.on(CHANGE_EVENT, callback);
@@ -27,26 +31,9 @@ let ResponderStore = Object.assign({}, EventEmitter.prototype, {
 
 let dispatchCallback = function(action) {
     switch(action.type) {
-        case ActionTypes.RESPONSE_CREATE_INITIATED: {
-            _isSubmitting = true;
-            PresentationStore.emitChange();
-            break;
-        }
-        case ActionTypes.RESPONSE_CREATE_SUCCESS: {
-            let {lectureKey, questionKey, responseKey, response} = action;
+        case ActionTypes.ACTIVE_QUESTION_CHANGE: {
             _isSubmitting = false;
-            if (lectureKey && response) {
-               _responses[lectureKey] = _responses[lectureKey] || {};
-               _responses[lectureKey][questionKey] = _responses[lectureKey][questionKey] || {};
-                Object.assign(_responses[lectureKey][questionKey], {[responseKey]: response});
-            }
-            PresentationStore.emitChange();
-            break;
-        }
-        case ActionTypes.RESPONSE_CREATE_FAIL: {
-            _isSubmitting = false;
-            PresentationStore.emitChange();
-            break;
+            ResponseStore.emitChange();
         }
     }
 };

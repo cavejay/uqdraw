@@ -15,8 +15,8 @@ class Responder extends React.Component {
     this.componentKey = ComponentKey.generate();
     this.state = {
     lecID: undefined,
-      isQuestionOpen: true,
-      lectureKey: '-JliFPJmDtXhEAv-YRZ4',
+      isQuestionOpen: false,
+      lectureKey: null,
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
@@ -50,6 +50,10 @@ class Responder extends React.Component {
     this.getResponderState();
   }
 
+  getResponderState() {
+    this.setState({isSubmitting: ResponderStore.isSubmitting()});
+  }
+
   // Submit the current canvas
   onSubmitImage(dataURL) {
     let response = {
@@ -59,10 +63,6 @@ class Responder extends React.Component {
     let lectureKey = '-JliFPJmDtXhEAv-YRZ4';
     let questionKey = '-JmhCbo1eHVVsTEA4TuZ';
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
-  }
-
-  getResponderState() {
-    this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
   hideQuestion() {

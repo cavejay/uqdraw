@@ -24,7 +24,6 @@ const APIConstants = keyMirror({
     responses: null,
     subjects: null,
     active: null,
-    courses: null,
     lecturers: null,
     users: null,
 
@@ -36,7 +35,6 @@ let firebasePaths = {
     [APIConstants.responses]: 'responses',
     [APIConstants.subjects]: 'courseLists',
     [APIConstants.users]: 'Users',
-    [APIConstants.courses]: 'Courses',
     [APIConstants.active]: 'activeLectures',
     [APIConstants.lecturers]: 'Lecturers',
 
@@ -155,7 +153,20 @@ let API = {
         refs[APIConstants.lectures][courseKey][lectureKey].ref.child("lectureCode").update(lectureCode, callback);
     },
 
+    /* Subscribes to the current active lecture and reports changes in the
+     * through to
+     *
+     */
+    subscribeToActivelectures: function(lectureCode, callback) {
+      firebaseSubscribe(APIConstants.active, lectureCode, componentKey, function(content) {
+        ResponderActions.updateResponseQuestion();
+      });
+      // let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]/${lectureCode}`);
+      // this.firebaseSubscribe(APIConstants.lectures, courseKey, componentKey, function(content) {
+      //     LectureActions.updateLectures(courseKey, content);
 
+
+    },
 
     /* In order to enable quick reference from the 3-digit codes to the specific
      * course/lecture combinations, a separate activeLectures table is kept, using

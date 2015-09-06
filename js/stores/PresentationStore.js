@@ -6,6 +6,7 @@ let ActionTypes = ResponseConstants.ActionTypes;
 let CHANGE_EVENT = 'change';
 
 let _responses = {};
+let _isSubmitting = false;
 let PresentationStore = Object.assign({}, EventEmitter.prototype, {
     getResponses: function(lectureKey) {
         return _responses[lectureKey];
