@@ -157,16 +157,28 @@ let API = {
      * through to
      *
      */
-    subscribeToActivelectures: function(lectureCode, callback) {
-      firebaseSubscribe(APIConstants.active, lectureCode, componentKey, function(content) {
-        ResponderActions.updateResponseQuestion();
+    subscribeToActive: function(componentKey, lectureCode) {
+      this.firebaseSubscribe(APIConstants.active, lectureCode, componentKey, function(content) {
+        ResponderActions.updateResponder(lectureCode, content);
       });
-      // let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]/${lectureCode}`);
-      // this.firebaseSubscribe(APIConstants.lectures, courseKey, componentKey, function(content) {
-      //     LectureActions.updateLectures(courseKey, content);
+      console.log("[API] Subscribed to LectureCode "+lectureCode);
+    },
 
+    unsubscribeFromActive: function(componentKey, lectureCode) {
+      this.firebaseUnsubscribe(APIConstants.active, lectureCode, componentKey)
+      console.log("[API] Unsubscribed to LectureCode "+LectureCode);
+    },
+
+    getActiveQuestionText: function(courseID, lectureID, questionID, callback) {
+      console.log("[API] Fetching questionText for lecture");
+      let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.lectures]}/${courseID}/${lectureID}/questions/${questionID}`);
+
+      ref.once('value', function(snapshot) {
+        callback(snapshot.val());
+      });
 
     },
+
 
     /* In order to enable quick reference from the 3-digit codes to the specific
      * course/lecture combinations, a separate activeLectures table is kept, using
@@ -344,6 +356,7 @@ let publicAPI = {
     removeQuestion: API.removeQuestion,
     updateLectureCode: API.updateLectureCode,
 
+    getActiveQuestionText: API.getActiveQuestionText,
     createActiveLecture: API.createActiveLecture,
     updateActiveLectureQuestion: API.updateActiveLectureQuestion,
     clearActiveLectureQuestion: API.clearActiveLectureQuestion,
