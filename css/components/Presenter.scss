@@ -121,6 +121,38 @@ $lavendarGray: #68627C;
   text-align: center;
 }
 
+.Modal--Response {
+  max-height: 550px;
+  max-width: 550px;
+
+  margin: auto;
+}
+
+.Response-Modal-Centerer {
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+
+  text-align: center;
+}
+
+.Image-Layout-Helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.Response-Modal-Image {
+  vertical-align: middle;
+
+  max-width: 500px;
+  max-height: 500px;
+  border-radius: 4px;
+  background-color: #eee;
+  box-shadow: inset 0 1px 4px rgba(0,0,0, .08);
+}
+
 .SectionHeading {
   color: #ccc;
   padding-bottom: 2px;

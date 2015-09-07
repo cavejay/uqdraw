@@ -6,6 +6,8 @@ import PresenterQuestion from './PresenterQuestion.jsx';
 import PresenterResponses from './PresenterResponses.jsx';
 import Timer from './Timer.jsx';
 
+import Modal from 'react-modal';
+
 import LectureStore from '../stores/LectureStore.js';
 import PresentationStore from '../stores/PresentationStore.js';
 
@@ -16,6 +18,12 @@ import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
 
+
+//Little way to set up modals as in other files.
+var appElement = document.getElementById('react');
+Modal.setAppElement(appElement);
+Modal.injectCSS();
+
 class Presenter extends React.Component {
 
   constructor(props) {
@@ -24,6 +32,8 @@ class Presenter extends React.Component {
     //props.onChangeCourse(null, props.routeParams.courseName);
 
     this.state = {
+      isResponseModalOpen: false,
+      responseModalKey: undefined,
       lectureCode: undefined,
       activeQuestionKey: "NONE",
       courseKey: undefined,
@@ -117,7 +127,20 @@ class Presenter extends React.Component {
   }
 
   onThumbnailClick(key) {
-    console.log('make a large version of submission ' + key);
+    console.log(this);
+    console.log(this.setState);
+    console.log(key);
+
+    this.setState({responseModalKey: key});
+    this.showResponseModal();
+  }
+
+  showResponseModal() {
+    this.setState({isResponseModalOpen: true});
+  }
+
+  hideResponseModal() {
+    this.setState({isResponseModalOpen: false});
   }
 
   start() {
@@ -213,15 +236,33 @@ class Presenter extends React.Component {
       }
     }
 
+
+    let responseSrc;
+    let key = this.state.responseModalKey;
+
+    if (key && activeResponses) {
+      console.log(this.state.responses)
+
+      responseSrc = activeResponses[key].imageURI; //Set in previous conditional
+    }
+
     return (
       <div className='PresenterView'>
+
+        <Modal className='Modal--Response' isOpen={this.state.isResponseModalOpen} onRequestClose={this.hideResponseModal.bind(this)}>
+          <a onClick={this.hideResponseModal.bind(this)} className='Modal__cross'>&times;</a>
+          <div className='Response-Modal-Centerer'>
+            <span className='Image-Layout-Helper'/><img className='Response-Modal-Image' src={responseSrc}/>
+          </div>
+        </Modal>
+
         <div className='Column--main'>
 
           <div className="PresentationDetails">
             <div className="Step">
               <div className='Step-number'>1</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Go to</span><span className='Step-value'>uqdraw.co</span>
+                <span className='Step-label'>Go to</span><span className='Step-value'>artifex.uqcloud.net</span>
               </div>
             </div>
             <div className="Step">
@@ -242,7 +283,7 @@ class Presenter extends React.Component {
           <div className="PresentationResponses">
             <h2 className='SectionHeading'>Responses</h2>
             <div className="ResponseThumbnails">
-              <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick}/>
+              <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
             </div>
           </div>
         </div>
