@@ -174,6 +174,7 @@ class Drawing extends React.Component {
 
   hideQuestion() {
     this.setState({ isQuestionOpen: false });
+    clearCanvas();
   }
 
   fullscreen() {

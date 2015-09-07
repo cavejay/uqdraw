@@ -16,8 +16,9 @@ class Responder extends React.Component {
     this.state = {
       lecID: undefined,
       isQuestionOpen: true,
-      questionKey: "",
-      lectureKey: "",
+      activeQ: "",
+      lectureID: "",
+      courseID: "",
       questionText: "Please wait while question loads",
     };
     this.ctx = undefined; // drawing canvas context
@@ -66,13 +67,14 @@ class Responder extends React.Component {
       submitted: Date.now(),
       imageURI: dataURL,
     };
-    let lectureKey = this.state.lectureKey;
-    let questionKey = this.state.questionKey;
+    let lectureKey = this.state.lectureID;
+    let questionKey = this.state.activeQ;
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
   }
 
   hideQuestion() {
     this.setState({ isQuestionOpen: false });
+
   }
 
   render() {

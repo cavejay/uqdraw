@@ -6,6 +6,7 @@ let actionTypes = ResponseConstants.ActionTypes;
 
 let ResponderActions = {
     createResponse: function(lectureKey, questionKey, response) {
+        let API = require('../utils/API').default;
         let responseKey = API.addToResponses(lectureKey, questionKey, response, (error) => {
             if (error) {
                 Dispatcher.dispatch({

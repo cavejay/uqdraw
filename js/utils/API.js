@@ -297,9 +297,9 @@ let API = {
     },
 
     addToResponses: function(lectureKey, questionKey, response, callback) {
-        let ref = refs[APIConstants.responses][lectureKey].ref
-                    .child(questionKey).push(response, callback);
-        return ref.key();
+        console.log("[API] Attempting to add response to "+questionKey);
+        let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.responses]}/${lectureKey}/${questionKey}`);
+        ref.push(response, callback);
     },
 
     subscribeToSubjects: function(componentKey, userId) {
