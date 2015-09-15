@@ -56,13 +56,22 @@ class App extends React.Component {
 // the App component above (line 12 atm).
 let routes = (
   <Route name="app" path="/" handler={App}>
-    <Route name="questionManager" handler={QuestionManager} path="/:courseName/question-manager"/>
-    <Route name="welcome" handler={Welcome} path="/welcome/:userId" />
-    <Route name="drawing" handler={Responder} path="/drawing/:lectureCode"/>
-    <Route name="presenter" handler={Presenter} path="/:courseId/:lectureId"/>
+    //Must handle the routes ending with either a slash or not
+    <Route name="welcome" handler={Welcome} path="presenter/:userId/"/>
+    <Route name="welcomeNoSlash" handler={Welcome} path="presenter/:userId"/>
+    <Route name="questionManager" handler={QuestionManager} path="presenter/:userId/:courseId/"/>
+    <Route name="questionManagerNoSlash" handler={QuestionManager} path="presenter/:userId/:courseId"/>
+    <Route name="presenter" handler={Presenter} path="presenter/:userId/:courseId/:lectureId/"/>
+    <Route name="presenterNoSlash" handler={Presenter} path="presenter/:userId/:courseId/:lectureId"/>
+
+    //These are still to be updated once they're implemented
     <Route name="archive" handler={Archive} path="/archive" />
     <Route name="responses" handler={Responses} path="/responses" />
+
+    <Route name="drawing" handler={Responder} path="/drawing/:lectureCode"/>
     {/* <Route name="test" handler={Test} path="/test" /> */}
+
+
     <DefaultRoute handler={StartView}/>
   </Route>
 );

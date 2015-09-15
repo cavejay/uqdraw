@@ -25,5 +25,5 @@ The following document give an overview of the heirarchy of components. There is
 	- Drawing.jsx
 - Archive.jsx
 
-##Depreciated
-- Responses.jsx
+##Not Yet Implemented
+- Responses.jsx (used in archiving, will probably be removed).

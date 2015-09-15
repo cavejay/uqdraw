@@ -21,7 +21,7 @@ class SubjectListItem extends React.Component {
       <Link
         className='ListItem'
         to={this.props.to}
-        params={{courseName: this.props.courseName}}
+        params={{courseId: this.props.courseId, userId:this.props.userId}}
         onClick={this.onChangeCourse.bind(this, this.props.courseId,
         this.props.courseName)}
       >
@@ -30,6 +30,7 @@ class SubjectListItem extends React.Component {
     );
   }
 }
+
 SubjectListItem.propTypes = {
   to: React.PropTypes.string,
   courseName: React.PropTypes.string,
@@ -37,6 +38,9 @@ SubjectListItem.propTypes = {
   children: React.PropTypes.node,
   onChangeCourse: React.PropTypes.func,
 };
+
+
+
 
 class SubjectList extends React.Component {
   constructor(props) {
@@ -94,8 +98,11 @@ class SubjectList extends React.Component {
         <SubjectListItem
           key={key}
           to='questionManager'
+
+          userId={this.props.userId}
           courseId={key}
           courseName={this.props.subjects[key]}
+
           onChangeCourse={this.props.onChangeCourse}
         >
           {this.props.subjects[key]}

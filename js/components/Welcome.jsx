@@ -86,6 +86,7 @@ class Welcome extends React.Component {
             <div className="Marquee-Subheading">Select the course the questions are for below, or add a new course.</div>
           </div>
           <SubjectList
+            userId={this.props.routeParams.userId}
             subjects={this.state.subjects}
             onAddSubject={this.onAddSubject}
             onChangeCourse={this.props.onChangeCourse}

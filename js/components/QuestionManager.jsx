@@ -25,7 +25,7 @@ Modal.injectCSS();
 class QuestionManager extends React.Component {
   constructor(props) {
     super(props);
-    props.onChangeCourse(null, props.routeParams.courseName);
+    //props.onChangeCourse(null, props.routeParams.courseName);
     this.componentKey = ComponentKey.generate();
     this.lectureCode = lectureCode.generate();
     this.state = {
@@ -47,28 +47,29 @@ class QuestionManager extends React.Component {
     LectureStore.addChangeListener(this.onLectureChange);
 
     // Initialise store data
-    this.initData(this.props.courseId);
+    this.initData(this.props.routeParams.courseId);
   }
 
   componentWillReceiveProps(newProps) {
     // Initialise store data
-    this.initData(newProps.courseId);
+    this.initData(newProps.routeParams.courseId);
   }
 
   componentWillUnmount() {
     LectureStore.removeChangeListener(this.onLectureChange);
-    API.unsubscribe(APIConstants.lectures, this.componentKey, this.props.courseId);
+    API.unsubscribe(APIConstants.lectures, this.componentKey, this.props.routeParams.courseId);
   }
 
   initData(courseKey) {
     if (courseKey) {
       this.setState({lectures: LectureStore.getAll(courseKey)});
+
       API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
     }
   }
 
   onLectureChange() {
-    this.setState({lectures: LectureStore.getAll(this.props.courseId)});
+    this.setState({lectures: LectureStore.getAll(this.props.routeParams.courseId)});
   }
 
   showLectureModal(event) {
@@ -82,22 +83,22 @@ class QuestionManager extends React.Component {
   }
 
   onAddLecture(title) {
-    LectureActions.create(this.props.courseId, this.lectureCode, title);
+    LectureActions.create(this.props.routeParams.courseId, this.lectureCode, title);
     this.setState({isLectureModalOpen: false});
     event.preventDefault();
   }
 
   onRemoveLecture(lectureId) {
-    LectureActions.delete(this.props.courseId, lectureId);
+    LectureActions.delete(this.props.routeParams.courseId, lectureId);
   }
 
   onAddQuestion(lectureKey, lecture, question) {
-    QuestionActions.create(this.props.courseId, lectureKey, lecture, question);
+    QuestionActions.create(this.props.routeParams.courseId, lectureKey, lecture, question);
     event.preventDefault();
   }
 
   onRemoveQuestion(lectureKey, lecture, questionKey) {
-    QuestionActions.delete(this.props.courseId, lectureKey, lecture, questionKey);
+    QuestionActions.delete(this.props.routeParams.courseId, lectureKey, lecture, questionKey);
     event.preventDefault();
   }
 
@@ -108,8 +109,8 @@ class QuestionManager extends React.Component {
         return (
           <QuestionList
             key={lectureKey}
-            courseName={this.props.courseName}
-            courseKey={this.props.courseId}
+            userId = {this.props.routeParams.userId}
+            courseKey={this.props.routeParams.courseId}
             lectureKey={lectureKey}
             lecture={this.state.lectures[lectureKey]}
             onRemoveLecture={this.onRemoveLecture.bind(this)}
@@ -131,7 +132,7 @@ class QuestionManager extends React.Component {
         <div className='QuestionManager' {...this.props.scrollHandlers} data-scrollable="true">
           <div className='QustionManager-header' data-scrollable="true">
             <div className="TitleBar-title">
-              <h1>Question Manager - {this.props.courseName}</h1>
+              <h1>Question Manager - [course name]</h1>
             </div>
           </div>
           <div className='CardListsContainer'>
