@@ -198,8 +198,16 @@ class Drawing extends React.Component {
     if (this.state.isFullscreen)
       var fullscreenStyle = {display: 'none'};
 
-    if (this.props.isSubmitting)
+    var submitText = "Submit"
+    if (this.props.isSubmitting){
       var loadingIndicator = <Spinner spinnerName='double-bounce' noFadeIn />;
+      this.state.hasSubmitted = true;
+      submitText = "Submitting Answer..."
+    }
+
+    // Hack to get some type of submission feedback working
+    if(this.props.isQuestionOpen) this.state.hasSubmitted = false;
+    if(!this.props.isSubmitting && this.state.hasSubmitted) submitText = "Submitted";
 
     return (
       <div>
@@ -215,7 +223,7 @@ class Drawing extends React.Component {
             <div style={clearStyle} className='Action-icon'></div>
           </div>
           <div className='Action Action--submit'>
-            <button className='Button--unstyled' onClick={this.onSubmitImage.bind(this)}>Submit Answer</button>
+            <button className='Button--unstyled' onClick={this.onSubmitImage.bind(this)}>{submitText}</button>
             {loadingIndicator}
           </div>
           <div onClick={this.cycleLineWidth.bind(this)} className='Action Action--strokeWidth'>

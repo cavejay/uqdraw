@@ -20,6 +20,7 @@ class Responder extends React.Component {
       lectureID: "",
       courseID: "",
       questionText: "Please wait while question loads",
+      isSubmitting: false,
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
@@ -58,7 +59,7 @@ class Responder extends React.Component {
   getResponderState() {
     console.log("[STORE] Updating state of component");
     this.setState(ResponderStore.refreshState());
-    // this.setState({isSubmitting: ResponderStore.isSubmitting()});
+    this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
   // Submit the current canvas
@@ -70,6 +71,7 @@ class Responder extends React.Component {
     let lectureKey = this.state.lectureID;
     let questionKey = this.state.activeQ;
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
+    this.state.isSubmitting = true;
   }
 
   hideQuestion() {
@@ -98,12 +100,12 @@ class Responder extends React.Component {
             </div>
           </div>
 
-          <Drawing activeQuestionKey="1" onSubmitImage={this.onSubmitImage.bind(this)} isSubmitting={this.state.isSubmitting}/>
+          <Drawing isQuestionOpen={this.state.isQuestionOpen} onSubmitImage={this.onSubmitImage.bind(this)} isSubmitting={this.state.isSubmitting}/>
         </div>
       );
     }
 
-    else {
+    else if (this.state.isSubmitting){
       markup = (
         <div className='QuestionOverlay' style={questionStyle}>
         There is no currently active question. You must wait for your lecturer to start taking responses before you may draw.

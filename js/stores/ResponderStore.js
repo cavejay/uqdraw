@@ -44,13 +44,30 @@ let dispatchCallback = function(action) {
             _isSubmitting = false;
             ResponderStore.emitChange();
             ResponderActions.getQuestionText(courseID, lectureID, activeQ);
+            break;
         }
 
         // this needs to be made in a separate call after we get the first lot
         case ActionTypes.GET_QUESTION_TEXT: {
             _state.questionText = action.questionText;
-            if(!_state.questionText) _state.questionText = "There's no question yet";
+            if(!_state.questionText) _state.questionText = "There's currently no active question. Please wait for your lecturer to start taking responses";
             ResponderStore.emitChange();
+            break;
+        }
+
+        // We want a pop up to say we're submitting
+        case ActionTypes.RESPONSE_CREATE_INITIATED: {
+            _isSubmitting = true;
+            _state.isQuestionOpen = false
+            ResponderStore.emitChange();
+            break;
+        }
+
+        case ActionTypes.RESPONSE_CREATE_SUCCESS: {
+            console.log("[API] Succeeded in adding reponse to firebase")
+            _isSubmitting = false;
+            ResponderStore.emitChange();
+            break;
         }
     }
 
