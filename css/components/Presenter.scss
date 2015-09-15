@@ -3,36 +3,52 @@ $purple--dark: #523B99;
 $offwhite: #F7FAFE;
 $lavendarGray: #68627C;
 
-.PresenterView {
-  display: flex;
-  min-height: 100vh;
+body {
+  overflow: hidden;
 }
 
-.Column--main {
-  width: 80vw;
+.PresenterView {
+  /*height: 100%;*/
 }
 
 .Column--supporting {
-  width: 20vw;
-  flex-shrink: 1;
-  box-shadow: -1px 0 10px rgba(0,0,0,.2);
+  width: 300px;
+  height: 100%;
+  box-shadow: 1px 0 10px rgba(0,0,0,.2);
   background-color: $offwhite;
-  position: relative;
+
+  position: fixed;
+
+  overflow: scroll;
+
+  z-index: 1;
 }
+
+.Column--main {
+  padding-left: 300px;
+
+  width: 100%;
+  height: 100%;
+
+  position: fixed;
+
+  overflow: scroll;
+
+  background: #fafafa;
+}
+
+
 
 .PresenterList {
 }
 
 .PresenterListItem {
   border-bottom: 1px solid rgba(0,0,0,.06);
-  text-align: center;
+  text-align: left;
   padding: 1em;
-  color: $lavendarGray;
-  text-transform: uppercase;
-  font-size: 20px;
-  font-weight: 600;
   transition: background-color 200ms ease-out;
 }
+
 .PresenterListItem:hover {
   background-color: rgba(0,0,0,.03);
   cursor: pointer;
@@ -40,7 +56,32 @@ $lavendarGray: #68627C;
 
 .PresenterListItem--active, .PresenterListItem--active:hover {
   background-color: $purple;
+}
+
+.PresenterListItem-QuestionNumber {
+  color: $lavendarGray;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.PresenterListItem-QuestionText {
+  color: gray;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.PresenterListItem--active .PresenterListItem-QuestionNumber {
   color: #fff;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.PresenterListItem--active .PresenterListItem-QuestionText {
+  color: #eee;
+  font-size: 18px;
+  font-weight: 300;
 }
 
 
@@ -85,6 +126,7 @@ $lavendarGray: #68627C;
   font-weight: 800;
 }
 
+
 .PresentationQuestion {
   padding: 1em 2em;
   text-align: center;
@@ -121,11 +163,18 @@ $lavendarGray: #68627C;
   text-align: center;
 }
 
+/*Force the react modal to show above the question selector*/
+.ReactModal__Overlay {
+  z-index: 2;
+}
+
 .Modal--Response {
   max-height: 550px;
   max-width: 550px;
 
   margin: auto;
+
+  z-index: 2;
 }
 
 .Response-Modal-Centerer {
@@ -138,9 +187,9 @@ $lavendarGray: #68627C;
 }
 
 .Image-Layout-Helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 
 .Response-Modal-Image {

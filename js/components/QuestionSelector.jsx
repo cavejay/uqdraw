@@ -42,7 +42,8 @@ class QuestionSelector extends React.Component {
       }
       return (
         <div key={question.key} className={className} onClick={this.onActivateQuestion.bind(this, question.key)}>
-          <span>Question {index+1}</span>
+          <span className="PresenterListItem-QuestionNumber">Q{index+1}:</span>
+          <span className="PresenterListItem-QuestionText"> {question.value}</span>
         </div>)
       ;
     });

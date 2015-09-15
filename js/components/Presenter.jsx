@@ -29,7 +29,7 @@ class Presenter extends React.Component {
   constructor(props) {
     super(props);
 
-    //props.onChangeCourse(null, props.routeParams.courseName);
+    props.onChangeCourse(null, props.routeParams.courseName);
 
     this.state = {
       isResponseModalOpen: false,
@@ -98,8 +98,6 @@ class Presenter extends React.Component {
     this.setState({lecture: LectureStore.getAll(lectureKey)});
     this.setState({responses: PresentationStore.getResponses(lectureKey)});
 
-    console.log(this.state);
-
     LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
     
     API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
@@ -127,10 +125,6 @@ class Presenter extends React.Component {
   }
 
   onThumbnailClick(key) {
-    console.log(this);
-    console.log(this.setState);
-    console.log(key);
-
     this.setState({responseModalKey: key});
     this.showResponseModal();
   }
@@ -171,32 +165,6 @@ class Presenter extends React.Component {
   }
 
   render() {
-    this.styles = {
-      presenterCode: {
-        display: 'flex',
-        flexDirection: 'column',
-      },
-      presenterCodeTitle: {
-        fontSize: 22,
-        letterSpacing: '8px',
-      },
-      presenterCodeCode: {
-        fontSize: 50,
-        lineHeight: 0.8,
-      },
-      presenterLink: {
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        fontSize: 50,
-      },
-      timer: {
-        alignSelf: 'flex-end',
-        margin: '5px 20px',
-      },
-    };
-
     let questions = [];
     let activeQuestion;
     let activeQuestionComponent;
@@ -241,14 +209,16 @@ class Presenter extends React.Component {
     let key = this.state.responseModalKey;
 
     if (key && activeResponses) {
-      console.log(this.state.responses)
-
       responseSrc = activeResponses[key].imageURI; //Set in previous conditional
     }
+
+
+
 
     return (
       <div className='PresenterView'>
 
+        {/* Markup for displaying responses in a modal view */}
         <Modal className='Modal--Response' isOpen={this.state.isResponseModalOpen} onRequestClose={this.hideResponseModal.bind(this)}>
           <a onClick={this.hideResponseModal.bind(this)} className='Modal__cross'>&times;</a>
           <div className='Response-Modal-Centerer'>
@@ -256,8 +226,15 @@ class Presenter extends React.Component {
           </div>
         </Modal>
 
+        {/* Question selector, displayed on the right of the screen */}
+        <div className='Column--supporting'>
+          <QuestionSelector questions={questions} onActivateQuestion={this.onActivateQuestion.bind(this)} activeQuestionKey={this.state.activeQuestionKey}/>
+        </div>        
+
+        {/* Question and response display */}
         <div className='Column--main'>
 
+          {/* Connection instructions */}
           <div className="PresentationDetails">
             <div className="Step">
               <div className='Step-number'>1</div>
@@ -272,6 +249,8 @@ class Presenter extends React.Component {
               </div>
             </div>
           </div>
+
+          {/* Question */}
           <div className="PresentationQuestion">
             <h2 className='SectionHeading'>Question</h2>
             {activeQuestionComponent}
@@ -280,6 +259,8 @@ class Presenter extends React.Component {
               {button}
             </div>
           </div>
+
+          {/* Responses */}
           <div className="PresentationResponses">
             <h2 className='SectionHeading'>Responses</h2>
             <div className="ResponseThumbnails">
@@ -288,9 +269,7 @@ class Presenter extends React.Component {
           </div>
         </div>
 
-        <div className='Column--supporting'>
-          <QuestionSelector questions={questions} onActivateQuestion={this.onActivateQuestion.bind(this)} activeQuestionKey={this.state.activeQuestionKey}/>
-        </div>
+
       </div>
     );
   }
