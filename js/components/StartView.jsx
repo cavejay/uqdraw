@@ -99,7 +99,14 @@ onChangeInput1(event) {
   }
   
   codeChecker() {
-    let lecCode = this.state.codeInput1.concat(this.state.codeInput2,this.state.codeInput3);
+    //Convert all of the input to uppercase.
+    let codeInput1Upper = this.state.codeInput1.toUpperCase();
+    let codeInput2Upper = this.state.codeInput2.toUpperCase();
+    let codeInput3Upper = this.state.codeInput3.toUpperCase();
+
+    //Merge the three individual code elements into 1
+    let lecCode = codeInput1Upper.concat(codeInput2Upper, codeInput3Upper);
+
     if (lecCode.length === 3){
       this.context.router.transitionTo('drawing', {'lectureCode': lecCode}, {});
     }

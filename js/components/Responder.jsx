@@ -30,7 +30,13 @@ class Responder extends React.Component {
   componentDidMount() {
     this.getResponderState();
     API.subscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
-    API.subscribe(APIConstants.active, this.componentKey, this.props.routeParams.lectureCode);
+
+
+    //As some responders may type the URL rather than using the code entry,
+    //can't assume that the code is uppercase at this point. Must convert it.
+    let upperLecCode = this.props.routeParams.lectureCode.toUpperCase();
+
+    API.subscribe(APIConstants.active, this.componentKey, upperLecCode);
     ResponderStore.addChangeListener(this.onPresentationChange);
   }
 
@@ -41,6 +47,8 @@ class Responder extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
+    console.log("test");
+
     if (this.props.activeQuestionKey !== newProps.activeQuestionKey) {
       if (newProps.activeQuestionKey) {
         //activate question
