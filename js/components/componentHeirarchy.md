@@ -23,5 +23,7 @@ The following document give an overview of the heirarchy of components. There is
 	- LectureComposer.jsx
 - Responder.jsx
 	- Drawing.jsx
-- Responses.jsx
 - Archive.jsx
+
+##Depreciated
+- Responses.jsx
