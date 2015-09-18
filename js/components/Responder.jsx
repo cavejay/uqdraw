@@ -71,8 +71,9 @@ class Responder extends React.Component {
   }
 
   // Submit the current canvas
-  onSubmitImage(dataURL) {
+  onSubmitImage(dataURL, isCorrect) {
     let response = {
+    	isCorrect: isCorrect,
       submitted: Date.now(),
       imageURI: dataURL,
     };

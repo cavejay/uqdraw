@@ -25,15 +25,25 @@ class PresenterResponses extends React.Component {
       response: {
         marginRight: 10,
       },
+      correctResponse: {
+		border: '1px solid #0f0',
+      },
 
     };
 
     let thumbnails = Object.keys(this.props.responses).map((responseKey) => {
-      return (
+      if (this.props.responses[responseKey].isCorrect == true){
+       return (
+        <a key={responseKey} href="" onClick={this.onThumbnailClick.bind(this, responseKey)}>
+          <img className='Thumbnail' style={this.styles.correctResponse} src={this.props.responses[responseKey].imageURI}/>
+        </a>      );
+      } else {
+       return (
         <a key={responseKey} href="" onClick={this.onThumbnailClick.bind(this, responseKey)}>
           <img className='Thumbnail' src={this.props.responses[responseKey].imageURI}/>
-        </a>
-      );
+        </a>      );
+        }
+
     });
 
     return (

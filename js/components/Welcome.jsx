@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router';
 import Header from './Header.jsx';
 import SubjectList from './SubjectList.jsx';
 require('../../css/components/WelcomeView.scss');
@@ -79,7 +79,14 @@ class Welcome extends React.Component {
     console.log('subjects = ', this.state.subjects);
     return (
       <div className='RouteContainer'>
-        <Header />
+        <Header>
+        <Link to='archive' params={{userId: this.props.routeParams.userId}} className='Stack-label'>
+         <div className='Stack'>
+            <img className='Stack-icon' src={require('../../images/basic_picture_multiple.svg')} />
+            Archives
+          </div>
+          </Link>
+        </Header>
         <div className='Welcome'>
           <div className='Marquee'>
             <h1 className='Marquee-Heading'>Welcome, {this.props.routeParams.userId}.</h1>

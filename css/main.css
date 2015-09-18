@@ -226,6 +226,10 @@ input:focus {
   background-image: url('../images/clear.svg');
 }
 
+.Action--correct > .Action-icon {
+  background-image: url('../images/correct.png');
+}
+
 .fullscreen {
   background-image: url('../images/arrows_expand.svg');
 }

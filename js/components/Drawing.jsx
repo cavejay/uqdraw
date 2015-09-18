@@ -13,6 +13,7 @@ class Drawing extends React.Component {
       isEraserActive: false,
       lineWidth: 'm',
       isFullscreen: false,
+      isCorrectActive: false,
     };
     this.ctx = undefined; // drawing canvas context
 
@@ -139,6 +140,12 @@ class Drawing extends React.Component {
     else                           this.ctx.strokeStyle = '#333333';
     this.setState({ isEraserActive: !this.state.isEraserActive });
   }
+  
+	toggleCorrect() {
+       if (!this.state.isCorrectActive) ;
+    else                           ;
+    this.setState({ isCorrectActive: !this.state.isCorrectActive });
+  }
 
   clearCanvas() {
     var ctx = this.displayCtx;
@@ -169,7 +176,8 @@ class Drawing extends React.Component {
   // Submit the current canvas
   onSubmitImage() {
     let dataURL = this.displayCanvas.toDataURL(); // canvas encoded as dataURI
-    this.props.onSubmitImage(dataURL);
+    let isCorrect = this.state.isCorrectActive;
+    this.props.onSubmitImage(dataURL, isCorrect);
   }
 
   hideQuestion() {
@@ -185,8 +193,13 @@ class Drawing extends React.Component {
   render() {
     let markup;
     var eraserStyle = {};
+    
     if (this.state.isEraserActive)
       eraserStyle = { backgroundImage: 'url(../../images/eraser-active.svg)' };
+      
+var correctStyle = {};
+if (this.state.isCorrectActive)
+      correctStyle = { backgroundImage: 'url(../../images/correct-active.png)' };
 
     var clearStyle = {};
 
@@ -204,6 +217,11 @@ class Drawing extends React.Component {
       this.state.hasSubmitted = true;
       submitText = "Submitting Answer..."
     }
+    
+    if(!this.props.isSubmitting && this.state.hasSubmitted) {
+    	this.clearCanvas();
+    } 
+    
 
     // Hack to get some type of submission feedback working
     if(this.props.isQuestionOpen) this.state.hasSubmitted = false;
@@ -225,6 +243,10 @@ class Drawing extends React.Component {
           <div className='Action Action--submit'>
             <button className='Button--unstyled' onClick={this.onSubmitImage.bind(this)}>{submitText}</button>
             {loadingIndicator}
+          </div>
+         <div onClick={this.toggleCorrect.bind(this)} className='Action Action--correct'>
+            <div style={correctStyle} className='Action-icon'></div>
+            <div className='Action Action--correctLabel'>Correct?</div>
           </div>
           <div onClick={this.cycleLineWidth.bind(this)} className='Action Action--strokeWidth'>
             <div className='BrushSizeIcon'>

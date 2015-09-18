@@ -65,7 +65,7 @@ let routes = (
     <Route name="presenterNoSlash" handler={Presenter} path="presenter/:userId/:courseId/:lectureId"/>
 
     //These are still to be updated once they're implemented
-    <Route name="archive" handler={Archive} path="/archive" />
+    <Route name="archive" handler={Archive} path="/archive/:userId" />
     <Route name="responses" handler={Responses} path="/responses" />
 
     <Route name="drawing" handler={Responder} path="/drawing/:lectureCode"/>

@@ -1,7 +1,6 @@
 import React from 'react';
 import config from '../config';
 import Header from './Header.jsx';
-import { Link } from 'react-router';
 import QuestionList from './QuestionList.jsx';
 import LectureComposer from './LectureComposer.jsx';
 import HorizontalDragScroll from '../composables/HorizontalDragScroll.js';
@@ -35,6 +34,7 @@ class QuestionManager extends React.Component {
       curDown: false,
       curOffset: 0,
       isLectureModalOpen: false,
+    	isDeleteModalIsOpen: false,
       lectures: {},
     };
 
@@ -101,6 +101,15 @@ class QuestionManager extends React.Component {
     QuestionActions.delete(this.props.routeParams.courseId, lectureKey, lecture, questionKey);
     event.preventDefault();
   }
+  
+  showDeleteModal(event) {
+    this.setState({isDeleteModalIsOpen: true});
+  }
+
+  hideDeleteModal(event) {
+    this.setState({isDeleteModalIsOpen: false});
+    event.preventDefault();
+  }
 
   render() {
     let lectures;
@@ -125,14 +134,17 @@ class QuestionManager extends React.Component {
       <div className='ViewContainer'>
         <Header>
           <div className='Stack'>
-            <img className='Stack-icon' src={require('../../images/basic_picture_multiple.svg')} />
-            <Link to='archive' className='Stack-label'>Archives</Link>
+            <img className='Stack-icon' onClick={this.showDeleteModal.bind(this)} src={require('../../images/delete_lecture.png')} />
+            <div className='Stack-label' onClick={this.showDeleteModal.bind(this)}>Delete Course</div>
+            <Modal isOpen={this.state.isDeleteModalIsOpen} className='Modal--deleteCourse'>
+ 			
+        	</Modal>
           </div>
         </Header>
         <div className='QuestionManager' {...this.props.scrollHandlers} data-scrollable="true">
           <div className='QustionManager-header' data-scrollable="true">
             <div className="TitleBar-title">
-              <h1>Question Manager - [course name]</h1>
+              <h1>Question Manager - {this.props.courseName}</h1>
             </div>
           </div>
           <div className='CardListsContainer'>
