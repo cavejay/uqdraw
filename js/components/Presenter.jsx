@@ -98,9 +98,13 @@ class Presenter extends React.Component {
   onLectureChange() {
     let courseKey = this.props.routeParams.courseId;
     let lectureKey = this.props.routeParams.lectureId;
+    let lectureCode = LectureStore.getCode();
 
     let lecture = LectureStore.get(courseKey, lectureKey);
-    this.setState({'lecture': lecture, 'lectureCode': LectureStore.getCode()});
+    this.setState({'lecture': lecture, 'lectureCode': lectureCode});
+
+    // Update the database with our lecture
+    LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
   }
 
   onPresentationChange() {
