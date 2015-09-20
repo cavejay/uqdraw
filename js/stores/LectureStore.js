@@ -6,6 +6,7 @@ let ActionTypes = LectureConstants.ActionTypes;
 let CHANGE_EVENT = 'change';
 
 let _lectures = {};
+let _lectureCode = "???";
 
 let LectureStore = Object.assign({}, EventEmitter.prototype, {
     get: function(courseId, lectureId) {
@@ -16,6 +17,9 @@ let LectureStore = Object.assign({}, EventEmitter.prototype, {
     getAll: function(courseId) {
         if (!courseId) throw new Error('LectureStore.getAll requires a courseId');
         return _lectures[courseId] || {};
+    },
+    getCode: function() {
+      return _lectureCode;
     },
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -30,6 +34,12 @@ let LectureStore = Object.assign({}, EventEmitter.prototype, {
 
 let dispatcherCallback = function(action) {
     switch(action.type) {
+        case ActionTypes.LECTURE_CODE_LIST_UPDATE: {
+            _lectureCode = action.lectureCode;
+            LectureStore.emitChange();
+            break;
+        }
+
         case ActionTypes.LECTURE_CREATE_SUCCESS: {
             let {courseKey, lectureKey, lecture} = action;
             if (lecture) {

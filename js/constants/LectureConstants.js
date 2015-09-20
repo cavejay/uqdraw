@@ -2,6 +2,7 @@ let keyMirror = require('keymirror');
 
 export default {
     ActionTypes: keyMirror({
+        LECTURE_CODE_LIST_UPDATE: null,
         LECTURES_LISTEN: null,
         LECTURES_UPDATE_INITIATED: null,
         LECTURES_UPDATE_SUCCESS: null,

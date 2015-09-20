@@ -1,9 +1,33 @@
 import Dispatcher from '../dispatcher/Dispatcher.js';
 import LectureConstants from '../constants/LectureConstants.js';
 let ActionTypes = LectureConstants.ActionTypes;
+
+import config from '../config';
+let firebaseRoot = config.firebase.base;
+let Firebase = require('firebase');
+import lectureCode from '../utils/lectureCode.js';
 // let API = require('../utils/API').default;
 
+getAvailableCode = (codes) => {
+  test = lectureCode.generateCode();
+  if (codes.indexOf(test) == -1) {
+    Dispatcher.dispo
+  }
+}
+
 let LectureActions = {
+    generateCode: () => {
+        refs = []; // clear the array
+        let ref = new Firebase(`${firebaseRoot}/activeLectures`);
+        ref.once('value', (snapshot, getAvailableCode) => {
+            snapshot.forEach((child) => {
+                refs.push(child.key());
+            })
+
+            console.log(hi());
+
+        });
+    },
 
     updateLectures: (courseKey, lectures) => {
         if (!courseKey || !lectures) return;

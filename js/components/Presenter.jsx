@@ -34,7 +34,7 @@ class Presenter extends React.Component {
     this.state = {
       isResponseModalOpen: false,
       responseModalKey: undefined,
-      lectureCode: undefined,
+      lectureCode: "???",
       activeQuestionKey: "NONE",
       courseKey: undefined,
       lectureKey: undefined,
@@ -42,7 +42,7 @@ class Presenter extends React.Component {
       lecture: {},
     };
 
-    this.state.lectureCode = this.generateCode();
+
 
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
@@ -75,16 +75,6 @@ class Presenter extends React.Component {
     API.unsubscribe(APIConstants.responses, this.componentKey, lectureKey);
   }
 
-  /* Generates a 3 digit code, used to give users access to the lecture 
-   * response page */
-  generateCode(courseKey, lectureKey, lecture){
-    let code3 = lectureCode.generate(); //Generate the code
-
-    //LectureActions.updateCode(courseKey, lectureKey, code3); //Store code in DB
-
-    return code3;
-  }
-
   /* Sets up all the basic data for the application */
   initData() {
     let courseKey = this.props.routeParams.courseId;
@@ -98,8 +88,9 @@ class Presenter extends React.Component {
     this.setState({lecture: LectureStore.getAll(lectureKey)});
     this.setState({responses: PresentationStore.getResponses(lectureKey)});
 
+    LectureActions.generateCode();
     LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
-    
+
     API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
     API.subscribe(APIConstants.responses, this.componentKey, lectureKey);
   }
@@ -109,7 +100,7 @@ class Presenter extends React.Component {
     let lectureKey = this.props.routeParams.lectureId;
 
     let lecture = LectureStore.get(courseKey, lectureKey);
-    this.setState({'lecture': lecture});
+    this.setState({'lecture': lecture, 'lectureCode': LectureStore.getCode()});
   }
 
   onPresentationChange() {
@@ -120,7 +111,7 @@ class Presenter extends React.Component {
 
   //Triggered when the user selects a question
   onActivateQuestion(key) {
-    this.setState({activeQuestionKey: key}); //Store key of the new selected question 
+    this.setState({activeQuestionKey: key}); //Store key of the new selected question
     this.reset(); //When a new question is selected, stop taking answers for the old one
   }
 
@@ -229,7 +220,7 @@ class Presenter extends React.Component {
         {/* Question selector, displayed on the right of the screen */}
         <div className='Column--supporting'>
           <QuestionSelector questions={questions} onActivateQuestion={this.onActivateQuestion.bind(this)} activeQuestionKey={this.state.activeQuestionKey}/>
-        </div>        
+        </div>
 
         {/* Question and response display */}
         <div className='Column--main'>
