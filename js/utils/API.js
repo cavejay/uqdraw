@@ -319,13 +319,13 @@ let API = {
     login: function(username, password, callback) {
       let refType = APIConstants.users;
       let filter = username;
-      console.log('loggin in')
+      console.log('[API] logging in')
       let current = new Firebase(`${firebaseRoot}/${firebasePaths[refType]}/${filter}`);
       console.log('current: '+current)
       current.once('value', (snapshot) => {
         let content = snapshot.val() || {};
         if (content == password) {
-          console.log('we matched pwds');
+          console.log('[API] we matched pwds');
           callback(null); // This is a success
         } else if (content) { // Password exists but didn't match
           callback(2); // Bad password errorcode == 2
