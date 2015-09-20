@@ -13,7 +13,7 @@ import PresentationStore from '../stores/PresentationStore.js';
 
 import LectureActions from '../actions/LectureActions.js';
 
-import lectureCode from '../utils/lectureCode.js';
+import LectureCode from '../utils/LectureCode.js';
 import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');

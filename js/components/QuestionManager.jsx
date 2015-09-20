@@ -10,7 +10,7 @@ import LectureActions from '../actions/LectureActions.js';
 import LectureStore from '../stores/LectureStore.js';
 import API, {APIConstants} from '../utils/API.js';
 import ComponentKey from '../utils/ComponentKey.js';
-import lectureCode from '../utils/lectureCode.js';
+import LectureCode from '../utils/LectureCode.js';
 let Firebase = require('firebase');
 let Modal = require('react-modal');
 
@@ -26,7 +26,7 @@ class QuestionManager extends React.Component {
     super(props);
     //props.onChangeCourse(null, props.routeParams.courseName);
     this.componentKey = ComponentKey.generate();
-    this.lectureCode = lectureCode.generate();
+    this.lectureCode = LectureCode.generate();
     this.state = {
       curYPos: 0,
       curXPos: 0,
@@ -101,7 +101,7 @@ class QuestionManager extends React.Component {
     QuestionActions.delete(this.props.routeParams.courseId, lectureKey, lecture, questionKey);
     event.preventDefault();
   }
-  
+
   showDeleteModal(event) {
     this.setState({isDeleteModalIsOpen: true});
   }
@@ -137,7 +137,7 @@ class QuestionManager extends React.Component {
             <img className='Stack-icon' onClick={this.showDeleteModal.bind(this)} src={require('../../images/delete_lecture.png')} />
             <div className='Stack-label' onClick={this.showDeleteModal.bind(this)}>Delete Course</div>
             <Modal isOpen={this.state.isDeleteModalIsOpen} className='Modal--deleteCourse'>
- 			
+
         	</Modal>
           </div>
         </Header>

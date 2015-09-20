@@ -5,27 +5,31 @@ let ActionTypes = LectureConstants.ActionTypes;
 import config from '../config';
 let firebaseRoot = config.firebase.base;
 let Firebase = require('firebase');
-import lectureCode from '../utils/lectureCode.js';
-// let API = require('../utils/API').default;
+import LectureCode from '../utils/LectureCode.js';
 
-getAvailableCode = (codes) => {
-  test = lectureCode.generateCode();
+var getAvailableCode = (codes) => {
+  let test = LectureCode.generate();
+  console.log("[CODE] checking the code: "+test);
   if (codes.indexOf(test) == -1) {
-    Dispatcher.dispo
+    Dispatcher.dispatch({
+	    type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
+	    lectureCode: test,
+    })
+    return;
+  } else {
+    return getAvailableCode(codes);
   }
 }
 
 let LectureActions = {
     generateCode: () => {
-        refs = []; // clear the array
+        let refs = []; // clear the array
         let ref = new Firebase(`${firebaseRoot}/activeLectures`);
-        ref.once('value', (snapshot, getAvailableCode) => {
+        ref.once('value', (snapshot) => {
             snapshot.forEach((child) => {
                 refs.push(child.key());
             })
-
-            console.log(hi());
-
+	    getAvailableCode(refs);
         });
     },
 
