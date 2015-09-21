@@ -14,22 +14,18 @@ var ref = new Firebase(firebaseRoot+"/activeLectures");
 ref.once('value', function(snapshot) {
   snapshot.forEach(function(child) {
 	console.log(" Checking: "+child.key()+" - "+child.val().activeQ);
-
 	var t = {'key': child.key(), 'val':child.val().activeQ};
 	refs.push(t);
   })
 
   refs.forEach(function(r) {
     if (r.val === 'NONE') {
-      ref.child(r.key).remove(function(error) {
-	      if(error) console.log('wth');
-	      console.log("error "+error);
-      }); // TODO this currently doesn't actually remove the questions :(
+      ref.child(r.key).remove();
       console.log(" Removed: "+r.key);
     } else {
       console.log(" Didn't remove "+r.key+" as \"NONE\" !== "+r.val);
     }
   });
 
-  process.exit(); // This might leave a connection hanging?
+  // Can't kill the process 'cause we're waiting for the remove functions
 });
