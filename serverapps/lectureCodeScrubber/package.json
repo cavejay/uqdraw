@@ -1,6 +1,6 @@
 {
   "name": "lectureCodeScrubber",
-  "version": "0.0.1",
+  "version": "0.1",
   "description": "Removes excess lecture codes from firebase",
   "main": "app.js",
   "author": "cavejay",

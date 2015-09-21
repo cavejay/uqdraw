@@ -22,7 +22,8 @@ let LectureActions = {
 	        Dispatcher.dispatch({
 	          type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
 	          lectureCode: test,
-	      })
+	        });
+	      }
 	    }
         });
     },

@@ -1,6 +1,9 @@
 var firebaseRoot = 'https://uqartifex.firebaseio.com/'
 var Firebase = require('firebase');
 
+// Please keep the version up to date with package.json
+// v0.1
+
 /* This App loads in all the activeLecture nodes from the database and removes
    all the active lectures that don't have an active question set.
 
