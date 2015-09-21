@@ -7,20 +7,6 @@ let firebaseRoot = config.firebase.base;
 let Firebase = require('firebase');
 import LectureCode from '../utils/LectureCode.js';
 
-var getAvailableCode = (codes) => {
-  let test = LectureCode.generate();
-  console.log("[CODE] checking the code: "+test);
-  if (codes.indexOf(test) == -1) {
-    Dispatcher.dispatch({
-	    type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
-	    lectureCode: test,
-    })
-    return;
-  } else {
-    return getAvailableCode(codes);
-  }
-}
-
 let LectureActions = {
     generateCode: () => {
         let refs = []; // clear the array
@@ -29,7 +15,15 @@ let LectureActions = {
             snapshot.forEach((child) => {
                 refs.push(child.key());
             })
-	    getAvailableCode(refs);
+	    var test;
+	    while(test = LectureCode.generate()){
+	      console.log("[CODE] checking the code: "+test);
+	      if (codes.indexOf(test) == -1) {
+	        Dispatcher.dispatch({
+	          type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
+	          lectureCode: test,
+	      })
+	    }
         });
     },
 
