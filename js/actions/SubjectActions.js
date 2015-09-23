@@ -39,6 +39,32 @@ let SubjectActions = {
       subjects: subjectsMap,
     });
   },
+    delete: (subjectName, userId) => {
+    if (!subjectName || !userId) return;
+
+    API.removeCourse(subjectName, userId, (error) => {
+      if (error === null) {
+      console.log("ENTERING HYPERSPEED");
+        Dispatcher.dispatch({
+          type: actionTypes.SUBJECT_DELETE_SUCCESS,
+          userId: userId,
+          subjectName: subjectName,
+        });
+      } else {
+        Dispatcher.dispatch({
+          type: actionTypes.SUBJECT_DELETE_FAIL,
+          userId: userId,
+          subjectName: subjectName,
+          error: error,
+        });
+      }
+    });
+
+    Dispatcher.dispatch({
+      type: actionTypes.SUBJECT_DELETE_INITIATED,
+      subjectName: subjectName,
+    });
+  },
 };
 
 export default SubjectActions;

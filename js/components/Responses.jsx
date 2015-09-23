@@ -1,13 +1,25 @@
 import React from 'react';
 import Header from './Header.jsx';
+import PresenterResponses from './PresenterResponses.jsx';
 let Firebase = require('firebase');
 import config from '../config.js';
+import Modal from 'react-modal';
+//Little way to set up modals as in other files.
+var appElement = document.getElementById('react');
+Modal.setAppElement(appElement);
+Modal.injectCSS();
 
 class Responses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       responses: [], // array of lecture responses
+               isResponseModalOpen: false,
+               responseModalKey: undefined,
+    };
+        this.sectionStyle = {
+      flexGrow: 1,
+      textAlign: 'center',
     };
   }
 
@@ -26,6 +38,20 @@ class Responses extends React.Component {
     });
   }
 
+      onThumbnailClick(key) {
+    this.setState({responseModalKey: key});
+    this.showResponseModal();
+  }
+
+  showResponseModal() {
+    this.setState({isResponseModalOpen: true});
+  }
+
+  hideResponseModal() {
+    this.setState({isResponseModalOpen: false});
+  }
+
+  
   render() {
     let style = {
       maxWidth: 800,
@@ -51,17 +77,39 @@ class Responses extends React.Component {
     let thumbnails = this.state.responses.map((uri) => {
       return <img width='250' style={thumbStyle} src={uri} />;
     });
-
+  
+      let activeResponses;
+    if (typeof this.state.activeQuestionKey !== 'undefined') {
+      if (this.state.responses) {
+        activeResponses = this.state.responses[this.state.activeQuestionKey];
+      }
+    }
+    let responseSrc;
+    let key = this.state.responseModalKey;
+    if (key && activeResponses) {
+      responseSrc = activeResponses[key].imageURI; //Set in previous conditional
+    }
     return (
       <div className='ResponsesView'>
+                  {/* Markup for displaying responses in a modal view */}
+        <Modal className='Modal--Response' isOpen={this.state.isResponseModalOpen} onRequestClose={this.hideResponseModal.bind(this)}>
+          <a onClick={this.hideResponseModal.bind(this)} className='Modal__cross'>&times;</a>
+          <div className='Response-Modal-Centerer'>
+            <span className='Image-Layout-Helper'/><img className='Response-Modal-Image' src={responseSrc}/>
+          </div>
+        </Modal>
         <Header />
         <div className='MainContainer'>
-          <div style={style} className='Responses'>
-            <h2 style={{display: 'block'}}>Responses</h2>
-            <div style={thumbContainerStyle}>
-              {thumbnails}
+                    <div className='top' ref='topSection' style={this.sectionStyle}>
+            <h1 className='CodeHeading'>COMS3200: Introduction</h1>
+    	</div>
+          {/* Responses */}
+            <div className="ResponseThumbnails">
+              <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
             </div>
-          </div>
+          
+        
+
         </div>
       </div>
     );
