@@ -64,7 +64,7 @@ let SubjectActions = {
       type: actionTypes.SUBJECT_DELETE_INITIATED,
       subjectName: subjectName,
     });
-  },
+  }
 };
 
 export default SubjectActions;

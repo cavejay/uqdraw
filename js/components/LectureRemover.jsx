@@ -8,14 +8,13 @@ class LectureRemover extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lecture: '',
-      inputHasText: false,
+    	delete: false,
     };
   }
 
   onSave() {
-    this.props.onSave(this.state.lecture);
-    //this.setState({lecture: '', inputHasText: false});
+    this.props.onSave(this.state.delete);
+    this.setState({delete: true});
   }
 
   render() {

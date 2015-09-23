@@ -37,6 +37,7 @@ class QuestionManager extends React.Component {
       curOffset: 0,
     isDeleteModalIsOpen: false,
       isLectureModalOpen: false,
+      delete: false,
       lectures: {},
     };
 
@@ -113,10 +114,10 @@ class QuestionManager extends React.Component {
     event.preventDefault();
   }
   
-  onRemoveCourse(courseKey) {
-      this.setState({isDeleteModalIsOpen: false});
+  onRemoveCourse(event) {
+    this.setState({isDeleteModalIsOpen: false});
     SubjectActions.delete(this.props.routeParams.courseId,this.userId);
-        this.context.router.transitionTo('welcome', {'userId':  this.userId}, {});
+    this.context.router.transitionTo('welcome', {'userId':  this.userId}, {});
       event.preventDefault();
   }  
 

@@ -126,8 +126,10 @@ let API = {
     },
     
     removeCourse: function(courseKey, userId, callback) {
-     	refs[APIConstants.subjects][userId].ref.child(userId).remove(callback);
-        refs[APIConstants.lectures].ref.child(courseKey).remove(callback);  
+     let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.subjects]}/${userId}`);
+     ref.child(courseKey).remove(callback);
+     ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.lectures]}`);
+     ref.child(courseKey).remove(callback); 
     },
 
 
