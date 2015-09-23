@@ -79,7 +79,7 @@ onChangeInput1(event) {
     this.state.codeInput1 = inputValue;
     this.codeChecker();
   }
-  
+
   onChangeInput2(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
@@ -87,9 +87,9 @@ onChangeInput1(event) {
     this.setState({'codeInput2': inputValue});
     this.state.codeInput2 = inputValue;
     this.codeChecker();
-     
+
   }
-  
+
   onChangeInput3(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
@@ -97,7 +97,7 @@ onChangeInput1(event) {
     this.state.codeInput3 = inputValue;
     this.codeChecker();
   }
-  
+
   codeChecker() {
     //Convert all of the input to uppercase.
     let codeInput1Upper = this.state.codeInput1.toUpperCase();
@@ -172,6 +172,10 @@ onChangeInput1(event) {
               </div>
             </form>
           </div>
+        </div>
+
+        <div ref='Version'>
+            v0.2.1
         </div>
       </div>
     );

@@ -16,7 +16,7 @@
   "pre-commit": [
     ""
   ],
-  "author": "nirrek",
+  "author": "artifex",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
