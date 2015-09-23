@@ -15,16 +15,12 @@ let LectureActions = {
             snapshot.forEach((child) => {
                 refs.push(child.key());
             })
-	    var test;
-	    while(test = LectureCode.generate()){
-	      console.log("[CODE] checking the code: "+test);
-	      if (codes.indexOf(test) == -1) {
-	        Dispatcher.dispatch({
-	          type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
-	          lectureCode: test,
-	        });
-	      }
-	    }
+            let test = LectureCode.generate(refs);
+            console.log("[CODE] Generated code: "+test);
+            Dispatcher.dispatch({
+                type: ActionTypes.LECTURE_CODE_LIST_UPDATE,
+                lectureCode: test,
+            });
         });
     },
 
