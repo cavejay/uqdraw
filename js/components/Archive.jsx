@@ -18,15 +18,14 @@ class Archive extends React.Component {
     props.onChangeCourse(props.routeParams.courseId, props.routeParams.courseName);
     this.state = {
       subjects: [], // list of subject names
-      currentCourse: "sad",
       lectures: {},
     };
     let userId = this.props.routeParams.userId;
     this.onSubjectChange = this.onSubjectChange.bind(this);
     this.onSubmitChange = this.onSubmitChange.bind(this);
     this.initData = this.initData.bind(this);
-    
-    
+    this.onLectureChange = this.onLectureChange.bind(this);
+      console.log(this.state.lectures);
     this.sectionStyle = {
       flexGrow: 1,
       textAlign: 'center',
@@ -75,7 +74,9 @@ class Archive extends React.Component {
     });
     API.subscribe(APIConstants.subjects, this.componentKey, userId);
   }
-
+  onLectureChange() {
+    this.setState({lectures: LectureStore.getAll(this.props.routeParams.courseId)});
+  }
   onSubjectChange() {
     this.setState({ subjects: SubjectStore.getAll() });
   }
@@ -87,11 +88,9 @@ class Archive extends React.Component {
   render() {
     let lectures;
     if (this.props.courseName) {
-    console.log(this.props.courseId);
       lectures =            <ArchiveLecture
             courseName={this.props.courseName}
             courseKey={this.props.courseId}
-            userId={this.props.routeParams.userId}
           />
     }
     return (

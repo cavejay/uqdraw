@@ -21,6 +21,7 @@ class Responses extends React.Component {
       flexGrow: 1,
       textAlign: 'center',
     };
+    console.log(this.props.routeParams.lectureId);
   }
 
   componentDidMount() {
@@ -101,7 +102,7 @@ class Responses extends React.Component {
         <Header />
         <div className='MainContainer'>
                     <div className='top' ref='topSection' style={this.sectionStyle}>
-            <h1 className='CodeHeading'>COMS3200: Introduction</h1>
+            <h1 className='CodeHeading'>{this.props.courseName}: {this.props.lectureTitle}</h1>
     	</div>
           {/* Responses */}
             <div className="ResponseThumbnails">

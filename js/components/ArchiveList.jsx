@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-
 require('../../css/components/Button.scss');
 require('../../css/components/Form.scss');
 

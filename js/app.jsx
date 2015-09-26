@@ -66,7 +66,7 @@ let routes = (
 
     //These are still to be updated once they're implemented
     <Route name="archive" handler={Archive} path="/archive/:userId" />
-    <Route name="responses" handler={Responses} path="/responses" />
+    <Route name="responses" handler={Responses} path="/responses/:courseId/:lectureId" />
 
     <Route name="drawing" handler={Responder} path="/drawing/:lectureCode"/>
     {/* <Route name="test" handler={Test} path="/test" /> */}
