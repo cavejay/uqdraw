@@ -13,12 +13,10 @@ class LectureLinks extends React.Component {
 
   render() {
   let {courseKey, lectureKey, lecture, ...delegateProps} = this.props;
-  let lectureTitle = lecture.title;
-console.log(lectureTitle);
     return (
     	<tr>
        		<td>{lecture.title}</td>
-			<td><Link to="responses" params={{courseName: this.props.courseName, courseId: courseKey, lectureId: lectureKey, lectureTitle: lectureTitle}} className='Button--unstyled'>View Responses</Link></td>
+			<td><Link to="responses" params={{courseName: this.props.courseName, courseId: courseKey, lectureId: lectureKey}} className='Button--unstyled'>View Responses</Link></td>
        	</tr>
     );
   }
@@ -67,7 +65,7 @@ class ArchiveLecture extends React.Component {
     }
   }
   
-    onLectureChange() {
+  onLectureChange() {
     this.setState({lectures: LectureStore.getAll(this.props.courseKey)});
   }
 
