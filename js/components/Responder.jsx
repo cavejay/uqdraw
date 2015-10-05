@@ -76,6 +76,14 @@ class Responder extends React.Component {
     	isCorrect: isCorrect,
       submitted: Date.now(),
       imageURI: dataURL,
+      client: {
+        appName: navigator.appCodeName,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        width: (function(){if(window.screen) return(screen.width); else return "Not Accessible"})(),
+        height: (function(){if(window.screen) return(screen.height); else return "Not Accessible"})(),
+      }
     };
     let lectureKey = this.state.lectureID;
     let questionKey = this.state.activeQ;
