@@ -17,12 +17,13 @@ class Responder extends React.Component {
     this.state = {
       lecID: undefined,
       isQuestionOpen: true,
-      activeQ: "",
+      activeQ: "NONE",
       lectureID: "",
       courseID: "",
       courseName: "TEST0000: Lecture Name ...",
-      questionText: "Please wait while question loads",
+      questionText: "",
       isSubmitting: false,
+      hasSubmitted: false,
     };
     this.ctx = undefined; // drawing canvas context
     this.onPresentationChange = this.onPresentationChange.bind(this);
@@ -53,12 +54,15 @@ class Responder extends React.Component {
 
   getResponderState() {
     console.log("[STORE] Updating state of component");
+    let oldActiveQ = this.state.activeQ;
     this.setState(ResponderStore.refreshState());
+    if(oldActiveQ !== this.state.activeQ) this.state.hasSubmitted = false;
     this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
   // Submit the current canvas
   onSubmitImage(dataURL, isCorrect) {
+    if(hasSubmitted === true) return;
     let response = {
     	isCorrect: isCorrect,
       submitted: Date.now(),
@@ -93,8 +97,8 @@ class Responder extends React.Component {
 
     if (!this.state.isQuestionOpen)
       var questionStyle = {display: 'none'};
-
-    if (this.state.activeQ !== "") {
+    console.log("activeQ -- "+this.state.activeQ);
+    if (this.state.activeQ !== undefined && this.state.activeQ !== "NONE") {
       markup = (
         <div>
           <div className='QuestionOverlay' style={questionStyle}>
