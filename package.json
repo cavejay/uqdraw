@@ -1,11 +1,11 @@
 {
   "name": "uqdraw",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Platform for asking in-lecture questions and getting free-form responses.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "testv" : "jest --verbose",
+    "testv": "jest --verbose",
     "testi": "mocha --compilers js:babel/register ./js/__integrationTests__/*.js",
     "start1": "npm install && webpack-dev-server --port 9000 --hot --progress --colors --no-info",
     "start": "npm install && webpack-dev-server --host 0.0.0.0 --port 9000 --hot --progress --colors --no-info",
