@@ -1,9 +1,13 @@
+// Variables because yolo
+$headerBar-height: 2em;
+
 .QuestionOverlay {
   position: absolute;
-  background-color: rgba(0, 0, 0, .5);
-  z-index: 11;
+  background-color: rgba(0, 0, 0, .8);
+  z-index: 3;
+  margin-top: $headerBar-height;
   width: 100vw;
-  height: 100vh;
+  height: 95vh;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -11,14 +15,15 @@
 
 .QuestionOverlay-content {
   background-color: #F7FAFE;
-  height: 80vh;
-  margin: 1.5em;
-  border-radius: 4px;
+  // height: 90vh;
+  width: 95vw;
+  margin-bottom:  5vw;
+  // border-radius: 4px;
   box-shadow: 0 1px 5px rgba(0,0,0,.3);
-  padding: 1.5em 1em;
+  padding: 50% 1em;
   text-align: center;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -26,6 +31,11 @@
 .QuestionOverlay-content > h3 {
   flex-grow: 1;
   margin: 0;
+}
+
+.noQuestion {
+  margin-top: 0;
+  height: 100%;
 }
 
 #displayCanvas {
@@ -47,9 +57,42 @@
   cursor: crosshair;
 }
 
+.headerBar {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $headerBar-height;
+  background-color: #5C42AB;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.3);
+}
+
+.headerBar > h3 {
+  margin: 0px;
+  padding: px;
+  color: #fff;
+}
+
+.headerQuestion {
+  z-index: 2;
+  position: absolute;
+  top: $headerBar-height;
+  left: 0;
+  width: 100%;
+  background-color: #797979;
+  display: flex;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.3);
+}
+
 .ActionBar {
   position: absolute;
-  z-index: 10;
+  z-index: 2;
   bottom: 0;
   left: 0;
   height: 60px;
@@ -147,7 +190,7 @@
 
 .fullscreen {
   position: absolute;
-  top: 1em;
+  top: $headerBar-height + 0.5em;
   right: 1em;
   width: 30px;
   height: 30px;

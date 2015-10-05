@@ -140,7 +140,7 @@ class Drawing extends React.Component {
     else                           this.ctx.strokeStyle = '#333333';
     this.setState({ isEraserActive: !this.state.isEraserActive });
   }
-  
+
 	toggleCorrect() {
        if (!this.state.isCorrectActive) ;
     else                           ;
@@ -193,10 +193,10 @@ class Drawing extends React.Component {
   render() {
     let markup;
     var eraserStyle = {};
-    
+
     if (this.state.isEraserActive)
       eraserStyle = { backgroundImage: 'url(../../images/eraser-active.svg)' };
-      
+
 var correctStyle = {};
 if (this.state.isCorrectActive)
       correctStyle = { backgroundImage: 'url(../../images/correct-active.png)' };
@@ -217,11 +217,11 @@ if (this.state.isCorrectActive)
       this.state.hasSubmitted = true;
       submitText = "Submitting Answer..."
     }
-    
+
     if(!this.props.isSubmitting && this.state.hasSubmitted) {
     	this.clearCanvas();
-    } 
-    
+    }
+
 
     // Hack to get some type of submission feedback working
     if(this.props.isQuestionOpen) this.state.hasSubmitted = false;
@@ -229,6 +229,7 @@ if (this.state.isCorrectActive)
 
     return (
       <div>
+        <div dangerouslySetInnerHTML={{__html: '<script>$(function() {document.addEventListener("touchmove", function(e){ e.preventDefault(); }, false);})();</script>'}} />
         <div onClick={this.fullscreen.bind(this)} className='fullscreen' style={fullscreenStyle}></div>
         <canvas key='displayCanvas' ref='displayCanvas' id='displayCanvas'></canvas>
         <canvas key='canvas' ref='canvas' id='canvas'></canvas>

@@ -3,6 +3,7 @@ import config from '../config.js';
 import ComponentKey from '../utils/ComponentKey.js';
 
 require('../../css/components/Button.scss');
+require('../../css/components/Drawing.scss')
 
 import ResponderStore from '../stores/ResponderStore.js';
 import ResponderActions from '../actions/ResponderActions.js';
@@ -19,6 +20,7 @@ class Responder extends React.Component {
       activeQ: "",
       lectureID: "",
       courseID: "",
+      courseName: "TEST0000: Lecture Name ...",
       questionText: "Please wait while question loads",
       isSubmitting: false,
     };
@@ -30,7 +32,6 @@ class Responder extends React.Component {
   componentDidMount() {
     this.getResponderState();
     API.subscribe(APIConstants.responses, this.componentKey, this.state.lectureKey);
-
 
     //As some responders may type the URL rather than using the code entry,
     //can't assume that the code is uppercase at this point. Must convert it.
@@ -44,20 +45,6 @@ class Responder extends React.Component {
     API.unsubscribe(APIConstants.responses, this.componentKey, );
     API.unsubscribe(APIConstants.active, this.componentKey);
     ResponderStore.removeChangeListener(this.onPresentationChange);
-  }
-
-  componentWillReceiveProps(newProps) {
-    console.log("test");
-
-    if (this.props.activeQuestionKey !== newProps.activeQuestionKey) {
-      if (newProps.activeQuestionKey) {
-        //activate question
-        this.setState({isQuestionActive: true});
-      } else {
-        //deactivate question
-        this.setState({isQuestionActive: false});
-      }
-    }
   }
 
   onPresentationChange() {
@@ -107,7 +94,7 @@ class Responder extends React.Component {
     if (!this.state.isQuestionOpen)
       var questionStyle = {display: 'none'};
 
-    if (this.state.isQuestionActive || true) {
+    if (this.state.activeQ !== "") {
       markup = (
         <div>
           <div className='QuestionOverlay' style={questionStyle}>
@@ -122,17 +109,28 @@ class Responder extends React.Component {
       );
     }
 
-    else if (this.state.isSubmitting){
+    else {
+      // TODO Stick a cute picture in here somewhere
       markup = (
-        <div className='QuestionOverlay' style={questionStyle}>
-        There is no currently active question. You must wait for your lecturer to start taking responses before you may draw.
+        <div className='QuestionOverlay noQuestion' style={questionStyle}>
+          <div className='QuestionOverlay-content'>
+            Your lecturer must be currently taking responses for you to submit a drawing.
+            <br></br>
+            <br></br>
+            If this doesn't change for an extended period of time please check that the last 3 characters of your url matches those shown on your lecturer's screen.
+          </div>
         </div>
+
       );
     }
 
     return (
       <div className='Drawing'>
+        <div className='headerBar'>
+          <h3>{this.state.courseName}</h3>
+        </div>
         {markup}
+        <div className='headerQuestion'> {"Question: "+this.state.questionText} </div>
       </div>
     );
   }
