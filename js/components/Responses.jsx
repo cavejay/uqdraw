@@ -24,7 +24,7 @@ class ArchiveQuestion extends React.Component {
     let questions = this.props.questions.map((question, index) => {
       let className = 'PresenterListItem';
       if (question.key === this.props.activeQuestionKey) {
-        className += ' PresenterListItem--active';
+        className += ' PresenterListItem';
       }
       return (
       <tr>
@@ -52,11 +52,7 @@ class ArchiveQuestion extends React.Component {
 }
 
 ArchiveQuestion.propTypes = {
-  to: React.PropTypes.string,
-  courseName: React.PropTypes.string,
-  courseId: React.PropTypes.string,
-  children: React.PropTypes.node,
-  onChangeCourse: React.PropTypes.func,
+  onCurrentQuestion: React.PropTypes.func,
 };
 
 class Responses extends React.Component {
@@ -66,6 +62,7 @@ class Responses extends React.Component {
       isResponseModalOpen: false,
       responseModalKey: undefined,
       lectureCode: undefined,
+      activeQuestionKey: "NONE",
       courseKey: undefined,
       lectureKey: undefined,
       responses: [],
@@ -100,7 +97,6 @@ class Responses extends React.Component {
     PresentationStore.addChangeListener(this.onPresentationChange);
 
     this.initData();
-    this.observeFirebaseResponses();
   }
 
   componentWillUnmount() {
@@ -112,17 +108,6 @@ class Responses extends React.Component {
 
     API.unsubscribe(APIConstants.lectures, this.componentKey, courseKey);
     API.unsubscribe(APIConstants.responses, this.componentKey, lectureKey);
-  }
-
-  observeFirebaseResponses() {
-    this.responsesRef = new Firebase(`${config.firebase.base}/presentations/3fa/responses`);
-    this.responsesRef.on('value', (snapshot) => {
-      let responses = snapshot.val() || {};
-      responses = Object.keys(responses).map((key) => {
-        return responses[key].submissionDataURI;
-      });
-      this.setState({ responses });
-    });
   }
   
    initData() {
@@ -152,7 +137,8 @@ class Responses extends React.Component {
 
     this.setState({'responses': PresentationStore.getResponses(lectureKey)});
   }
-    onCurrentQuestion(key) {
+  
+	onCurrentQuestion(key) {
     this.setState({activeQuestionKey: key}); //Store key of the new selected question 
   }
 
@@ -218,23 +204,22 @@ class Responses extends React.Component {
     
     return (
       <div className='ResponsesView'>
-                  {/* Markup for displaying responses in a modal view */}
+        {/* Markup for displaying responses in a modal view */}
         <Modal className='Modal--Response' isOpen={this.state.isResponseModalOpen} onRequestClose={this.hideResponseModal.bind(this)}>
           <a onClick={this.hideResponseModal.bind(this)} className='Modal__cross'>&times;</a>
           <div className='Response-Modal-Centerer'>
             <span className='Image-Layout-Helper'/><img className='Response-Modal-Image' src={responseSrc}/>
           </div>
         </Modal>
-        <Header />
         <div className='MainContainer'>
         <div className='top' ref='topSection' style={this.sectionStyle}>
-            <h1 className='CodeHeading'>{this.props.courseName}: {this.props.lectureTitle}</h1>
+            <h1 className='CodeHeading'>{this.props.courseName}: {this.state.lecture.title}</h1>
     	</div>
         <div className='MainContainer' style={this.tableStyle}>
           <ArchiveQuestion
             questions={questions}
             onCurrentQuestion={this.onCurrentQuestion.bind(this)} 
-            currentQuestionKey={this.state.activeQuestionKey}
+            activeQuestionKey={this.state.activeQuestionKey}
           />
           </div>
           <div ref='divider' style={this.divider}></div>
