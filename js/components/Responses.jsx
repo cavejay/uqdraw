@@ -211,6 +211,7 @@ class Responses extends React.Component {
             <span className='Image-Layout-Helper'/><img className='Response-Modal-Image' src={responseSrc}/>
           </div>
         </Modal>
+        <Header />
         <div className='MainContainer'>
         <div className='top' ref='topSection' style={this.sectionStyle}>
             <h1 className='CodeHeading'>{this.props.courseName}: {this.state.lecture.title}</h1>
