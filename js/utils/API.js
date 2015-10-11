@@ -124,6 +124,13 @@ let API = {
     unsubscribeFromLectures: function(componentKey, courseKey) {
         this.firebaseUnsubscribe(APIConstants.lectures, courseKey, componentKey);
     },
+    
+    removeCourse: function(courseKey, userId, callback) {
+     let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.subjects]}/${userId}`);
+     ref.child(courseKey).remove(callback);
+     ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.lectures]}`);
+     ref.child(courseKey).remove(callback); 
+    },
 
 
     /* ================================================
@@ -135,6 +142,7 @@ let API = {
     },
 
     removeLecture: function(courseKey, lectureId, callback) {
+    console.log(refs[APIConstants.lectures][courseKey]);
         refs[APIConstants.lectures][courseKey].ref.child(lectureId).remove(callback);
     },
 
@@ -349,6 +357,7 @@ let publicAPI = {
     setFirebaseRoot: API.setFirebaseRoot, // exposed for test configurationn
     subscribe: API.subscribe,
     unsubscribe: API.unsubscribe,
+    removeCourse: API.removeCourse,
     addToLectures: API.addToLectures,
     removeLecture: API.removeLecture,
     updateLecture: API.updateLecture,
