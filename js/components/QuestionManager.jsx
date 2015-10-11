@@ -27,7 +27,7 @@ class QuestionManager extends React.Component {
     super(props);
     //props.onChangeCourse(null, props.routeParams.courseName);
     this.componentKey = ComponentKey.generate();
-    this.lectureCode = lectureCode.generate();
+    this.lectureCode = LectureCode.generate();
     this.userId = this.props.routeParams.userId;
     this.state = {
       curYPos: 0,
@@ -35,7 +35,7 @@ class QuestionManager extends React.Component {
       curScrollPos: 0,
       curDown: false,
       curOffset: 0,
-    isDeleteModalIsOpen: false,
+      isDeleteModalIsOpen: false,
       isLectureModalOpen: false,
       delete: false,
       lectures: {},
