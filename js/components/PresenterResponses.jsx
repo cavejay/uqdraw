@@ -26,7 +26,7 @@ class PresenterResponses extends React.Component {
         marginRight: 10,
       },
       correctResponse: {
-		border: '1px solid #0f0',
+		    border: '2px solid #0f0',
       },
 
     };
@@ -43,14 +43,25 @@ class PresenterResponses extends React.Component {
           <img className='Thumbnail' src={this.props.responses[responseKey].imageURI}/>
         </a>      );
         }
-
     });
 
-    return (
-      <div style={this.styles.container}>
-        <div style={this.styles.responses}>{thumbnails}</div>
-      </div>
-    );
+    if (thumbnails.length) { //There are some responese to show
+      return (
+        <div className="ResponseThumbnails">
+          <div style={this.styles.container}>
+            <div style={this.styles.responses}>{thumbnails}</div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="NoResponsesMessage"> 
+          There are no responses to show. 
+        </div>
+      );
+    }
+
+    
   }
 }
 

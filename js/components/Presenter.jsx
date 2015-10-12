@@ -40,6 +40,8 @@ class Presenter extends React.Component {
       lectureKey: undefined,
       responses: [],
       lecture: {},
+
+      displayingResponses: false,
     };
 
 
@@ -164,10 +166,25 @@ class Presenter extends React.Component {
     }
   }
 
+  showQuestion() {
+    this.setState({'displayingResponses': false});
+
+    console.log("A");
+  }
+
+  showResponses() {
+    this.setState({'displayingResponses': true});
+
+    console.log("B");
+  }
+
+
   render() {
     let questions = [];
     let activeQuestion;
     let activeQuestionComponent;
+
+
     if (this.state.lecture && this.state.lecture.questions && this.state.lecture.questionOrder) {
       questions = this.state.lecture.questionOrder.map((key) => {
         return {
@@ -212,8 +229,21 @@ class Presenter extends React.Component {
       responseSrc = activeResponses[key].imageURI; //Set in previous conditional
     }
 
+    var activeResponsesDisplay = <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
 
 
+    var questionClass = "SectionLabel";
+    var responsesClass = "SectionLabel";
+
+    var contentDisplay;
+
+    if (this.state.displayingResponses) {
+      responsesClass += " SectionLabel--Selected";
+      contentDisplay = activeResponsesDisplay;
+    } else {
+      questionClass += " SectionLabel--Selected";
+      contentDisplay = activeQuestionComponent;
+    }
 
     return (
       <div className='PresenterView'>
@@ -226,7 +256,7 @@ class Presenter extends React.Component {
           </div>
         </Modal>
 
-        {/* Question selector, displayed on the right of the screen */}
+        {/* Question selector, displayed on the left of the screen */}
         <div className='Column--supporting'>
           <QuestionSelector questions={questions} onActivateQuestion={this.onActivateQuestion.bind(this)} activeQuestionKey={this.state.activeQuestionKey}/>
         </div>
@@ -239,33 +269,35 @@ class Presenter extends React.Component {
             <div className="Step">
               <div className='Step-number'>1</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Go to</span><span className='Step-value'>artifex.uqcloud.net</span>
+                <div className='Step-label'>Go to</div>
+                <div className='Step-value'>artifex.uqcloud.net</div>
               </div>
             </div>
             <div className="Step">
               <div className='Step-number'>2</div>
               <div className='Step-instructions'>
-                <span className='Step-label'>Enter code</span><span className='Step-value'>{this.state.lectureCode}</span>
+                <div className='Step-label'>Enter code</div>
+                <div className='Step-value'>{this.state.lectureCode}</div>
               </div>
             </div>
           </div>
 
-          {/* Question */}
-          <div className="PresentationQuestion">
-            <h2 className='SectionHeading'>Question</h2>
-            {activeQuestionComponent}
-            <div className='Timer'>
-              {timer}
-              {button}
+          <div className="PresentationContent">
+            <div className="PresentationContentControls">
+              <h2 className={questionClass} onClick={this.showQuestion.bind(this)}>Question</h2> 
+              <h2 className={responsesClass} onClick={this.showResponses.bind(this)}>Responses</h2>
+            </div>
+
+            {/* Question or Responses */}
+            <div className="PresentationContentItem">
+              {contentDisplay}
             </div>
           </div>
-
-          {/* Responses */}
-          <div className="PresentationResponses">
-            <h2 className='SectionHeading'>Responses</h2>
-            <div className="ResponseThumbnails">
-              <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
-            </div>
+          
+          { /* Presentation Controls */ }
+          <div className="PresentationControls">
+            <div className="PresentationControlItem"> {button} </div>
+            <div className="PresentationControlItem"> {timer} </div>
           </div>
         </div>
 

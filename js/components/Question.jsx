@@ -10,7 +10,7 @@ class Question extends React.Component {
   render() {
     const {questionKey, question} = this.props;
     return (
-      <div className="Card" draggable="true">
+      <div className="Card">
         <span>{question}</span>
         <a
           className="Button--close"
