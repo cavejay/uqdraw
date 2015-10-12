@@ -105,6 +105,11 @@ class Presenter extends React.Component {
 
     // Update the database with our lecture
     LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
+
+    //Make sure that, if some questions exist, the first one is selected automatically
+    if (lecture && lecture.questionOrder && lecture.questionOrder[0]) {
+      this.setState({'activeQuestionKey':lecture.questionOrder[0]});
+    }
   }
 
   onPresentationChange() {
