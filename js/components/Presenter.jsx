@@ -4,6 +4,8 @@ import { Button } from './UI.jsx';
 import QuestionSelector from './QuestionSelector.jsx';
 import PresenterQuestion from './PresenterQuestion.jsx';
 import PresenterResponses from './PresenterResponses.jsx';
+import PresenterDetails from './PresenterDetails.jsx';
+import PresenterActivate from './PresenterActivate.jsx';
 import Timer from './Timer.jsx';
 
 import Modal from 'react-modal';
@@ -32,19 +34,23 @@ class Presenter extends React.Component {
     props.onChangeCourse(null, props.routeParams.courseName);
 
     this.state = {
-      isResponseModalOpen: false,
-      responseModalKey: undefined,
+      lectureIsActive: false,
       lectureCode: "???",
       activeQuestionKey: "NONE",
+
       courseKey: undefined,
       lectureKey: undefined,
       responses: [],
       lecture: {},
 
       displayingResponses: false,
+
+      isResponseModalOpen: false,
+      responseModalKey: undefined,
     };
 
 
+    this.waitingForCode = false;
 
     this.start = this.start.bind(this);
     this.stop = this.stop.bind(this);
@@ -91,7 +97,6 @@ class Presenter extends React.Component {
     this.setState({responses: PresentationStore.getResponses(lectureKey)});
 
     LectureActions.generateCode();
-    LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
 
     API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
     API.subscribe(APIConstants.responses, this.componentKey, lectureKey);
@@ -108,7 +113,9 @@ class Presenter extends React.Component {
     // Update the database with our lecture
     LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
 
-    //Make sure that, if some questions exist, the first one is selected automatically
+    console.log(lecture);
+
+    //Select the first question automatically
     if (lecture && lecture.questionOrder && lecture.questionOrder[0]) {
       this.setState({'activeQuestionKey':lecture.questionOrder[0]});
     }
@@ -166,16 +173,21 @@ class Presenter extends React.Component {
     }
   }
 
+  activateLecture() {
+    /* The lecture and code will not be activated when the window is
+    first opened, as lecturers may want to view the lecture without actually
+    launching a presentation. This is to be called when the user wishes to 
+    actually launch the presentation, and begin accepting responses. */
+
+    this.setState({'lectureIsActive': true});
+  }
+
   showQuestion() {
     this.setState({'displayingResponses': false});
-
-    console.log("A");
   }
 
   showResponses() {
     this.setState({'displayingResponses': true});
-
-    console.log("B");
   }
 
 
@@ -215,9 +227,17 @@ class Presenter extends React.Component {
     }
 
     let activeResponses;
+    var responseCount = 0;
+
     if (typeof this.state.activeQuestionKey !== 'undefined') {
       if (this.state.responses) {
         activeResponses = this.state.responses[this.state.activeQuestionKey];
+
+        if (activeResponses) {
+          responseCount = Object.keys(activeResponses).length;
+
+          console.log(responseCount);
+        }
       }
     }
 
@@ -245,6 +265,29 @@ class Presenter extends React.Component {
       contentDisplay = activeQuestionComponent;
     }
 
+
+    var upperBanner;
+
+    if (this.state.lectureIsActive) {
+      upperBanner = <PresenterDetails code={this.state.lectureCode}/>
+    } else {
+      upperBanner = <PresenterActivate activateLecture={this.activateLecture.bind(this)}/>
+    }
+
+
+    var lowerBanner;
+
+    if (this.state.lectureIsActive) {
+      lowerBanner = (
+        <div className="PresentationControls">
+          <div className="PresentationControlItem"> {button} </div>
+          <div className="PresentationControlItem"> <p> {responseCount} Responses </p> </div>
+          <div className="PresentationControlItem PresentationControlItemRight"> {timer} </div>
+        </div>
+      );
+    }
+    
+
     return (
       <div className='PresenterView'>
 
@@ -261,27 +304,13 @@ class Presenter extends React.Component {
           <QuestionSelector questions={questions} onActivateQuestion={this.onActivateQuestion.bind(this)} activeQuestionKey={this.state.activeQuestionKey}/>
         </div>
 
-        {/* Question and response display */}
+        {/* All non-question selector content on the window */}
         <div className='Column--main'>
 
-          {/* Connection instructions */}
-          <div className="PresentationDetails">
-            <div className="Step">
-              <div className='Step-number'>1</div>
-              <div className='Step-instructions'>
-                <div className='Step-label'>Go to</div>
-                <div className='Step-value'>artifex.uqcloud.net</div>
-              </div>
-            </div>
-            <div className="Step">
-              <div className='Step-number'>2</div>
-              <div className='Step-instructions'>
-                <div className='Step-label'>Enter code</div>
-                <div className='Step-value'>{this.state.lectureCode}</div>
-              </div>
-            </div>
-          </div>
+          {/* Upper Banner */}
+          {upperBanner}
 
+          {/* Question and response display */}
           <div className="PresentationContent">
             <div className="PresentationContentControls">
               <h2 className={questionClass} onClick={this.showQuestion.bind(this)}>Question</h2> 
@@ -295,10 +324,7 @@ class Presenter extends React.Component {
           </div>
           
           { /* Presentation Controls */ }
-          <div className="PresentationControls">
-            <div className="PresentationControlItem"> {button} </div>
-            <div className="PresentationControlItem"> {timer} </div>
-          </div>
+          {lowerBanner}
         </div>
 
 
