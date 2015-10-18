@@ -20,7 +20,6 @@ import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
 
-
 //Little way to set up modals as in other files.
 var appElement = document.getElementById('react');
 Modal.setAppElement(appElement);
@@ -245,7 +244,7 @@ class Presenter extends React.Component {
     let responseSrc;
     let key = this.state.responseModalKey;
 
-    if (key && activeResponses) {
+    if (key && activeResponses && activeResponses[key]) {
       responseSrc = activeResponses[key].imageURI; //Set in previous conditional
     }
 
