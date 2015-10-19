@@ -50,7 +50,7 @@ let dispatchCallback = function(action) {
         // this needs to be made in a separate call after we get the first lot
         case ActionTypes.GET_QUESTION_TEXT: {
             _state.questionText = action.questionText;
-            if(!_state.questionText) _state.questionText = "<empty>";
+            if(!_state.questionText) _state.questionText = "...";
             ResponderStore.emitChange();
             break;
         }

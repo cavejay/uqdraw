@@ -1,4 +1,8 @@
-// Variables because yolo
+.Drawing {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
 
 .noQuestion {
   margin-top: 0;
@@ -45,11 +49,41 @@
   position: relative;
   padding-top: 48px;
   background-color: #F7FAFE;
+  overflow: scroll;
 }
 
 .questionDiv {
   text-align: center;
+}
+
+.responseDiv {
+  margin-top: 10%;
   height: 100%;
+  text-align: center;
+}
+
+.responseButton {
+  margin: auto;
+  padding: 18px 0;
+  margin-top: 20px;
+  background-color: lightgrey;
+  width: 400px;
+  height: 60px;
+}
+
+.responseButton:hover {
+  background-color: grey;
+}
+
+@media (max-width: 400px) {
+  .responseButton {
+    width: 100%;
+  }
+}
+
+.questionNotOpenDiv {
+  color: red;
+  
 }
 
 .SectionLabel {

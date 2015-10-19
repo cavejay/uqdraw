@@ -198,14 +198,15 @@ let API = {
      * lectureCode: 3 digit code, all in capitals
      * newActive: the question code for the newly active question
      **/
-    createActiveLecture: function(lectureCode, courseKey, lectureKey, callback) {
+    createActiveLecture: function(lectureCode, courseKey, lectureKey, title, callback) {
         // root/activeLecture
         let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.active]}`);
 
         let newActiveLecture = {
             courseID: courseKey,
             lectureID: lectureKey,
-            activeQ: "NONE"
+            activeQ: "NONE",
+            lectureTitle: title
         };
 
 
