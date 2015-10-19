@@ -10,7 +10,7 @@ class ArchiveListItem extends React.Component {
 
   render() {
     return (
-      <div className='ListItem'
+      <div className='ListItem' style={{width: 200,}}
       to={this.props.to}
       params={{courseName: this.props.courseName}}
       onClick={this.onChangeCourse.bind(this, this.props.courseId,
@@ -39,6 +39,7 @@ class ArchiveList extends React.Component {
       textAlign: 'center',
       margin: 10,
     };
+
   }
   
   render() {
