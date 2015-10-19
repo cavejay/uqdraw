@@ -1,6 +1,12 @@
 // Variables because yolo
 $headerBar-height: 2em;
 
+.Drawing {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
 .QuestionOverlay {
   position: absolute;
   background-color: rgba(0, 0, 0, .8);
