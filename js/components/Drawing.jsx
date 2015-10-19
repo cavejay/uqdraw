@@ -197,8 +197,8 @@ class Drawing extends React.Component {
     if (this.state.isEraserActive)
       eraserStyle = { backgroundImage: 'url(../../images/eraser-active.svg)' };
 
-var correctStyle = {};
-if (this.state.isCorrectActive)
+    var correctStyle = {};
+    if (this.state.isCorrectActive)
       correctStyle = { backgroundImage: 'url(../../images/correct-active.png)' };
 
     var clearStyle = {};

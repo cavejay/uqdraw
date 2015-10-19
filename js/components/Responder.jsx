@@ -3,7 +3,8 @@ import config from '../config.js';
 import ComponentKey from '../utils/ComponentKey.js';
 
 require('../../css/components/Button.scss');
-require('../../css/components/Drawing.scss')
+require('../../css/components/Drawing.scss');
+require('../../css/components/Canvas.scss');
 
 import ResponderStore from '../stores/ResponderStore.js';
 import ResponderActions from '../actions/ResponderActions.js';
@@ -20,8 +21,9 @@ class Responder extends React.Component {
       activeQ: "NONE",
       lectureID: "",
       courseID: "",
-      courseName: "TEST0000: Lecture Name ...",
-      questionText: "",
+      courseName: "TEST0000",
+      lectureName: "Lecture Name",
+      questionText: "Loading gif here",
       isSubmitting: false,
       hasSubmitted: false,
     };
@@ -87,6 +89,23 @@ class Responder extends React.Component {
 
   }
 
+  getQuestion() {
+    return (
+      <div className='questionDiv'>
+        <h2 className='SectionLabel'>QUESTION</h2>
+        <div className='questionText'>
+          {this.state.questionText}
+        </div>
+      </div>
+    );
+  }
+
+  getResponse() {
+    return (
+      <div>This is empty</div>
+    );
+  }
+
   render() {
     let markup;
 
@@ -114,7 +133,6 @@ class Responder extends React.Component {
     }
 
     else {
-      // TODO Stick a cute picture in here somewhere
       markup = (
         <div className='QuestionOverlay noQuestion' style={questionStyle}>
           <div className='QuestionOverlay-content'>
@@ -131,10 +149,15 @@ class Responder extends React.Component {
     return (
       <div className='Drawing'>
         <div className='headerBar'>
-          <h3>{this.state.courseName}</h3>
+            <div className='headerText'>
+                <h3>{this.state.courseName}</h3>
+                <h4 id="lectureName">{this.state.lectureName}</h4>
+            </div>
         </div>
-        {markup}
-        <div className='headerQuestion'> {"Question: "+this.state.questionText} </div>
+        <div className='content'>
+          {this.getQuestion()}
+          {this.getResponse()}
+        </div>
       </div>
     );
   }
