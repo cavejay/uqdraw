@@ -109,10 +109,14 @@ class Presenter extends React.Component {
     let lecture = LectureStore.get(courseKey, lectureKey);
     this.setState({'lecture': lecture, 'lectureCode': lectureCode});
 
-    // Update the database with our lecture
-    LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
+    let title = "Loading Title...";
 
-    console.log(lecture);
+    if (lecture && lecture.title) {
+      title = lecture.title;
+    }
+
+    // Update the database with our lecture
+    LectureActions.activateLecture(lectureCode, courseKey, lectureKey, title);
 
     //Select the first question automatically
     if (lecture && lecture.questionOrder && lecture.questionOrder[0]) {
