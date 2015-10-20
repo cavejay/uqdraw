@@ -126,9 +126,9 @@ let LectureActions = {
     /* activeLecture */
     // None of these currently have callbacks, they will be implemented later. We don't
     // really need them at this point in time.
-    activateLecture: (lectureCode, courseKey, lectureKey, title) => {
+    activateLecture: (lectureCode, courseKey, lectureKey, title, user) => {
         let API = require('../utils/API').default;
-        let ref = API.createActiveLecture(lectureCode, courseKey, lectureKey, title, () => {});
+        let ref = API.createActiveLecture(lectureCode, courseKey, lectureKey, title, user, () => {});
     },
 
     setActiveQuestion: (lectureCode, activeQuestionKey) => {
