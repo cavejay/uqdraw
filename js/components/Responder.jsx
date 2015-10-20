@@ -20,6 +20,7 @@ var statetypes = {
 }
 
 var hasSubmitted = false;
+var lastSubmittedImage = null;
 
 class Responder extends React.Component {
   constructor(props) {
@@ -68,7 +69,29 @@ class Responder extends React.Component {
   }
 
   openCamera() {
-    // This is here for dylan
+    console.log("[Camera] We're using the camera");
+    //Get a handle on the input box
+    var input = document.getElementById("photo-input");
+    //If there have been some files selected
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      //This is the callback when reader finishes
+      //with the readAsDataURL called below,
+      reader.onload = function (e) {
+        //The data returned
+        lastSubmittedImage = e.target.result;
+        console.log("[Camera] "+lastSubmittedImage);
+
+        //TODO: Implement the displaying of the image on the canvas.
+        //I was thinking that it was just going to be easiest to just
+        //throw it on the canvas but whatever!
+      }
+
+      //Read the data from the url, and call back the function
+      //defined above.
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
   getResponderState() {
@@ -107,7 +130,8 @@ class Responder extends React.Component {
 
   // Submit the current canvas
   onSubmitImage(dataURL, isCorrect) {
-    if(this.state.hasSubmitted === true) return;
+    if(hasSubmitted === true) return;
+    lastSubmittedImage = dataURL; // Save the image for reasons
     let response = {
     	isCorrect: isCorrect,
       submitted: Date.now(),
@@ -174,6 +198,8 @@ class Responder extends React.Component {
     return questionModal;
   }
 
+
+
   getResponse() {
     var title = (<h2 className='SectionLabel'>RESPONSE</h2>);
     if (this.state.state == statetypes.badcode) return;
@@ -184,8 +210,14 @@ class Responder extends React.Component {
           <div className='responseButton' onClick={this.startDrawing.bind(this)}>
             Tap to Draw
           </div>
-          <div className='responseButton' onClick={this.openCamera.bind(this)}>
-            Tap to Take a Picture
+          <div>
+
+            <form>
+            <div id='photoLabel' className='responseButton'>
+              Tap to take a Picture
+            </div>
+            <input accept="image/*" onChange={this.openCamera.bind(this)} type="file" id="photo-input" name="photo-input"></input>
+            </form>
           </div>
         </div>
       );

@@ -82,9 +82,23 @@
   }
 }
 
+#photo-input {
+  margin-top: -60px;
+  height: 60px;
+  width: 400px;
+  z-index: 1;
+  position: relative;
+  font-size: 1000px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#photoLabel {
+  z-index: 0;
+}
+
 .questionNotOpenDiv {
   color: red;
-
 }
 
 .SectionLabel {
