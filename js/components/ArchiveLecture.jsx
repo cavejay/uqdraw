@@ -91,23 +91,24 @@ class ArchiveLecture extends React.Component {
   }
 
   onCurrentLecture(key) {
+
     this.setState({activeLectureKey: key}); //Store key of the new selected lecture 
   }
 
   render() {
 		let lectureLinks;
-    let {courseKey, lectureKey, lecture, ...delegateProps} = this.props;
-    if (this.state.activeLectureKey) {
-       var currentLectureQuestions = 
-          <ArchiveQuestions
-            key={this.state.activeLectureKey}
-            userId = {this.props.userId}
-            courseId={this.state.courseKey}
-            lectureId={this.state.activeLectureKey}
-            lecture={this.state.lectures[this.state.activeLectureKey]}
-          />
+    let currentLectureQuestions;
+        if (this.state.activeLectureKey) {
+         currentLectureQuestions = 
+            <ArchiveQuestions
+              key={this.state.activeLectureKey}
+              userId = {this.props.userId}
+              courseId={this.state.courseKey}
+              lectureId={this.state.activeLectureKey}
+              lecture={this.state.lectures[this.state.activeLectureKey]}
+            />
+        }
 
-    }
       if (this.state.lectures) {
       lectureLinks = Object.keys(this.state.lectures).map((lectureKey) => {
         return (
@@ -126,15 +127,13 @@ class ArchiveLecture extends React.Component {
     }
 
     return (
-      <div className='top' ref='topSection' style={this.sectionStyle}>
+      <div className='top' ref='topSection'>
           <div className='Column-Left'>
             <div className='Heading2'>Select</div>
             <div className='Heading1'>LECTURE</div>
              {lectureLinks}
           </div>
-            <div className='Column-Right'>
                 {currentLectureQuestions}
-            </div>
         </div>
        
 
