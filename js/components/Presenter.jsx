@@ -116,7 +116,7 @@ class Presenter extends React.Component {
     }
 
     // Update the database with our lecture
-    LectureActions.activateLecture(lectureCode, courseKey, lectureKey, title);
+    LectureActions.activateLecture(lectureCode, courseKey, lectureKey, title, this.props.routeParams.userId);
 
     //Select the first question automatically
     if (lecture && lecture.questionOrder && lecture.questionOrder[0]) {
