@@ -26,18 +26,38 @@
 	    padding-left: 40px;	
 }
 
-.Column-Right {
+.responses {
+	    color: #ccc;
+	    margin-top: -8px;
+	   	margin-bottom: -10px;
+	    padding-bottom: 10px;
+	    font-size: 18px;
+}
 
+.ArchiveView {
+	overflow-y: hidden;
+}
+
+.Column-Heading {
+  width: 225px;
+	 border-right: solid thick #ddd;
+}
+
+.Column-Right {
+  overflow-y: scroll;
+    height: 100vh;
 }
 
 .Column-Left{
-  width: 225px;
+  width: 240px;
   height: 100vh;
   background-color: $offwhite;
-  overflow: hidden;
+  overflow-y: scroll;
   z-index: 1;
   display: inline-block;	
     float: left;
-    border-right: solid thick #ccc;
+    border-right: solid thick #ddd;
 }
+
+
 

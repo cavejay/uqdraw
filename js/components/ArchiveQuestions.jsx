@@ -41,6 +41,7 @@ class QuestionList extends React.Component {
         <div className='ListItem' style={this.sectionStyle}
           onClick ={this.onCurrentQuestion.bind(this,question.key)}>
           {question.value}
+          <div className='responses'>Responses</div>
         </div>
         );
     });
@@ -99,7 +100,6 @@ class ArchiveQuestions extends React.Component {
     this.setState({lecture: LectureStore.getAll(courseKey)});
     this.setState({responses: PresentationStore.getResponses(lectureKey)});
 
-    console.log(PresentationStore.getResponses(lectureKey));
     API.subscribe(APIConstants.lectures, this.componentKey, courseKey);
     API.subscribe(APIConstants.responses, this.componentKey, lectureKey);
   }
@@ -119,6 +119,8 @@ class ArchiveQuestions extends React.Component {
   
   onCurrentQuestion(key) {
     this.setState({activeQuestionKey: key}); //Store key of the new selected question 
+     this.setState({responses: PresentationStore.getResponses(this.state.lectureKey)});
+
   }
 
   onThumbnailClick(key) {
@@ -179,7 +181,11 @@ class ArchiveQuestions extends React.Component {
     let responseSrc;
     let key = this.state.responseModalKey;
     if (key && activeResponses) {
-      responseSrc = activeResponses[key].imageURI; //Set in previous conditional
+      try {
+        responseSrc = activeResponses[key].imageURI; //Set in previous conditional
+      } catch (e) {
+        responseSrc = [];
+      }
     }
 
     var activeResponsesDisplay = <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
@@ -203,7 +209,7 @@ class ArchiveQuestions extends React.Component {
           />
           </div>
             <div className='Column-Right'>
-            <div className='Heading2'> </div>
+            <div className='Heading2'><br/></div>
               <div className='Heading1'>RESPONSES</div>
             <div className="ResponseThumbnails">
                 {activeResponsesDisplay}
