@@ -30,8 +30,8 @@ class Responder extends React.Component {
       activeQ: "NONE",
       lectureID: "",
       courseID: "",
-      courseName: "TEST0000",
-      lectureName: "Lecture Name",
+      courseName: "~",
+      lectureTitle: "~",
       questionText: "",
       state: statetypes.badcode,
     };
@@ -81,10 +81,6 @@ class Responder extends React.Component {
       this.state.state = statetypes.openbutclosed;
     }
 
-    if(this.state.questionText == "") { // We're loading the page
-      this.state.state = statetypes.loading;
-    }
-
     if(oldActiveQ !== this.state.activeQ) {
       hasSubmitted = false;
       this.state.state = statetypes.open;
@@ -100,6 +96,10 @@ class Responder extends React.Component {
 
     if(this.state.activeQ == undefined) { // no active question thus a bad code
       this.state.state = statetypes.badcode;
+    }
+
+    if(this.state.questionText == "" || this.state.courseCode === "~") { // We're loading the page
+      this.state.state = statetypes.loading;
     }
 
     this.setState({isSubmitting: ResponderStore.isSubmitting()});
@@ -232,7 +232,7 @@ class Responder extends React.Component {
         <div className='headerBar'>
             <div className='headerText'>
                 <h3>{this.state.courseName}</h3>
-                <h4 id="lectureName">{this.state.lectureName}</h4>
+                <h4 id="lectureName">{this.state.lectureTitle}</h4>
             </div>
         </div>
         <div className='content'>

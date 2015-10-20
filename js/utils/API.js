@@ -124,12 +124,12 @@ let API = {
     unsubscribeFromLectures: function(componentKey, courseKey) {
         this.firebaseUnsubscribe(APIConstants.lectures, courseKey, componentKey);
     },
-    
+
     removeCourse: function(courseKey, userId, callback) {
      let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.subjects]}/${userId}`);
      ref.child(courseKey).remove(callback);
      ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.lectures]}`);
-     ref.child(courseKey).remove(callback); 
+     ref.child(courseKey).remove(callback);
     },
 
 
@@ -184,6 +184,15 @@ let API = {
       ref.once('value', function(snapshot) {
         callback(snapshot.val());
       });
+    },
+
+    getCourseFromDB: function(owner, courseID, callback) {
+      console.log("[API] Fetching Couse Code");
+      let ref = new Firebase(`${firebaseRoot}/${firebasePaths[APIConstants.subjects]}/${owner}/${courseID}`);
+
+      ref.once('value', function(snapshot) {
+        callback(snapshot.val());
+      })
 
     },
 
@@ -368,6 +377,7 @@ let publicAPI = {
     updateLectureCode: API.updateLectureCode,
 
     getActiveQuestionText: API.getActiveQuestionText,
+    getCourseFromDB: API.getCourseFromDB,
     createActiveLecture: API.createActiveLecture,
     updateActiveLectureQuestion: API.updateActiveLectureQuestion,
     clearActiveLectureQuestion: API.clearActiveLectureQuestion,

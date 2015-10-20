@@ -39,8 +39,10 @@ let ResponderActions = {
         Dispatcher.dispatch({
             type: actionTypes.ACTIVE_QUESTION_CHANGE,
             activeQ: content.activeQ,
+            owner: content.owner,
             courseID: content.courseID,
             lectureID: content.lectureID,
+            lectureTitle: content.lectureTitle,
         })
     },
 
@@ -52,7 +54,16 @@ let ResponderActions = {
               questionText: content,
           })
         });
+    },
 
+    getCourseCode: function(owner, courseID) {
+        let API = require('../utils/API').default;
+        API.getCourseFromDB(owner, courseID, function(content) {
+          Dispatcher.dispatch({
+            type: actionTypes.GET_COURSE_CODE,
+            courseCode: content,
+          });
+        });
     },
 
     updateResponses: function(lectureKey, responses) {
@@ -61,7 +72,7 @@ let ResponderActions = {
             lectureKey,
             responses,
         });
-    }
+    },
 };
 
 export default ResponderActions;
