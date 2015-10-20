@@ -170,7 +170,8 @@ class Responder extends React.Component {
     } else if(this.state.state == statetypes.loading) {
       questionModal = (
         <div className='loadingDiv'>
-          Loading Content
+          <div>Loading Content</div>
+          <div className='largeLoadingGif'></div>
         </div>
       );
 
