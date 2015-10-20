@@ -229,7 +229,6 @@ class Drawing extends React.Component {
 
     return (
       <div>
-        <div dangerouslySetInnerHTML={{__html: '<script>$(function() {document.addEventListener("touchmove", function(e){ e.preventDefault(); }, false);})();</script>'}} />
         <div onClick={this.fullscreen.bind(this)} className='fullscreen' style={fullscreenStyle}></div>
         <canvas key='displayCanvas' ref='displayCanvas' id='displayCanvas'></canvas>
         <canvas key='canvas' ref='canvas' id='canvas'></canvas>

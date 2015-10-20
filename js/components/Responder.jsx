@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import config from '../config.js';
 import ComponentKey from '../utils/ComponentKey.js';
 
@@ -161,8 +162,8 @@ class Responder extends React.Component {
     if (this.state.state == statetypes.badcode) {
       questionModal = (
         <div className='badCodeDiv'>
-          This is not the lecture you are looking for
-          Click here to go back to the homepage
+          This is not the lecture you are looking for.
+          <Link to="app">Click here to go back to the homepage</Link>
         </div>
       );
 
@@ -199,8 +200,6 @@ class Responder extends React.Component {
     return questionModal;
   }
 
-
-
   getResponse() {
     var title = (<h2 className='SectionLabel'>RESPONSE</h2>);
     if (this.state.state == statetypes.badcode) return;
@@ -212,13 +211,12 @@ class Responder extends React.Component {
             Tap to Draw
           </div>
           <div>
-
-            <form>
+          <form>
             <div id='photoLabel' className='responseButton'>
               Tap to take a Picture
             </div>
             <input accept="image/*" onChange={this.openCamera.bind(this)} type="file" id="photo-input" name="photo-input"></input>
-            </form>
+          </form>
           </div>
         </div>
       );
@@ -234,7 +232,7 @@ class Responder extends React.Component {
     } else if (this.state.state == statetypes.drawing) { // There's a question being answered
       return (
         <div classname='responseDiv'>
-          // <Drawing isQuestionOpen={this.state.isQuestionOpen} onSubmitImage={this.onSubmitImage.bind(this)} isSubmitting={this.state.isSubmitting}/>
+          <Drawing onSubmitImage={this.onSubmitImage.bind(this)}/>
           <div className='reponseButton' onClick={this.onSubmitImage.bind(this)}>
             Tap to Submit
           </div>
@@ -244,8 +242,9 @@ class Responder extends React.Component {
       return (
         <div className='responseDiv'>
           {title}
-          <div>
-            You've submitted a picture! congrats
+          <div className='submittedDiv'>
+            <h3>Your Response!</h3>
+            <canvas id="submittedImage" width='180' height='180'></canvas>
           </div>
         </div>
       );
