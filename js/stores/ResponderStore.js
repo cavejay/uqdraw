@@ -36,23 +36,31 @@ let ResponderStore = Object.assign({}, EventEmitter.prototype, {
 let dispatchCallback = function(action) {
     switch(action.type) {
         case ActionTypes.ACTIVE_QUESTION_CHANGE: {
-            let {activeQ, courseID, lectureID} = action;
+            let {activeQ, owner, courseID, lectureID, lectureTitle} = action;
             _state.isQuestionOpen = true;
+            _state.owner = owner;
             _state.activeQ = activeQ;
             _state.courseID = courseID;
             _state.lectureID = lectureID;
+            _state.lectureTitle = lectureTitle;
             _isSubmitting = false;
             ResponderStore.emitChange();
             ResponderActions.getQuestionText(courseID, lectureID, activeQ);
+            ResponderActions.getCourseCode(owner, courseID);
             break;
         }
 
         // this needs to be made in a separate call after we get the first lot
         case ActionTypes.GET_QUESTION_TEXT: {
             _state.questionText = action.questionText;
-            if(!_state.questionText) _state.questionText = "<empty>";
+            if(!_state.questionText) _state.questionText = "...";
             ResponderStore.emitChange();
             break;
+        }
+
+        case ActionTypes.GET_COURSE_CODE: {
+            _state.courseName = action.courseCode;
+            ResponderStore.emitChange();
         }
 
         // We want a pop up to say we're submitting

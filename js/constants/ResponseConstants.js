@@ -10,5 +10,6 @@ export default {
             RESPONSES_UPDATE_FAIL: null,
             ACTIVE_QUESTION_CHANGE: null,
             GET_QUESTION_TEXT: null,
+            GET_COURSE_CODE: null,
     }),
 };

@@ -4,6 +4,7 @@ import config from '../config.js';
 let Spinner = require('react-spinkit');
 
 require('../../css/components/Drawing.scss');
+require('../../css/components/Canvas.scss');
 require('../../css/components/Button.scss');
 
 class Drawing extends React.Component {
@@ -80,12 +81,13 @@ class Drawing extends React.Component {
     // Setup event listeners for the finger that caused the event firing.
     finger.on('start', (point) => {
       points = [];
-      points.push(point);
+      points.push({x: point.x, y: point.y+offset});
     });
 
+    var offset = -101;
     // Wiping version
     finger.on('move', (point) => {
-      points.push(point);
+      points.push({x: point.x, y: point.y+offset});
 
       // Wipe the canvas clean on each move event, allows making single path
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -177,7 +179,7 @@ class Drawing extends React.Component {
   onSubmitImage() {
     let dataURL = this.displayCanvas.toDataURL(); // canvas encoded as dataURI
     let isCorrect = this.state.isCorrectActive;
-    this.props.onSubmitImage(dataURL, isCorrect);
+    this.props.SubmitImage(dataURL, isCorrect);
   }
 
   hideQuestion() {
@@ -197,9 +199,12 @@ class Drawing extends React.Component {
     if (this.state.isEraserActive)
       eraserStyle = { backgroundImage: 'url(../../images/eraser-active.svg)' };
 
-var correctStyle = {};
-if (this.state.isCorrectActive)
-      correctStyle = { backgroundImage: 'url(../../images/correct-active.png)' };
+    var correctStyle = {};
+    if (this.state.isCorrectActive) {
+      correctStyle = { backgroundImage: 'url(../../images/thumbsup-active.png)' };
+    } else {
+      correctStyle = { backgroundImage: 'url(../../images/thumbsup.png)' };
+    }
 
     var clearStyle = {};
 
@@ -229,8 +234,6 @@ if (this.state.isCorrectActive)
 
     return (
       <div>
-        <div dangerouslySetInnerHTML={{__html: '<script>$(function() {document.addEventListener("touchmove", function(e){ e.preventDefault(); }, false);})();</script>'}} />
-        <div onClick={this.fullscreen.bind(this)} className='fullscreen' style={fullscreenStyle}></div>
         <canvas key='displayCanvas' ref='displayCanvas' id='displayCanvas'></canvas>
         <canvas key='canvas' ref='canvas' id='canvas'></canvas>
 
@@ -241,13 +244,8 @@ if (this.state.isCorrectActive)
           <div onClick={this.clearCanvas.bind(this)} className='Action Action--clear'>
             <div style={clearStyle} className='Action-icon'></div>
           </div>
-          <div className='Action Action--submit'>
-            <button className='Button--unstyled' onClick={this.onSubmitImage.bind(this)}>{submitText}</button>
-            {loadingIndicator}
-          </div>
          <div onClick={this.toggleCorrect.bind(this)} className='Action Action--correct'>
             <div style={correctStyle} className='Action-icon'></div>
-            <div className='Action Action--correctLabel'>Correct?</div>
           </div>
           <div onClick={this.cycleLineWidth.bind(this)} className='Action Action--strokeWidth'>
             <div className='BrushSizeIcon'>
@@ -256,6 +254,9 @@ if (this.state.isCorrectActive)
               <div style={largeStyle} className='BrushSize BrushSize-large'></div>
             </div>
           </div>
+        </div>
+        <div className='responseButton submitButton' onClick={this.onSubmitImage.bind(this)}>
+          Tap to Submit
         </div>
       </div>
     );

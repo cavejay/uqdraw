@@ -20,7 +20,6 @@ import API, {APIConstants} from '../utils/API.js';
 
 require('../../css/components/Presenter.scss');
 
-
 //Little way to set up modals as in other files.
 var appElement = document.getElementById('react');
 Modal.setAppElement(appElement);
@@ -110,10 +109,14 @@ class Presenter extends React.Component {
     let lecture = LectureStore.get(courseKey, lectureKey);
     this.setState({'lecture': lecture, 'lectureCode': lectureCode});
 
-    // Update the database with our lecture
-    LectureActions.activateLecture(lectureCode, courseKey, lectureKey);
+    let title = "Loading Title...";
 
-    console.log(lecture);
+    if (lecture && lecture.title) {
+      title = lecture.title;
+    }
+
+    // Update the database with our lecture
+    LectureActions.activateLecture(lectureCode, courseKey, lectureKey, title, this.props.routeParams.userId);
 
     //Select the first question automatically
     if (lecture && lecture.questionOrder && lecture.questionOrder[0]) {
@@ -245,7 +248,7 @@ class Presenter extends React.Component {
     let responseSrc;
     let key = this.state.responseModalKey;
 
-    if (key && activeResponses) {
+    if (key && activeResponses && activeResponses[key]) {
       responseSrc = activeResponses[key].imageURI; //Set in previous conditional
     }
 
