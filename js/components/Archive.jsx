@@ -10,7 +10,8 @@ import ArchiveLecture from './ArchiveLecture.jsx';
 require('../../css/components/Table.scss');
 require('../../css/components/Button.scss');
 require('../../css/components/Colors.scss');
-
+require('../../css/components/Archive.scss');
+require('../../css/components/Presenter.scss');
 
 class Archive extends React.Component {
  constructor(props) {
@@ -19,31 +20,13 @@ class Archive extends React.Component {
     this.state = {
       subjects: [], // list of subject names
       lectures: {},
+      courseKey: undefined,
+      userId: this.props.routeParams.userId,
     };
-    let userId = this.props.routeParams.userId;
     this.onSubjectChange = this.onSubjectChange.bind(this);
     this.onSubmitChange = this.onSubmitChange.bind(this);
     this.initData = this.initData.bind(this);
     this.onLectureChange = this.onLectureChange.bind(this);
-      console.log(this.state.lectures);
-    this.sectionStyle = {
-      flexGrow: 1,
-      textAlign: 'center',
-    };
-    
-    this.tableStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-    }
-    
-    this.divider = {
-        width: '100%',
-        height: 1,
-        backgroundColor: '#e0e0e0',
-        display: 'flex',
-        justifyContent: 'center',
-        margin: 20,
-    };
   }
    componentDidMount() {
     // Populate local state from store & setup Firebase observation.
@@ -75,7 +58,7 @@ class Archive extends React.Component {
     API.subscribe(APIConstants.subjects, this.componentKey, userId);
   }
   onLectureChange() {
-    this.setState({lectures: LectureStore.getAll(this.props.routeParams.courseId)});
+    this.setState({lectures: LectureStore.getAll(this.props.courseId)});
   }
   onSubjectChange() {
     this.setState({ subjects: SubjectStore.getAll() });
@@ -87,32 +70,40 @@ class Archive extends React.Component {
 
   render() {
     let lectures;
-    if (this.props.courseName) {
-      lectures =            <ArchiveLecture
+
+    if (this.props.courseId) {
+      lectures =            
+      <ArchiveLecture
+            userId={this.props.routeParams.userId}
             courseName={this.props.courseName}
             courseKey={this.props.courseId}
           />
     }
     return (
       <div className='ArchiveView'>
-        <Header />
-        <div className='top' ref='topSection' style={this.sectionStyle}>
-            <h1 className='CodeHeading'>Archive Manager</h1>
-            <div className='CodeSubheading'>Pick a course</div>
-    	</div>
+        <Header>
+        <div className='archiveName'> {this.props.routeParams.userId}'s Archives </div>
+        </Header>
 
-          <ArchiveList
-            courseName={this.props.courseName}
-            courseKey={this.props.courseId}
-            userId={this.props.routeParams.userId}
-            subjects={this.state.subjects}
-            onChangeCourse={this.props.onChangeCourse}
-          />
-        <div ref='divider' style={this.divider}></div>
-        <div className='CodeSubheading' style={this.sectionStyle}>{this.props.courseName} Lecture Sessions</div>
-        <div className='MainContainer' style={this.tableStyle}>
-          {lectures}
+        <div className='top' ref='topSection' style={this.sectionStyle}>
+          <div className='Column-Left'>
+            <div className='Heading2'>Select</div>
+            <div className='Heading1' >COURSE</div>
+            <ArchiveList
+              courseName={this.props.courseName}
+              courseKey={this.props.courseId}
+              userId={this.props.routeParams.userId}
+              subjects={this.state.subjects}
+              onChangeCourse={this.props.onChangeCourse}
+            />
           </div>
+            <div className='Column-Right'>
+              {lectures}
+            </div>
+
+
+        </div>
+
       </div>
     );
   }

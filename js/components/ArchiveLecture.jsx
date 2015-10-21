@@ -5,38 +5,59 @@ import QuestionComposer from './QuestionComposer.jsx';
 import LectureActions from '../actions/LectureActions.js';
 import LectureStore from '../stores/LectureStore.js';
 import ComponentKey from '../utils/ComponentKey.js';
-
+import ArchiveQuestions from './ArchiveQuestions.jsx';
 import API, {APIConstants} from '../utils/API.js';
+
+require('../../css/components/Button.scss');
+require('../../css/components/Archive.scss');
 require('../../css/components/QuestionManager.scss');
 
 class LectureLinks extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+    this.sectionStyle = {
+      flexGrow: 1,
+      textAlign: 'center',
+      margin: 10,
+      width: 200,
+    };
+
+  }
+
+  onCurrentLecture(key) {
+    this.props.onCurrentLecture(key);
+  }
 
   render() {
   let {courseKey, lectureKey, lecture, ...delegateProps} = this.props;
     return (
-    	<tr>
-       		<td>{lecture.title}</td>
-			<td><Link to="responses" params={{courseName: this.props.courseName, courseId: courseKey, lectureId: lectureKey}} className='Button--unstyled'>View Responses</Link></td>
-       	</tr>
+        <div className='ListItem' style={this.sectionStyle}
+          onClick ={this.onCurrentLecture.bind(this,lectureKey)}>
+          {lecture.title}
+        </div>
+
     );
   }
 }
 
 LectureLinks.propTypes = {
   to: React.PropTypes.string,
-  courseName: React.PropTypes.string,
-  courseId: React.PropTypes.string,
+  lectureKey: React.PropTypes.string,
+  onCurrentLecture: React.PropTypes.func,
   children: React.PropTypes.node,
-  onChangeCourse: React.PropTypes.func,
 };
 
 class ArchiveLecture extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       lectures: {},
+      courseKey: this.props.courseKey,
+       activeLectureKey: undefined,
     };
+
     this.componentKey = ComponentKey.generate();
     this.initData = this.initData.bind(this);
     this.onLectureChange = this.onLectureChange.bind(this);
@@ -69,29 +90,55 @@ class ArchiveLecture extends React.Component {
     this.setState({lectures: LectureStore.getAll(this.props.courseKey)});
   }
 
+  onCurrentLecture(key) {
+
+    this.setState({activeLectureKey: key}); //Store key of the new selected lecture 
+  }
+
   render() {
 		let lectureLinks;
+    let currentLectureQuestions;
+        if (this.state.activeLectureKey) {
+         currentLectureQuestions = 
+            <ArchiveQuestions
+              key={this.state.activeLectureKey}
+              userId = {this.props.userId}
+              courseId={this.state.courseKey}
+              lectureId={this.state.activeLectureKey}
+              lecture={this.state.lectures[this.state.activeLectureKey]}
+            />
+        }
+
       if (this.state.lectures) {
       lectureLinks = Object.keys(this.state.lectures).map((lectureKey) => {
         return (
-        <LectureLinks
+          <LectureLinks
             key={lectureKey}
+            userId = {this.props.userId}
             courseKey={this.props.courseKey}
             lectureKey={lectureKey}
             lecture={this.state.lectures[lectureKey]}
+            onCurrentLecture={this.onCurrentLecture.bind(this)} 
           />
+
         );
       });
+
     }
 
     return (
-        <table>
-            <tr>
-              <th>Lecture Name</th>
-              <th></th>
-            </tr>
-              {lectureLinks}
-          </table>
+      <div className='top' ref='topSection'>
+          <div className='Column-Left'>
+            <div className='Heading2'>Select</div>
+            <div className='Heading1'>LECTURE</div>
+             {lectureLinks}
+          </div>
+                {currentLectureQuestions}
+        </div>
+       
+
+
+
     );
   }
 }

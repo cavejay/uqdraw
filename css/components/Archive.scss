@@ -1,0 +1,71 @@
+    @import 'Colors';
+
+.archiveName {
+	    color: #ccc;
+	    margin-top: -20px;
+	    padding-bottom: 10px;
+	    text-transform: uppercase;
+	    font-weight: 900;
+}
+
+.sectionStyle{
+		lexGrow: 1;
+    	textAlign: 'center';
+}
+
+.Heading1 {
+	    font-weight: 900;	
+	    font-size: 30px;
+	    padding-left: 40px;	
+}
+
+.Heading2 {
+	    color: #bbb;
+	    padding-top: 10px;
+	    font-weight: 900;
+	    padding-left: 40px;	
+}
+
+.responses {
+	    color: #ccc;
+	    margin-top: -8px;
+	   	margin-bottom: -10px;
+	    padding-bottom: 10px;
+	    font-size: 18px;
+}
+
+.ArchiveView {
+	overflow-y: hidden;
+}
+
+.Column-Heading {
+  width: 225px;
+	 border-right: solid thick #ddd;
+}
+
+.Date-Heading {
+	    color: #bbb;
+	    padding-top: 10px;
+	    font-weight: 900;
+	    padding-left: 40px;	
+	width:100%;
+}
+
+.Column-Right {
+  overflow-y: scroll;
+    height: 100vh;
+}
+
+.Column-Left{
+  width: 240px;
+  height: 100vh;
+  background-color: $offwhite;
+  overflow-y: scroll;
+  z-index: 1;
+  display: inline-block;	
+    float: left;
+    border-right: solid thick #ddd;
+}
+
+
+
