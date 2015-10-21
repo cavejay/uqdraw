@@ -20,6 +20,7 @@ class Archive extends React.Component {
     this.state = {
       subjects: [], // list of subject names
       lectures: {},
+      courseKey: undefined,
       userId: this.props.routeParams.userId,
     };
     this.onSubjectChange = this.onSubjectChange.bind(this);
@@ -57,7 +58,7 @@ class Archive extends React.Component {
     API.subscribe(APIConstants.subjects, this.componentKey, userId);
   }
   onLectureChange() {
-    this.setState({lectures: LectureStore.getAll(this.props.routeParams.courseId)});
+    this.setState({lectures: LectureStore.getAll(this.props.courseId)});
   }
   onSubjectChange() {
     this.setState({ subjects: SubjectStore.getAll() });
@@ -69,7 +70,8 @@ class Archive extends React.Component {
 
   render() {
     let lectures;
-    if (this.props.courseName) {
+
+    if (this.props.courseId) {
       lectures =            
       <ArchiveLecture
             userId={this.props.routeParams.userId}
@@ -86,7 +88,7 @@ class Archive extends React.Component {
         <div className='top' ref='topSection' style={this.sectionStyle}>
           <div className='Column-Left'>
             <div className='Heading2'>Select</div>
-            <div className='Heading1'>COURSE</div>
+            <div className='Heading1' >COURSE</div>
             <ArchiveList
               courseName={this.props.courseName}
               courseKey={this.props.courseId}

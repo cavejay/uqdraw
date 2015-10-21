@@ -8,7 +8,7 @@ import LectureStore from '../stores/LectureStore.js';
 import ComponentKey from '../utils/ComponentKey.js';
 import API, {APIConstants} from '../utils/API.js';
 
-import PresenterResponses from './PresenterResponses.jsx';
+import ArchiveResponses from './ArchiveResponses.jsx';
 import Modal from 'react-modal';
 require('../../css/components/Button.scss');
 require('../../css/components/Archive.scss');
@@ -172,12 +172,40 @@ class ArchiveQuestions extends React.Component {
 
   
       let activeResponses;
+      var responseKeys = [];
+      var dateResponses = [];
+      var groupedResponses = [];
+      let activeGroupResponses;
     if (this.state.activeQuestionKey) {
       if (this.state.responses) {
         activeResponses = this.state.responses[this.state.activeQuestionKey];
       }
+      if(activeResponses) {
+                responseKeys = Object.keys(activeResponses);
+        for (var i = 0; i < responseKeys.length; i++) {
+          var newDate = new Date(activeResponses[responseKeys[i]].submitted);
+          var newDateMonth = newDate.toDateString();
+          if (dateResponses.length == 0){
+                     dateResponses.push(newDateMonth);
+          } else {
+            if(dateResponses.indexOf(newDateMonth) == -1){
+              dateResponses.push(newDateMonth);
+            }
+          }
+        }
+      }
     }
-    
+
+  for (var i = 0; i < dateResponses.length; i++) {
+   var activeResponsesDisplay = <ArchiveResponses responses={activeResponses || {}} date={dateResponses[i]}onThumbnailClick={this.onThumbnailClick.bind(this)}/>
+    groupedResponses.push(
+      <div className='Date-Heading'>{dateResponses[i]}</div>
+      );
+    groupedResponses.push(
+      <div>{activeResponsesDisplay}</div>
+      );
+  }
+
     let responseSrc;
     let key = this.state.responseModalKey;
     if (key && activeResponses) {
@@ -187,8 +215,6 @@ class ArchiveQuestions extends React.Component {
         responseSrc = [];
       }
     }
-
-    var activeResponsesDisplay = <PresenterResponses responses={activeResponses || {}} onThumbnailClick={this.onThumbnailClick.bind(this)}/>
 
     return (
       <div className='top' ref='topSection'>
@@ -212,7 +238,7 @@ class ArchiveQuestions extends React.Component {
             <div className='Heading2'><br/></div>
               <div className='Heading1'>RESPONSES</div>
             <div className="ResponseThumbnails">
-                {activeResponsesDisplay}
+                {groupedResponses}
             </div>
             </div>
       </div>
