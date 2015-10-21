@@ -4,6 +4,19 @@
   width: 100%;
 }
 
+.SectionLabel {
+  color: #ccc;
+  padding-bottom: 2px;
+  border-bottom: 3px solid #ddd;
+  display: inline-block;
+  text-align: center;
+  font-size: 16px;
+  text-transform: uppercase;
+
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .noQuestion {
   margin-top: 0;
   height: 100%;
@@ -56,6 +69,15 @@
   text-align: center;
 }
 
+.questionDivDrawing {
+  text-align: center;
+}
+
+.questionDivDrawing > h2 {
+  text-align: center;
+  margin: 0 auto;
+}
+
 .responseDiv {
   margin-top: 10%;
   height: 100%;
@@ -87,7 +109,7 @@
   height: 60vh;
   margin-top: 15vh;
   padding: 10px;
-  padding-top: 20vh;
+  padding-top: 15vh;
   text-align: center;
   cursor: pointer;
 }
@@ -144,22 +166,12 @@
   color: red;
 }
 
-.SectionLabel {
-  color: #ccc;
-  padding-bottom: 2px;
-  border-bottom: 3px solid #ddd;
-  display: inline-block;
-  text-align: center;
-  font-size: 16px;
-  text-transform: uppercase;
-
-  margin-left: 10px;
-  margin-right: 10px;
+.canvasDrawingElement {
+  position: relative;
+  height: 60vh;
 }
 
-.SectionLabel:hover{
 
-}
 
 .fullscreen {
   position: absolute;

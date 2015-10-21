@@ -162,7 +162,7 @@ class Responder extends React.Component {
     if (this.state.state == statetypes.badcode) {
       questionModal = (
         <div className='badCodeDiv'>
-          This is not the lecture you are looking for.
+          <p>This is not the lecture you are looking for.</p>
           <Link to="app">Click here to go back to the homepage</Link>
         </div>
       );
@@ -179,7 +179,7 @@ class Responder extends React.Component {
       // This will appear if the student is currently drawing an answer
     } else if (this.state.state == statetypes.drawing) {
       questionModal = (
-        <div className='questionDiv'>
+        <div className='questionDivDrawing' >
           {title}
           <div className='questionTextDrawing'>
             {this.state.questionText}
@@ -232,9 +232,8 @@ class Responder extends React.Component {
     } else if (this.state.state == statetypes.drawing) { // There's a question being answered
       return (
         <div classname='responseDiv'>
-          <Drawing onSubmitImage={this.onSubmitImage.bind(this)}/>
-          <div className='reponseButton' onClick={this.onSubmitImage.bind(this)}>
-            Tap to Submit
+          <div className='canvasDrawingElement'>
+            <Drawing SubmitImage={this.onSubmitImage.bind(this)} />
           </div>
         </div>
       );
