@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.Drawing--Scroll {
+  overflow: scroll;
+}
+
 .SectionLabel {
   color: #ccc;
   padding-bottom: 2px;
@@ -80,7 +84,7 @@
 
 .responseDiv {
   margin-top: 10%;
-  height: 100%;
+  /*height: 100%;*/
   text-align: center;
 }
 
@@ -124,7 +128,16 @@
   margin-top: 0;
   border-color: #5C42AB;
   border-width: medium;
-  background-color: blue;
+  background-color: white;
+
+  width: 700px;
+  height: auto;
+}
+
+@media screen and (max-width: 778px) {
+    #submittedImage {
+        width: 90%;
+    }
 }
 
 .responseButton {
@@ -141,11 +154,7 @@
   background-color: grey;
 }
 
-@media (max-width: 400px) {
-  .responseButton {
-    width: 100%;
-  }
-}
+
 
 #photo-input {
   margin-top: -60px;
