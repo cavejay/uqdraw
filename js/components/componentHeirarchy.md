@@ -24,6 +24,10 @@ The following document give an overview of the heirarchy of components. There is
 - Responder.jsx
 	- Drawing.jsx
 - Archive.jsx
+	- ArchiveList.jsx
+		- ArchiveLecture.jsx
+			- ArchiveQuestions.jsx
+				- ArchiveResponses.jsx
 
 ##Not Yet Implemented
 - Responses.jsx (used in archiving, will probably be removed).
