@@ -36,6 +36,7 @@ class Responder extends React.Component {
       lectureTitle: "~",
       questionText: "",
       state: statetypes.badcode,
+      lastSubmittedImage: undefined,
     };
     this.ctx = undefined; // drawing canvas context
     this.onChange = this.onChange.bind(this);
@@ -69,7 +70,7 @@ class Responder extends React.Component {
     console.log('[USER] started drawing');
   }
 
-  openCamera() {
+  openCamera(submission) {
     console.log("[Camera] We're using the camera");
     //Get a handle on the input box
     var input = document.getElementById("photo-input");
@@ -82,11 +83,11 @@ class Responder extends React.Component {
       reader.onload = function (e) {
         //The data returned
         lastSubmittedImage = e.target.result;
-        console.log("[Camera] "+lastSubmittedImage);
 
-        //TODO: Implement the displaying of the image on the canvas.
-        //I was thinking that it was just going to be easiest to just
-        //throw it on the canvas but whatever!
+        console.log("[Camera] "+ lastSubmittedImage);
+
+        //Setting this state will display it on the submission screen
+        submission(lastSubmittedImage, false);
       }
 
       //Read the data from the url, and call back the function
@@ -153,6 +154,8 @@ class Responder extends React.Component {
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
     this.setState({state:  statetypes.openSubmitted});
     hasSubmitted = true;
+
+    this.setState({lastSubmittedImage: dataURL});
   }
 
   getQuestion() {
@@ -215,7 +218,7 @@ class Responder extends React.Component {
             <div id='photoLabel' className='responseButton'>
               Tap to take a Picture
             </div>
-            <input accept="image/*" onChange={this.openCamera.bind(this)} type="file" id="photo-input" name="photo-input"></input>
+            <input accept="image/*" onChange={this.openCamera.bind(this, this.onSubmitImage.bind(this))} type="file" id="photo-input" name="photo-input"></input>
           </form>
           </div>
         </div>
@@ -243,7 +246,8 @@ class Responder extends React.Component {
           {title}
           <div className='submittedDiv'>
             <h3>Your Response!</h3>
-            <canvas id="submittedImage" width='180' height='180'></canvas>
+            {/*<canvas id="submittedImage" width='180' height='180'></canvas>*/}
+            <img id="submittedImage" src={this.state.lastSubmittedImage}/>
           </div>
         </div>
       );
@@ -258,8 +262,14 @@ class Responder extends React.Component {
     var mediumStyle = (this.state.lineWidth === 'm') ? activeStyle : {};
     var largeStyle = (this.state.lineWidth === 'l') ? activeStyle : {};
 
+    var DrawingClass = "Drawing";
+
+    if (this.state.state == statetypes.openSubmitted) {
+      DrawingClass="Drawing Drawing--Scroll";
+    }
+
     return (
-      <div className='Drawing'>
+      <div className={DrawingClass}>
         <div className='headerBar'>
             <div className='headerText'>
                 <h3>{this.state.courseName}</h3>
