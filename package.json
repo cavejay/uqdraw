@@ -1,6 +1,6 @@
 {
   "name": "uqdraw",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Platform for asking in-lecture questions and getting free-form responses.",
   "main": "index.js",
   "scripts": {
