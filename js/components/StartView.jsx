@@ -4,7 +4,7 @@ import AuthActions from '../actions/AuthActions.js';
 import AuthStore from '../stores/AuthStore.js';
 require('../../css/components/StartView.scss');
 
-var versionNumber = 'v0.3.1'
+var versionNumber = 'v0.3.2'
 
 class StartView extends React.Component {
   constructor(props) {
