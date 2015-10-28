@@ -1,4 +1,4 @@
-# UQDraw Prototype
+# UQDraw
 This guide assumes you are familiar with modern web dev and will not cover configuring your system for web development. The getting started section assumes you are using OSX with node installed.
 
 ## Overview of Technology Used
@@ -12,7 +12,7 @@ Installing the dependencies
 
 Running the dev server
 `$ npm run start`
-You can access the dev server at `http://localhost:9000`
+You can access the dev server at `http://localhost:9000` and through your local network by using your machine's assigned ip address. 
 
 Bundling the app
 `$ npm run build`
