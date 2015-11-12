@@ -60,12 +60,18 @@ class Drawing extends React.Component {
     // through scaling.
     this.setCanvasWidths();
 
+    // Set up the default drawing tools. These are changed by the user
+    // when the drawing window is shown.
     this.setLineWidth('m');
     this.ctx.lineJoin = 'round';
     this.ctx.lineCap = 'round';
     this.ctx.strokeStyle = '#333333';
   }
 
+
+  // When a click is made, will need to work out the mid point of the dot that
+  // is to be draw, for the most accurate and consistent drawing experience.
+  // This function gives a quick way to calculate the midpoint.
   computeMidpoint(point1, point2) {
     var midpoint = {
       x: (point1.x + point2.x) / 2,
@@ -74,6 +80,14 @@ class Drawing extends React.Component {
     return midpoint;
   }
 
+  // Triggerd when the user draws on the screen, begins calculating the
+  // drawing of smooth lines as the finger or pointer is dragged across
+  // the screen.
+  //
+  // As the refresh rate of the touch sensing is not high enough to draw
+  // perfectly smooth lines, quadradic curves are used to join each of 
+  // the points, for a smooth line (rather than straight lines between
+  // points which provides a sub-par experience)
   fingerTouchedScreen(hand, finger, displayCtx, ctx, canvas) {
     var points = this.points;
     if (hand.fingers.length > 1) return; // only deal with single finger.
@@ -121,6 +135,7 @@ class Drawing extends React.Component {
     });
   }
 
+  //Set up the engine used for sensing drawing on the canvas.
   initializeTouchy() {
     this.points = []; // list of all touch points in the current movement
 
@@ -129,6 +144,9 @@ class Drawing extends React.Component {
     });
   }
 
+  //Resizing of the window can cause issues in the display of the canvas, 
+  //to prevent this, the canvas widths are calculated and hard set using
+  //this funciton. It is called when this component is initialised.
   setCanvasWidths() {
     // Must set DOM properties, as CSS styling will distory otherwise.
     this.displayCanvas.width = parseInt(getComputedStyle(this.displayCanvas).width, 10);
@@ -137,18 +155,28 @@ class Drawing extends React.Component {
     this.canvas.height = this.displayCanvas.height;
   }
 
+  // Turns the eraser on or off (depending on the current state). Eraser is 
+  // enabled by changing the color of the drawing tool to the color of the 
+  // background.
   toggleEraser() {
-    if (!this.state.isEraserActive) this.ctx.strokeStyle = '#F7FAFE';
-    else                           this.ctx.strokeStyle = '#333333';
+    if (!this.state.isEraserActive) {
+      this.ctx.strokeStyle = '#F7FAFE';
+    } else {
+      this.ctx.strokeStyle = '#333333';
+    }
+
     this.setState({ isEraserActive: !this.state.isEraserActive });
   }
 
+  // Users and select if they think they have a correct answer. This function
+  // toggels the isCorrectActive state item.
 	toggleCorrect() {
        if (!this.state.isCorrectActive) ;
     else                           ;
     this.setState({ isCorrectActive: !this.state.isCorrectActive });
   }
 
+  //Removes all of the drawings from the canvas.
   clearCanvas() {
     var ctx = this.displayCtx;
 
@@ -182,6 +210,10 @@ class Drawing extends React.Component {
     this.props.SubmitImage(dataURL, isCorrect);
   }
 
+  // Used for automatic question display flow. When the lecture moves from
+  // having an active question to having no active question (triggered by
+  // a remote event), this is called, disabling the ability for users to
+  // submit responses.
   hideQuestion() {
     this.setState({ isQuestionOpen: false });
     clearCanvas();
