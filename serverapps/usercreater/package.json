@@ -1,0 +1,11 @@
+{
+  "name": "usercreater",
+  "version": "0.0.1",
+  "description": "Create users for uqdraw",
+  "main": "newuser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "github.com/cavejay",
+  "license": "ISC"
+}
