@@ -13,7 +13,7 @@
     "transfer": "bash deploy.sh",
     "deploy": "webpack --config webpack.config.deploy.js --progress --colors && bash deploy.sh",
     "productionBuild": "NODE_ENV=production webpack -p --config webpack.config.deploy.js",
-    "makedeploy": "mkdir localdeploy && cp build/* localdeploy && cp index.html localdeploy && cp -rf images localdeploy"
+    "makedeploy": "mkdir localdeploy && cp build/* localdeploy && cp index.html localdeploy && cp favicon.ico localdeploy && cp -rf images localdeploy"
  },
   "pre-commit": [
     ""
