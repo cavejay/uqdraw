@@ -18,26 +18,31 @@ class QuestionList extends React.Component {
     };
   }
 
+  //Display modal for generation a question
   showQuestionModal() {
     this.setState({modalIsOpen: true});
     event.preventDefault();
   }
 
+  //Dismiss modal for generating a question
   hideQuestionModal() {
     this.setState({modalIsOpen: false});
     event.preventDefault();
   }
 
+  //Triggered when a new question is added
   onAddQuestion(lectureKey, lecture, question) {
     this.props.onAddQuestion(lectureKey, lecture, question);
     this.setState({modalIsOpen: false});
     event.preventDefault();
   }
 
+  //Triggered when lecture is removed
   onRemoveLecture(key) {
     this.props.onRemoveLecture(key);
   }
 
+  //Triggered when a question is removed
   onRemoveQuestion(lectureKey, lecture, questionKey) {
     this.props.onRemoveQuestion(lectureKey, lecture, questionKey);
   }
@@ -53,6 +58,8 @@ class QuestionList extends React.Component {
           return null;
         }
 
+        //For each question, generate an individual question component that
+        //is used for display in the render function below
         let question = lecture.questions[questionKey];
         return (
           <Question

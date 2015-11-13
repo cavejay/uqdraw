@@ -124,6 +124,13 @@ class QuestionManager extends React.Component {
 
   render() {
     let lectures;
+
+    // Create a list of all of the lectures for this course. Convert these
+    // into a list of questions for each lecture displayed inside of a
+    // QuestionList component.
+    //
+    // The lectures object is used in the render object as a fast,
+    // reusable way of rendering the questions for each lecture.
     if (this.state.lectures) {
       lectures = Object.keys(this.state.lectures).map((lectureKey) => {
         return (

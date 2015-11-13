@@ -35,11 +35,23 @@ class QuestionSelector extends React.Component {
   }
 
   render() {
+    // Create a formatted list of question elements that users can use
+    // to select the question they want to take answers for
+
+    //For all of the questions in the list (these are already ordered)
     let questions = this.props.questions.map((question, index) => {
+      //Set the default class name to just "PersenterListItem", as all
+      //elements will have this class name
       let className = 'PresenterListItem';
+
+      //If this is the selected question, also add the active class, so
+      //that it can be formatted differently to display this that it has
+      //been selected
       if (question.key === this.props.activeQuestionKey) {
         className += ' PresenterListItem--active';
       }
+
+      //Return the JSX markup for the element of the question selector.
       return (
         <div key={question.key} className={className} onClick={this.onActivateQuestion.bind(this, question.key)}>
           <span className="PresenterListItem-QuestionNumber">Q{index+1}:</span>
