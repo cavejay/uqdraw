@@ -11,6 +11,8 @@ import ComponentKey from '../utils/ComponentKey.js';
 import API, {APIConstants} from '../utils/API.js';
 
 class Welcome extends React.Component {
+  // Welcome screen presented to the user once they have logged in. 
+
   constructor(props) {
     super(props);
     this.componentKey = ComponentKey.generate();
@@ -29,6 +31,7 @@ class Welcome extends React.Component {
   componentDidMount() {
     // Populate local state from store & setup Firebase observation.
     this.initData();
+
     // Listen for store changes
     SubjectStore.addChangeListener(this.onSubjectChange);
     SubjectStore.addChangeListener(this.onSubmitChange);
@@ -47,10 +50,13 @@ class Welcome extends React.Component {
     API.unsubscribe(APIConstants.subjects, this.componentKey, userId);
   }
 
+  // Set up all the data for the welcome screen
   initData() {
+    //Get the User's ID from the route
     let userId = this.props.routeParams.userId;
     console.log('subjects = ', SubjectStore.getAll());
 
+    //Update the handle to the subjects (connect it to the subject store)
     this.setState({
       subjects: SubjectStore.getAll(),
       isSubmitting: SubjectStore.isSubmitting(),
@@ -68,7 +74,8 @@ class Welcome extends React.Component {
     this.setState({ isSubmitting: SubjectStore.isSubmitting() });
   }
 
-  // Callback to be passed to SubjectList child
+  // Callback to be passed to SubjectList child, is called when the user wants
+  // to add a new subject to the list
   onAddSubject(subjectName) {
     let userId = this.props.routeParams.userId;
     SubjectActions.create(userId, subjectName);

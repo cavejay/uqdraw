@@ -73,7 +73,8 @@ class StartView extends React.Component {
     AuthStore.removeChangeListener(this.onLoginSuccess);
   }
 
-onChangeInput1(event) {
+  // When the first code input element changes
+  onChangeInput1(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
     if (inputValue.length === 1) React.findDOMNode(this.refs.in2).focus();
@@ -82,6 +83,7 @@ onChangeInput1(event) {
     this.codeChecker();
   }
 
+  // When the second code input element changes
   onChangeInput2(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
@@ -92,6 +94,7 @@ onChangeInput1(event) {
 
   }
 
+  // When the second code input element changes
   onChangeInput3(event) {
     let inputValue = event.target.value;
     if (inputValue.length > 1)   return; // max 1 char
@@ -109,7 +112,10 @@ onChangeInput1(event) {
     //Merge the three individual code elements into 1
     let lecCode = codeInput1Upper.concat(codeInput2Upper, codeInput3Upper);
 
+    //Assert that the lenght is correct
     if (lecCode.length === 3){
+      // If the length is correct, use this code to transition to the
+      // response page for this code.
       this.context.router.transitionTo('drawing', {'lectureCode': lecCode}, {});
     }
   }

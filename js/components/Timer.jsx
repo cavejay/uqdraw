@@ -12,22 +12,27 @@ class Timer extends React.Component {
     this.tick = this.tick.bind(this);
   }
 
+  // Start timer counting. Timer is not reset, so if there is elapsed time
+  // the timer will continue from where it was 
   startTimer() {
     if (!this.timer) {
       this.timer = setInterval(this.tick, this.props.interval);
     }
   }
 
+  // Pause the timer at its current point
   stopTimer() {
     clearInterval(this.timer);
     this.timer = undefined;
   }
 
+  // Stop the timer if it is not already stopped, and set it back to 0.
   resetTimer() {
     this.stopTimer();
     this.setState({elapsed: 0});
   }
 
+  // Update the timer based on how much time has elapsed since the last update.
   tick() {
     this.setState({elapsed: Number(this.state.elapsed) + +Number(this.props.increment)});
   }

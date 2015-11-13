@@ -55,12 +55,13 @@ class SubjectList extends React.Component {
   // Click handler for adding a new course button.
   showForm() {
     this.setState({ modalIsOpen: true }, () => {
-      // hack to focus the input, for some reason the react-modal destroys
-      // any ref attribute inside it, so we cant use that. no time to debug it.
+      // Focus the input, for some reason the react-modal destroys
+      // any ref attribute inside it, so can't be used
       document.querySelector('.Input').focus();
     });
   }
 
+  //Triggered when a new course is added.
   addNewCourse(event) {
     this.props.onAddSubject(this.state.newCourse);
 
@@ -71,13 +72,16 @@ class SubjectList extends React.Component {
     event.preventDefault();
   }
 
+  //When the selected course is change
   onCourseInputChange(event) {
     this.setState({ newCourse: event.target.value });
   }
 
+
   openModal() {
     this.setState({ modalIsOpen: true });
   }
+  
   closeModal(event) {
     event.preventDefault();
     this.setState({ modalIsOpen: false });

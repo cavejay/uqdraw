@@ -13,17 +13,18 @@ require('../../css/components/Archive.scss');
 require('../../css/components/QuestionManager.scss');
 
 class LectureLinks extends React.Component {
+  // Contains links to all of the lectures for a selected course.
   constructor(props) {
     super(props);
     this.state = {
     };
+
     this.sectionStyle = {
       flexGrow: 1,
       textAlign: 'center',
       margin: 10,
       width: 200,
     };
-
   }
 
   onCurrentLecture(key) {
@@ -37,7 +38,6 @@ class LectureLinks extends React.Component {
           onClick ={this.onCurrentLecture.bind(this,lectureKey)}>
           {lecture.title}
         </div>
-
     );
   }
 }

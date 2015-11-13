@@ -17,18 +17,22 @@ class Archive extends React.Component {
  constructor(props) {
     super(props);
     props.onChangeCourse(props.routeParams.courseId, props.routeParams.courseName);
+
     this.state = {
       subjects: [], // list of subject names
-      lectures: {},
-      courseKey: undefined,
-      userId: this.props.routeParams.userId,
+      lectures: {}, //all of the currently displayed lectures
+      courseKey: undefined, //will be set when a course is selected
+      userId: this.props.routeParams.userId, //ID of the currently logged in user
     };
+
+    //Bind callback handlers
     this.onSubjectChange = this.onSubjectChange.bind(this);
     this.onSubmitChange = this.onSubmitChange.bind(this);
     this.initData = this.initData.bind(this);
     this.onLectureChange = this.onLectureChange.bind(this);
   }
-   componentDidMount() {
+
+  componentDidMount() {
     // Populate local state from store & setup Firebase observation.
     this.initData();
     // Listen for store changes
@@ -54,13 +58,25 @@ class Archive extends React.Component {
       subjects: SubjectStore.getAll(),
       isSubmitting: SubjectStore.isSubmitting(),
     }, () => {
+
     });
+
+    // Need to be updated with any changes in the subjects store, to display
+    // any new courses, lectures, questions and responeses.
     API.subscribe(APIConstants.subjects, this.componentKey, userId);
   }
+
+
+  // When the selected lecture is changed
   onLectureChange() {
+    // When the selected lecture is changed, get all of the updated lectures
+    // that need to be displayed
     this.setState({lectures: LectureStore.getAll(this.props.courseId)});
   }
+
+  // When the selected subject is changed
   onSubjectChange() {
+    // New subject has been changed, so get the updated subjects from the store
     this.setState({ subjects: SubjectStore.getAll() });
   }
 
@@ -71,6 +87,9 @@ class Archive extends React.Component {
   render() {
     let lectures;
 
+    // Before attempting to display any lectures, ensure that a
+    // course has been selected. If no course is selected, leave 
+    // lectures are null
     if (this.props.courseId) {
       lectures =            
       <ArchiveLecture

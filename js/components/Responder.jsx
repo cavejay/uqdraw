@@ -28,15 +28,15 @@ class Responder extends React.Component {
     super(props);
     this.componentKey = ComponentKey.generate();
     this.state = {
-      lecID: undefined,
-      activeQ: "NONE",
-      lectureID: "",
-      courseID: "",
-      courseName: "~",
-      lectureTitle: "~",
-      questionText: "",
-      state: statetypes.badcode,
-      lastSubmittedImage: undefined,
+      lecID: undefined, //The lecture that the code is for
+      activeQ: "NONE", //ID of the currently active question
+      lectureID: "", //The lecture that the code is for
+      courseID: "", //The ID of the course this lecture is for
+      courseName: "~", //The name of the course
+      lectureTitle: "~", //The title of the lecture
+      questionText: "", //The text of the question
+      state: statetypes.badcode, //Current state of the lecture
+      lastSubmittedImage: undefined, //The last image that this user submitted to the database
     };
     this.ctx = undefined; // drawing canvas context
     this.onChange = this.onChange.bind(this);
@@ -65,11 +65,14 @@ class Responder extends React.Component {
     this.getResponderState();
   }
 
+  // Triggered when the user starts drawing
   startDrawing() {
     this.setState({state: statetypes.drawing});
     console.log('[USER] started drawing');
   }
 
+  //Opens the camera, allowing a user to submit an image of their response,
+  //rather than drawing on their machine
   openCamera(submission) {
     console.log("[Camera] We're using the camera");
     //Get a handle on the input box
@@ -96,6 +99,8 @@ class Responder extends React.Component {
     }
   }
 
+  //Calcualte and set the current state that the responder is in, based on
+  //current state values.
   getResponderState() {
     console.log("[STORE] Updating state of component");
     let oldActiveQ = this.state.activeQ;
@@ -106,7 +111,7 @@ class Responder extends React.Component {
       this.state.state = statetypes.openbutclosed;
     }
 
-    if(oldActiveQ !== this.state.activeQ) {
+    if(oldActiveQ !== this.state.activeQ) { //The system is open and ready for a response
       hasSubmitted = false;
       this.state.state = statetypes.open;
     }
@@ -115,7 +120,7 @@ class Responder extends React.Component {
       this.state.state = statetypes.open;
     }
 
-    if (hasSubmitted) {
+    if (hasSubmitted) { //User has the page open, but has already made a submission
       this.state.state = statetypes.openSubmitted;
     }
 
@@ -130,10 +135,12 @@ class Responder extends React.Component {
     this.setState({isSubmitting: ResponderStore.isSubmitting()});
   }
 
-  // Submit the current canvas
+  // Submit the current canvas to the database
   onSubmitImage(dataURL, isCorrect) {
-    if(hasSubmitted === true) return;
+    if(hasSubmitted === true) return; //Don't allow for multiple submissions
     lastSubmittedImage = dataURL; // Save the image for reasons
+    
+    //Generate the payload to be submitted
     let response = {
     	isCorrect: isCorrect,
       submitted: Date.now(),
@@ -149,12 +156,18 @@ class Responder extends React.Component {
         height: (function(){if(window.screen) return(screen.height); else return "Not Accessible"})(),
       }
     };
+
+    //Get additional metedata required by API
     let lectureKey = this.state.lectureID;
     let questionKey = this.state.activeQ;
+
+    //Submit the resopnse
     let ref = ResponderActions.createResponse(lectureKey, questionKey, response);
+    
     this.setState({state:  statetypes.openSubmitted});
     hasSubmitted = true;
 
+    //Keep the submitted image so that it can be displayed to the user
     this.setState({lastSubmittedImage: dataURL});
   }
 
